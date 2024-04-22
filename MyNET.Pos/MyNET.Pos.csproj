@@ -1,0 +1,855 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{22B64E44-8330-4892-AA8A-AAD15ED5FDD9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MyNET.Pos</RootNamespace>
+    <AssemblyName>POS</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>planet_accounting_m_Lj2_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BarcodeStandard, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BarcodeLib.2.4.0\lib\net46\BarcodeStandard.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.9\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EngineIoClientDotNet, Version=0.9.22.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EngineIoClientDotNet.0.9.22\lib\net45\EngineIoClientDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ExtendedXmlSerializer, Version=3.7.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExtendedXmlSerializer.3.7.6\lib\net452\ExtendedXmlSerializer.dll</HintPath>
+    </Reference>
+    <Reference Include="FPcore">
+      <HintPath>..\..\..\FPcore.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.59.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.59\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.barcodes, Version=7.2.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.2.3\lib\net461\itext.barcodes.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.commons, Version=7.2.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.commons.7.2.3\lib\net461\itext.commons.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.forms, Version=7.2.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.2.3\lib\net461\itext.forms.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.io, Version=7.2.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.2.3\lib\net461\itext.io.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.kernel, Version=7.2.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.2.3\lib\net461\itext.kernel.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.layout, Version=7.2.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.2.3\lib\net461\itext.layout.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.pdfa, Version=7.2.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.2.3\lib\net461\itext.pdfa.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.sign, Version=7.2.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.2.3\lib\net461\itext.sign.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.styledxmlparser, Version=7.2.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.2.3\lib\net461\itext.styledxmlparser.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.svg, Version=7.2.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.2.3\lib\net461\itext.svg.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="LightInject, Version=6.3.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LightInject.6.3.5\lib\net46\LightInject.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.5.0.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.5.0.0\lib\net461\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.5.0.0\lib\net461\Microsoft.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.5.0.0\lib\net461\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.5.0.0\lib\net461\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.5.0.0\lib\net461\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Word.15.0.4797.1004\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Reporting.WinForms.v11.1.0.0.0\lib\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Reporting.WinForms.v11.1.0.0.0\lib\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Reporting.WinForms.v11.1.0.0.0\lib\Microsoft.ReportViewer.WinForms.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Reporting.WinForms.v11.1.0.0.0\lib\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Toolkit, Version=7.1.0.0, Culture=neutral, PublicKeyToken=4aff67a105548ee2, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Toolkit.7.1.2\lib\netstandard2.0\Microsoft.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="myNET.UpdateService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\myNET.UpdateService.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NReco.LambdaParser, Version=1.0.11.0, Culture=neutral, PublicKeyToken=50b5ad72a1d364c6, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.LambdaParser.1.0.12\lib\net45\NReco.LambdaParser.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="RestSharp, Version=106.6.10.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.6.10\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SocketIOClient, Version=3.0.8.0, Culture=neutral, PublicKeyToken=c9a3629195a82104, processorArchitecture=MSIL">
+      <HintPath>..\packages\SocketIOClient.3.0.8\lib\net462\SocketIOClient.dll</HintPath>
+    </Reference>
+    <Reference Include="SocketIoClientDotNet, Version=0.9.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SocketIoClientDotNet.0.9.13\lib\net45\SocketIoClientDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Doc, Version=10.9.6.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Doc.10.9.6\lib\net40\Spire.Doc.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Pdf, Version=8.6.1.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\FreeSpire.PDF.8.6.0\lib\net40\Spire.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Sprache, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sprache.2.3.1\lib\net45\Sprache.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=1.2.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.7.1\lib\net461\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.115.5, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\lib\net451\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.115.5, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.115.5\lib\net451\System.Data.SQLite.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.115.5, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.115.5\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.5.0.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Interactive, Version=4.1.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Interactive.4.1.1\lib\net45\System.Interactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO" />
+    <Reference Include="System.Linq.Expressions" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Text.Encoding.CodePages, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.4.5.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.7.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=7.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.7.0.2\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WebSocket4Net, Version=0.14.1.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocket4Net.0.14.1\lib\net45\WebSocket4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DatabaseConnect.cs" />
+    <Compile Include="FP.cs" />
+    <Compile Include="Helper\AutoClosingMessageBox.cs" />
+    <Compile Include="Helper\Base.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Helper\Base.Designer.cs">
+      <DependentUpon>Base.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Helper\BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\FiscalPrinterHelper.cs" />
+    <Compile Include="Gloabals.cs" />
+    <Compile Include="Helper\FullScreen.cs" />
+    <Compile Include="Helper\InvoicePDF.cs" />
+    <Compile Include="Helper\ITextEvents.cs" />
+    <Compile Include="Helper\SocketManager.cs" />
+    <Compile Include="Helper\TrackError.cs" />
+    <Compile Include="Helper\TremolPrint.cs" />
+    <Compile Include="LoadJson.cs" />
+    <Compile Include="Login\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\ConnectToServer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\ConnectToServer.Designer.cs">
+      <DependentUpon>ConnectToServer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\SelectStation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\SelectStation.Designer.cs">
+      <DependentUpon>SelectStation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Config.cs" />
+    <Compile Include="Modules\AddPartner.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\AddPartner.Designer.cs">
+      <DependentUpon>AddPartner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\AddSpaces.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\AddSpaces.Designer.cs">
+      <DependentUpon>AddSpaces.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\AddTables.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\AddTables.Designer.cs">
+      <DependentUpon>AddTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\BonusCard\Add_BonusCard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\BonusCard\Add_BonusCard.Designer.cs">
+      <DependentUpon>Add_BonusCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\AdminCloseCashbox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\AdminCloseCashbox.Designer.cs">
+      <DependentUpon>AdminCloseCashbox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\autoupdate\UpdateDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\autoupdate\UpdateDialog.Designer.cs">
+      <DependentUpon>UpdateDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\autoupdate\UpdateModule.cs" />
+    <Compile Include="Modules\BonusCard\BonusCardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\BonusCard\BonusCardForm.Designer.cs">
+      <DependentUpon>BonusCardForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\BonusCard\BonusCardList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\BonusCard\BonusCardList.Designer.cs">
+      <DependentUpon>BonusCardList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\BonusCard\BonusCardTemplateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\BonusCard\BonusCardTemplateForm.Designer.cs">
+      <DependentUpon>BonusCardTemplateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Buttons\CreateButtons.cs" />
+    <Compile Include="Modules\CloseCashboxRestaurant.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\CloseCashboxRestaurant.Designer.cs">
+      <DependentUpon>CloseCashboxRestaurant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\CloseChashbox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\CloseChashbox.Designer.cs">
+      <DependentUpon>CloseChashbox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\DailyReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\DailyReport.Designer.cs">
+      <DependentUpon>DailyReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Buttons\IdentifierButtonEventArgs.cs" />
+    <Compile Include="Modules\Buttons\ListViewExtensions.cs" />
+    <Compile Include="Modules\DelTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\DelTable.Designer.cs">
+      <DependentUpon>DelTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\DiscountTotalAmount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\DiscountTotalAmount.Designer.cs">
+      <DependentUpon>DiscountTotalAmount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\DiscountTotalPercentage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\DiscountTotalPercentage.Designer.cs">
+      <DependentUpon>DiscountTotalPercentage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\DisplayInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\DisplayInfo.Designer.cs">
+      <DependentUpon>DisplayInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Email.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Email.Designer.cs">
+      <DependentUpon>Email.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\EnterPin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\EnterPin.Designer.cs">
+      <DependentUpon>EnterPin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\FavoriteItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\FavoriteItems.Designer.cs">
+      <DependentUpon>FavoriteItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\frmPayment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\frmPayment.Designer.cs">
+      <DependentUpon>frmPayment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\frmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\frmSettings.Designer.cs">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\InputControlState.cs" />
+    <Compile Include="Modules\Invoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Invoice.Designer.cs">
+      <DependentUpon>Invoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ItemDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\ItemDetails.Designer.cs">
+      <DependentUpon>ItemDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\OpenChashbox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\OpenChashbox.Designer.cs">
+      <DependentUpon>OpenChashbox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Options.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Options.Designer.cs">
+      <DependentUpon>Options.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\PosIsRunning.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\PosIsRunning.Designer.cs">
+      <DependentUpon>PosIsRunning.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\PosRestaurant.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\PosRestaurant.Designer.cs">
+      <DependentUpon>PosRestaurant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\PrinterConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\PrinterConfig.Designer.cs">
+      <DependentUpon>PrinterConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Raporti.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Raporti.Designer.cs">
+      <DependentUpon>Raporti.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ReportByDate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\ReportByDate.Designer.cs">
+      <DependentUpon>ReportByDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ReportRestaurant.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\ReportRestaurant.Designer.cs">
+      <DependentUpon>ReportRestaurant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Restaurant.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Restaurant.Designer.cs">
+      <DependentUpon>Restaurant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\RestaurantOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\RestaurantOptions.Designer.cs">
+      <DependentUpon>RestaurantOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\RestaurantPos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\RestaurantPos.Designer.cs">
+      <DependentUpon>RestaurantPos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\SavePOS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\SavePOS.Designer.cs">
+      <DependentUpon>SavePOS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Shitjet e Fundit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Shitjet e Fundit.Designer.cs">
+      <DependentUpon>Shitjet e Fundit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ThermalPrinter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\ThermalPrinter.Designer.cs">
+      <DependentUpon>ThermalPrinter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\JoinTables.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\JoinTables.Designer.cs">
+      <DependentUpon>JoinTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\TransferOrderDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\TransferOrderDetails.Designer.cs">
+      <DependentUpon>TransferOrderDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Untitled %281%29.zip" />
+    <None Include="Version">
+      <SubType>Component</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Translation.cs" />
+    <Compile Include="UpdateChecker.cs" />
+    <Compile Include="ViewReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewReport.Designer.cs">
+      <DependentUpon>ViewReport.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Helper\Base.resx">
+      <DependentUpon>Base.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Helper\BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\ConnectToServer.resx">
+      <DependentUpon>ConnectToServer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\SelectStation.resx">
+      <DependentUpon>SelectStation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\AddPartner.resx">
+      <DependentUpon>AddPartner.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\AddSpaces.resx">
+      <DependentUpon>AddSpaces.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\AddTables.resx">
+      <DependentUpon>AddTables.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\BonusCard\Add_BonusCard.resx">
+      <DependentUpon>Add_BonusCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\AdminCloseCashbox.resx">
+      <DependentUpon>AdminCloseCashbox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\autoupdate\UpdateDialog.resx">
+      <DependentUpon>UpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\BonusCard\BonusCardForm.resx">
+      <DependentUpon>BonusCardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\BonusCard\BonusCardList.resx">
+      <DependentUpon>BonusCardList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\BonusCard\BonusCardTemplateForm.resx">
+      <DependentUpon>BonusCardTemplateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\CloseCashboxRestaurant.resx">
+      <DependentUpon>CloseCashboxRestaurant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\CloseChashbox.resx">
+      <DependentUpon>CloseChashbox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\DailyReport.resx">
+      <DependentUpon>DailyReport.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\DelTable.resx">
+      <DependentUpon>DelTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\DiscountTotalAmount.resx">
+      <DependentUpon>DiscountTotalAmount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\DiscountTotalPercentage.resx">
+      <DependentUpon>DiscountTotalPercentage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\DisplayInfo.resx">
+      <DependentUpon>DisplayInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Email.resx">
+      <DependentUpon>Email.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\EnterPin.resx">
+      <DependentUpon>EnterPin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\FavoriteItems.resx">
+      <DependentUpon>FavoriteItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\frmPayment.resx">
+      <DependentUpon>frmPayment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\frmSettings.resx">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Invoice.resx">
+      <DependentUpon>Invoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\ItemDetails.resx">
+      <DependentUpon>ItemDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\OpenChashbox.resx">
+      <DependentUpon>OpenChashbox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Options.resx">
+      <DependentUpon>Options.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\PosIsRunning.resx">
+      <DependentUpon>PosIsRunning.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\PosRestaurant.resx">
+      <DependentUpon>PosRestaurant.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\PrinterConfig.resx">
+      <DependentUpon>PrinterConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Raporti.resx">
+      <DependentUpon>Raporti.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\ReportByDate.resx">
+      <DependentUpon>ReportByDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\ReportRestaurant.resx">
+      <DependentUpon>ReportRestaurant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Restaurant.resx">
+      <DependentUpon>Restaurant.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\RestaurantOptions.resx">
+      <DependentUpon>RestaurantOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\RestaurantPos.resx">
+      <DependentUpon>RestaurantPos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\SavePOS.resx">
+      <DependentUpon>SavePOS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Shitjet e Fundit.resx">
+      <DependentUpon>Shitjet e Fundit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\ThermalPrinter.resx">
+      <DependentUpon>ThermalPrinter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\JoinTables.resx">
+      <DependentUpon>JoinTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\TransferOrderDetails.resx">
+      <DependentUpon>TransferOrderDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewReport.resx">
+      <DependentUpon>ViewReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="AutoUpdate.exe.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Services\Services.csproj">
+      <Project>{4feaf3ef-9036-40d9-b172-dbab161d1ff1}</Project>
+      <Name>Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AutoUpdate.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="planet.ico" />
+    <Content Include="myNET.UpdateService.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="planet_accounting_m_Lj2_icon.ico" />
+    <None Include="Resources\noimage.jpg" />
+    <None Include="Resources\Llogo_per_emaileeee_540x.png" />
+    <None Include="Resources\Untitled__5_-removebg-preview.png" />
+    <None Include="Resources\Untitled__4_-removebg-preview.png" />
+    <None Include="Resources\Untitled__3_-removebg-preview.png" />
+    <None Include="Resources\free.png" />
+    <None Include="Resources\teste.png" />
+    <None Include="Resources\Frame_1-removebg-preview.png" />
+    <None Include="Resources\Untitled-removebg-preview %281%29.png" />
+    <None Include="Resources\Untitled.png" />
+    <None Include="Resources\Untitled.svg" />
+    <None Include="Resources\download.jpg" />
+    <None Include="Resources\luffy-luffy-gear4.gif" />
+    <None Include="Resources\chair.png" />
+    <None Include="Resources\output-onlinepngtools %282%29.png" />
+    <None Include="Resources\output-onlinepngtools %281%29.png" />
+    <None Include="Resources\logout.png" />
+    <None Include="Resources\output-onlinepngtools.png" />
+    <None Include="Resources\exit.jpeg" />
+    <None Include="Resources\exit %281%29.png" />
+    <None Include="Resources\trash3.png" />
+    <None Include="Resources\trash2.png" />
+    <None Include="Resources\check-button4.png" />
+    <None Include="Resources\trash1.png" />
+    <None Include="Resources\check-button3.png" />
+    <None Include="Resources\trash.png" />
+    <None Include="Resources\check-button2.png" />
+    <None Include="Resources\check-button1.png" />
+    <None Include="Resources\accept %282%291.png" />
+    <None Include="Resources\check1.png" />
+    <None Include="Resources\accept %282%29.png" />
+    <None Include="Resources\check-button.png" />
+    <None Include="Resources\check.png" />
+    <None Include="Resources\accept-removebg-preview.png" />
+    <None Include="Resources\accept1.png" />
+    <None Include="Resources\accept.png" />
+    <None Include="Resources\185-1852910_tick-clipart-black-and-white-hd-png-download-removebg-preview.png" />
+    <None Include="Resources\68-686810_check-white-mark-clipart-by-michelle-clip-art.png" />
+    <None Include="Resources\174-1740965_7-photos-of-black-and-white-check-mark.png" />
+    <None Include="Resources\check-lists.png" />
+    <None Include="Resources\backgroundfull.jpg" />
+    <None Include="Resources\image.jpg" />
+    <None Include="Resources\trash-removebg-preview.png" />
+    <None Include="Resources\download.png" />
+    <None Include="Resources\dynamic-style.png" />
+    <None Include="Resources\table icon.png" />
+    <None Include="Resources\planet_accounting_small_logo.png" />
+    <None Include="Resources\planet_accounting_logo_.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modules\Partners\" />
+    <Folder Include="Register\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net451\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net451\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net451\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net451\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

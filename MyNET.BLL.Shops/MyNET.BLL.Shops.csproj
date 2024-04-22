@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{93357527-2E2F-46D1-855E-66857FED36A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MyNET.Shops</RootNamespace>
+    <AssemblyName>MyNET.BLL.Shops</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Infragistics3.Win.UltraWinGrid.ExcelExport.v9.2, Version=9.2.20092.1003, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DAL\CashBox.cs" />
+    <Compile Include="DAL\Bank.cs" />
+    <Compile Include="DAL\Category.cs" />
+    <Compile Include="DAL\ClientDatabases.cs" />
+    <Compile Include="DAL\Helper.cs" />
+    <Compile Include="DAL\ItemsBlobs.cs" />
+    <Compile Include="DAL\Constants.cs" />
+    <Compile Include="DAL\Item.cs" />
+    <Compile Include="DAL\PartnerType.cs" />
+    <Compile Include="DAL\Payment.cs" />
+    <Compile Include="DAL\PaymentMethod.cs" />
+    <Compile Include="DAL\PaymentSale.cs" />
+    <Compile Include="DAL\PaymentType.cs" />
+    <Compile Include="DAL\SalesType.cs" />
+    <Compile Include="DAL\Settings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DAL\Partner.cs" />
+    <Compile Include="DAL\Sale.cs" />
+    <Compile Include="DAL\SaleDetails.cs" />
+    <Compile Include="DAL\TrackError.cs" />
+    <Compile Include="DAL\Station.cs" />
+    <Compile Include="DAL\UserColumns.cs" />
+    <Compile Include="DAL\UserSettings.cs" />
+    <Compile Include="DAL\VatLevel.cs" />
+    <Compile Include="DAL\Vendor.cs" />
+    <Compile Include="Entities\CashBox.cs" />
+    <Compile Include="Entities\Bank.cs" />
+    <Compile Include="Entities\IModel.cs" />
+    <Compile Include="Entities\Item.cs" />
+    <Compile Include="Entities\Category.cs" />
+    <Compile Include="Entities\ItemsBlobs.cs" />
+    <Compile Include="Entities\Partner.cs" />
+    <Compile Include="Entities\Payment.cs" />
+    <Compile Include="Entities\PaymentDetails.cs" />
+    <Compile Include="Entities\PaymentSale.cs" />
+    <Compile Include="Enums\PaymentTypes.cs" />
+    <Compile Include="Entities\Sale.cs" />
+    <Compile Include="Entities\SaleDetails.cs" />
+    <Compile Include="Entities\Station.cs" />
+    <Compile Include="Entities\Vendor.cs" />
+    <Compile Include="Models\InsertStock.cs" />
+    <Compile Include="Models\Invoice.cs" />
+    <Compile Include="Models\ItemsBarcodes.cs" />
+    <Compile Include="Models\ItemsByProfitability.cs" />
+    <Compile Include="Models\ItemsDiscount.cs" />
+    <Compile Include="Models\ItemsHistory.cs" />
+    <Compile Include="Models\ItemsPriceSales.cs" />
+    <Compile Include="Models\ItemsRestaurant.cs" />
+    <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\PaymentCard.cs" />
+    <Compile Include="Models\Sale.cs" />
+    <Compile Include="Models\SalesBook.cs" />
+    <Compile Include="Models\SalesBookVat.cs" />
+    <Compile Include="Models\SaleDetails.cs" />
+    <Compile Include="Models\SalesList.cs" />
+    <Compile Include="Models\PaymentSale.cs" />
+    <Compile Include="Models\TransferItemsDetails.cs" />
+    <Compile Include="Models\UserSettings.cs" />
+    <Compile Include="Models\WarehouseItems.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\DataSources\MyNET.Entities.TransferItemsDetails.datasource" />
+    <None Include="Properties\DataSources\MyNET.Models.SalesList.datasource" />
+    <None Include="Properties\DataSources\MyNET.Models.TransferItemsDetails.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\init_data_script.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
