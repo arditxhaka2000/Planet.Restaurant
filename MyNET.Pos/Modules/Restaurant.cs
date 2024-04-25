@@ -22,10 +22,16 @@ using MyNET.Shops;
 using System.IO;
 using System.Text.RegularExpressions;
 using iText.StyledXmlParser.Jsoup.Parser;
+using System.Runtime.InteropServices;
+using Microsoft.Web.WebView2.WinForms;
+using Microsoft.Web.WebView2.Wpf;
+using Microsoft.Web.WebView2.Core;
+using Quobject.SocketIoClientDotNet.Client;
+using System.Windows.Markup;
 
 namespace MyNET.Pos.Modules
 {
-
+    [ComVisible(true)]
     public partial class Restaurant : Form
     {
         AddTables tables = new AddTables();
@@ -41,103 +47,132 @@ namespace MyNET.Pos.Modules
         public static int FSize;
         public static int gap;
 
-
         public Restaurant()
         {
             InitializeComponent();
+            InitializeWebView();
 
         }
+        private async void InitializeWebView()
+        {
+            await webView21.EnsureCoreWebView2Async(null);
+            // Send data from C# to JavaScript
+            webView21.CoreWebView2.WebMessageReceived += CoreWebView2_AddWebMessageReceived;
+            webView21.CoreWebView2.Navigate(System.Windows.Forms.Application.StartupPath + "\\index.html");
+            SendDataToJavaScript(Services.Tables.GetTables());
+        }
+
+        private void CoreWebView2_AddWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
+        {
+            // Receive messages sent from JavaScript
+            string message = e.TryGetWebMessageAsString();
+            MessageBox.Show("Message received from JavaScript: " + message);
+        }
+        // Example method to send data from C# to JavaScript
+        private async void SendDataToJavaScript(List<Services.Tables> tables)
+        {
+            string jsonTables = JsonConvert.SerializeObject(tables);
+
+            jsonTables = jsonTables.Replace("'", "\\'");
+
+            await webView21.CoreWebView2.ExecuteScriptAsync($"receiveDataFromCSharp('{jsonTables}')");
+
+        }
+
         private void Restaurant_Load(object sender, EventArgs e)
         {
-            AdjustTableSize();
-            Globals.LoadSettings();
-            panel1.BackColor = Color.FromArgb(42, 46, 55);
-            comboBox1.Text = Globals.User.Name;
-            socket = new SocketIO(Services.Connection.GetConnection());
-            socket.On("connect", (server) =>
-            {
-                MessageBox.Show("Connected to server");
-            });
-
-            socket.On("query response", (data) =>
-            {
-                Console.WriteLine($"Received query response: {data}");
-
-                dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
-                int x = responseObj[0].LocationX;
-                int y = responseObj[0].LocationY;
-                int id = responseObj[0].Id;
-
-                AdjustTableLocation(x, y, id);
-            });
-            socket.On("table info", (data) =>
-            {
-                Console.WriteLine($"Received table info: {data}");
-
-                dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
-                int inPos = responseObj[0].inPos;
-                string id = responseObj[0].Id;
-                AdjustTableColor(inPos, id);
-            });
-            socket.On("PosTotal", (data) =>
-            {
-                Console.WriteLine($"Received table info: {data}");
-                dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
-                string total = responseObj[0].inPosTotal;
-                string id = responseObj[0].Id;
-
-                AdjustTableTotal(total, id);
-
-            });
-            socket.On("AddTable", (data) =>
-            {
-                Console.WriteLine($"Received table info: {data}");
-                dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
-                ReloadForm();
-
-            });
-
-            socket.ConnectAsync();
-
-            panel1.Controls.Clear();
-            panel2.Controls.Clear();
-            if (Spaces.GetSpaces().Count == 0)
-            {
-                AddSpaces addSpaces = new AddSpaces();
-                addSpaces.ShowDialog();
-
-                AddTables addTables = new AddTables();
-                addTables.ShowDialog();
-            }
-            else
-            {
-                int buttonWidth = 120;
-                int buttonHeight = 40;
-                int margin = 30;
-
-                foreach (var space in Spaces.GetSpaces().Where(p => p.toDelete != "1"))
-                {
-                    Button button = new Button();
-                    button.Name = space.Name;
-                    button.Text = space.Name;
-                    button.BackColor = Color.FromArgb(55, 67, 82);
-                    button.FlatStyle = FlatStyle.Popup;
-                    button.Width = buttonWidth;
-                    button.Height = buttonHeight;
-                    button.Tag = space.Id;
-                    button.Location = new Point(panel2.Controls.Count * (buttonWidth + margin), 5);
-                    button.ForeColor = Color.White;
-                    button.Click += new EventHandler(Button_Click);
-                    panel2.Controls.Add(button);
-
-                    if (panel2.Controls.Count == 1)
-                    {
-                        button.PerformClick();
-                    }
-                }
 
 
-            }
+            ////AdjustTableSize();
+            //Globals.LoadSettings();
+            ////panel1.BackColor = Color.FromArgb(42, 46, 55);
+            ////comboBox1.Text = Globals.User.Name;
+            //socket = new SocketIO(Services.Connection.GetConnection());
+            //socket.On("connect", (server) =>
+            //{
+            //    MessageBox.Show("Connected to server");
+            //});
+
+            //socket.On("query response", (data) =>
+            //{
+            //    Console.WriteLine($"Received query response: {data}");
+
+            //    dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
+            //    int x = responseObj[0].LocationX;
+            //    int y = responseObj[0].LocationY;
+            //    int id = responseObj[0].Id;
+
+            //    //AdjustTableLocation(x, y, id);
+            //});
+            //socket.On("table info", (data) =>
+            //{
+            //    Console.WriteLine($"Received table info: {data}");
+
+            //    dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
+            //    int inPos = responseObj[0].inPos;
+            //    string id = responseObj[0].Id;
+            //    //AdjustTableColor(inPos, id);
+
+            //});
+            //socket.On("PosTotal", (data) =>
+            //{
+            //    Console.WriteLine($"Received table info: {data}");
+            //    dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
+            //    string total = responseObj[0].inPosTotal;
+            //    string id = responseObj[0].Id;
+
+            //    //AdjustTableTotal(total, id);
+
+            //});
+            //socket.On("AddTable", (data) =>
+            //{
+            //    Console.WriteLine($"Received table info: {data}");
+            //    dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
+            //    ReloadForm();
+
+            //});
+
+            //socket.ConnectAsync();
+
+            //panel1.Controls.Clear();
+            ////panel2.Controls.Clear();
+            //if (Spaces.GetSpaces().Count == 0)
+            //{
+            //    AddSpaces addSpaces = new AddSpaces();
+            //    addSpaces.ShowDialog();
+
+            //    AddTables addTables = new AddTables();
+            //    addTables.ShowDialog();
+            //}
+            //else
+            //{
+            //    int buttonWidth = 120;
+            //    int buttonHeight = 40;
+            //    int margin = 30;
+
+            //    //foreach (var space in Spaces.GetSpaces().Where(p => p.toDelete != "1"))
+            //    //{
+            //    //    Button button = new Button();
+            //    //    button.Name = space.Name;
+            //    //    button.Text = space.Name;
+            //    //    button.BackColor = Color.FromArgb(55, 67, 82);
+            //    //    button.FlatStyle = FlatStyle.Popup;
+            //    //    button.Width = buttonWidth;
+            //    //    button.Height = buttonHeight;
+            //    //    button.Tag = space.Id;
+            //    //    button.Location = new Point(panel2.Controls.Count * (buttonWidth + margin), 5);
+            //    //    button.ForeColor = Color.White;
+            //    //    button.Click += new EventHandler(Button_Click);
+            //    //    panel2.Controls.Add(button);
+
+            //    //    if (panel2.Controls.Count == 1)
+            //    //    {
+            //    //        button.PerformClick();
+            //    //    }
+            //    //}
+
+
+
 
         }
 
@@ -186,17 +221,17 @@ namespace MyNET.Pos.Modules
             if (button != null)
             {
                 int spaceId = (int)button.Tag;
-                foreach (var item in panel2.Controls.OfType<Button>())
-                {
-                    if (item.Tag.ToString() == spaceId.ToString())
-                    {
-                        item.BackColor = Color.FromArgb(122, 111, 190);
-                    }
-                    else
-                    {
-                        item.BackColor = Color.FromArgb(55, 67, 82);
-                    }
-                }
+                //foreach (var item in panel2.Controls.OfType<Button>())
+                //{
+                //    if (item.Tag.ToString() == spaceId.ToString())
+                //    {
+                //        item.BackColor = Color.FromArgb(122, 111, 190);
+                //    }
+                //    else
+                //    {
+                //        item.BackColor = Color.FromArgb(55, 67, 82);
+                //    }
+                //}
                 var tables = Services.Tables.GetTablesBySpaceId(spaceId).Where(p => p.toDelete != "1");
                 currentSpaceId = spaceId;
                 panel1.Controls.Clear();
@@ -520,69 +555,71 @@ namespace MyNET.Pos.Modules
         }
         public void HideSpace(int id)
         {
-            var ctrl = panel2.Controls
-      .OfType<Button>()
-      .FirstOrDefault(c => c.Tag.ToString() == id.ToString());
-            ctrl.Dispose();
-            panel2.Refresh();
-            //panel2.Controls.Clear();
-
-            //foreach (var space in Spaces.GetSpaces().Where(p => p.toDelete == "0"))
-            //{
-            //    Button button = new Button();
-            //    button.Name = space.Name;
-            //    button.Text = space.Name;
-            //    button.BackColor = Color.FromArgb(55, 67, 82);
-            //    button.FlatStyle = FlatStyle.Flat;
-            //    button.Width = 100;
-            //    button.Height = 30;
-            //    button.Tag = space.Id;
-            //    button.Location = new Point(panel2.Controls.Count * (100 + 10), 0);
-            //    button.ForeColor = Color.White;
-            //    button.Click += new EventHandler(Button_Click);
-            //    panel2.Controls.Add(button);
+            //      var ctrl = panel2.Controls
+            //.OfType<Button>()
+            //.FirstOrDefault(c => c.Tag.ToString() == id.ToString());
+            //      ctrl.Dispose();
+            //      panel2.Refresh();
 
 
-            //    if (panel2.Controls.Count == 1)
-            //    {
-            //        button.PerformClick();
-            //    }
-            //}
+            ////panel2.Controls.Clear();
 
-            //var tables = Services.Tables.GetTablesBySpaceId(id).Where(p => p.toDelete == "0");
-            //panel1.Controls.Clear();
+            ////foreach (var space in Spaces.GetSpaces().Where(p => p.toDelete == "0"))
+            ////{
+            ////    Button button = new Button();
+            ////    button.Name = space.Name;
+            ////    button.Text = space.Name;
+            ////    button.BackColor = Color.FromArgb(55, 67, 82);
+            ////    button.FlatStyle = FlatStyle.Flat;
+            ////    button.Width = 100;
+            ////    button.Height = 30;
+            ////    button.Tag = space.Id;
+            ////    button.Location = new Point(panel2.Controls.Count * (100 + 10), 0);
+            ////    button.ForeColor = Color.White;
+            ////    button.Click += new EventHandler(Button_Click);
+            ////    panel2.Controls.Add(button);
 
-            //int buttonWidth = 120;
-            //int buttonHeight = 60;
 
-            //foreach (var table in tables)
-            //{
-            //    Panel panel = new Panel();
-            //    panel.Width = buttonWidth;
-            //    panel.Height = buttonHeight + 20; // Height of PictureBox + Label
-            //    int pixelX = (int)(Convert.ToDecimal(table.LocationX) * this.Width / 100);
-            //    int pixelY = (int)(Convert.ToDecimal(table.LocationY) * this.Height / 100);
-            //    panel.Top = pixelY;
-            //    panel.Left = pixelX;
-            //    panel.Click += button_Click;
-            //    panel.Tag = table.Id;
-            //    panel.BackColor = table.inPos == 0 ? Color.White : Color.Red;
-            //    panel.Name = table.Name;
-            //    panel.BorderStyle = BorderStyle.FixedSingle; // Add border to panel for visual representation
-            //    panel1.Controls.Add(panel);
+            ////    if (panel2.Controls.Count == 1)
+            ////    {
+            ////        button.PerformClick();
+            ////    }
+            ////}
 
-            //    Label label = new Label();
-            //    label.Text = table.Name;
-            //    label.Name = table.Name;
-            //    label.BackColor = Color.White;
-            //    label.AutoSize = false;
-            //    label.Width = buttonWidth;
-            //    label.Height = 20;
-            //    label.TextAlign = ContentAlignment.MiddleCenter;
-            //    label.Location = new Point(panel.Width / 2 - label.Width / 2, panel.Height / 2 - label.Height / 2);
-            //    panel.Controls.Add(label); // Add Label to the panel
+            ////var tables = Services.Tables.GetTablesBySpaceId(id).Where(p => p.toDelete == "0");
+            ////panel1.Controls.Clear();
 
-            //}
+            ////int buttonWidth = 120;
+            ////int buttonHeight = 60;
+
+            ////foreach (var table in tables)
+            ////{
+            ////    Panel panel = new Panel();
+            ////    panel.Width = buttonWidth;
+            ////    panel.Height = buttonHeight + 20; // Height of PictureBox + Label
+            ////    int pixelX = (int)(Convert.ToDecimal(table.LocationX) * this.Width / 100);
+            ////    int pixelY = (int)(Convert.ToDecimal(table.LocationY) * this.Height / 100);
+            ////    panel.Top = pixelY;
+            ////    panel.Left = pixelX;
+            ////    panel.Click += button_Click;
+            ////    panel.Tag = table.Id;
+            ////    panel.BackColor = table.inPos == 0 ? Color.White : Color.Red;
+            ////    panel.Name = table.Name;
+            ////    panel.BorderStyle = BorderStyle.FixedSingle; // Add border to panel for visual representation
+            ////    panel1.Controls.Add(panel);
+
+            ////    Label label = new Label();
+            ////    label.Text = table.Name;
+            ////    label.Name = table.Name;
+            ////    label.BackColor = Color.White;
+            ////    label.AutoSize = false;
+            ////    label.Width = buttonWidth;
+            ////    label.Height = 20;
+            ////    label.TextAlign = ContentAlignment.MiddleCenter;
+            ////    label.Location = new Point(panel.Width / 2 - label.Width / 2, panel.Height / 2 - label.Height / 2);
+            ////    panel.Controls.Add(label); // Add Label to the panel
+
+            ////}
 
 
 

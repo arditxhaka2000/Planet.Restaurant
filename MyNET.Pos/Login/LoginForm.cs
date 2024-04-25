@@ -221,16 +221,18 @@ namespace MyNET.Pos
                     {
                         ifLocked = Services.StationService.LockUserStation(Globals.User.Id, Globals.DeviceId,PosType);
                     }
-                    if (UserStation.Get(Globals.User.Id).PosType == 0)
-                    {
-                        Globals.NextStep = "PosRestaurant";
+                    //if (UserStation.Get(Globals.User.Id).PosType == 0)
+                    //{
+                    //    Globals.NextStep = "PosRestaurant";
 
-                    }
-                    else
-                    {
-                        Globals.NextStep = "Restaurant";
+                    //}
+                    //else
+                    //{
+                    //    Globals.NextStep = "Restaurant";
 
-                    }
+                    //}
+                    Globals.NextStep = "Restaurant";
+
                     Globals.CashBoxStatus = "Open";
                     this.Close();
                 }
