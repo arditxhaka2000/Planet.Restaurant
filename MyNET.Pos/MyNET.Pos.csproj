@@ -580,6 +580,9 @@
     <Content Include="js\restaurant.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="css\restaurant.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\Untitled %281%29.zip" />
     <None Include="Version">
       <SubType>Component</SubType>
@@ -786,31 +789,31 @@
     <Content Include="AutoUpdate.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="css\barfiller.css">
+    <Content Include="bootstrap\barfiller.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="css\bootstrap.min.css">
+    <Content Include="bootstrap\bootstrap.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="css\flaticon.css">
+    <Content Include="bootstrap\flaticon.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="css\font-awesome.min.css">
+    <Content Include="bootstrap\font-awesome.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="css\magnific-popup.css">
+    <Content Include="bootstrap\magnific-popup.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="css\owl.carousel.min.css">
+    <Content Include="bootstrap\owl.carousel.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="css\slicknav.min.css">
+    <Content Include="bootstrap\slicknav.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="css\style.css">
+    <Content Include="bootstrap\style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="planet.ico" />

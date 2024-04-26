@@ -58,7 +58,13 @@ namespace MyNET.Pos.Modules
             await webView21.EnsureCoreWebView2Async(null);
             // Send data from C# to JavaScript
             webView21.CoreWebView2.WebMessageReceived += CoreWebView2_AddWebMessageReceived;
+            webView21.CoreWebView2.DOMContentLoaded += WebView_DOMContentLoaded;
             webView21.CoreWebView2.Navigate(System.Windows.Forms.Application.StartupPath + "\\index.html");
+
+        }
+
+        private void WebView_DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
+        {
             SendDataToJavaScript(Services.Tables.GetTables());
         }
 
