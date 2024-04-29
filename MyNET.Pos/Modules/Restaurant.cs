@@ -65,26 +65,37 @@ namespace MyNET.Pos.Modules
 
         private void WebView_DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
         {
-            SendDataToJavaScript(Services.Tables.GetTables());
+            SendTablesToJavaScript(Services.Tables.GetTables());
+            SendSpacesToJavaScript(Services.Spaces.GetSpaces());
         }
 
         private void CoreWebView2_AddWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
             // Receive messages sent from JavaScript
             string message = e.TryGetWebMessageAsString();
-            MessageBox.Show("Message received from JavaScript: " + message);
+            var tables = Services.Tables.GetTablesBySpaceId(Convert.ToInt32(message));
+            SendTablesToJavaScript(tables);
+            webView21.Refresh();
         }
         // Example method to send data from C# to JavaScript
-        private async void SendDataToJavaScript(List<Services.Tables> tables)
+        private async void SendTablesToJavaScript(List<Services.Tables> tables)
         {
             string jsonTables = JsonConvert.SerializeObject(tables);
 
             jsonTables = jsonTables.Replace("'", "\\'");
 
-            await webView21.CoreWebView2.ExecuteScriptAsync($"receiveDataFromCSharp('{jsonTables}')");
+            await webView21.CoreWebView2.ExecuteScriptAsync($"receiveTables('{jsonTables}')");
+        }
+        private async void SendSpacesToJavaScript(List<Services.Spaces> spaces)
+        {
+            string jsonSpaces = JsonConvert.SerializeObject(spaces);
+
+            jsonSpaces = jsonSpaces.Replace("'", "\\'");
+
+            await webView21.CoreWebView2.ExecuteScriptAsync($"receiveSpaces('{jsonSpaces}')");
 
         }
-
+        
         private void Restaurant_Load(object sender, EventArgs e)
         {
 

@@ -1,5 +1,16 @@
-#table_div .col {
+#table_div .draggable {
+    position: absolute;
     border: 1px solid black;
-    background-color:red;
-    height:100px;
+    background-color: red;
+    height: 100px;
+    width: 100px;
+    overflow: hidden;
+}
+
+#table_div .draggable .row {
+    justify-content:center;
+}
+
+#table_div .draggable .row h5 {
+    font-size: 13px;
 }
