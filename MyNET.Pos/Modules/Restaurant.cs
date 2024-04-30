@@ -65,8 +65,17 @@ namespace MyNET.Pos.Modules
 
         private void WebView_DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
         {
-            SendTablesToJavaScript(Services.Tables.GetTables());
-            SendSpacesToJavaScript(Services.Spaces.GetSpaces());
+            var spaces = Services.Spaces.GetSpaces();
+
+
+            if (spaces.Count > 0)
+            {
+                SendSpacesToJavaScript(spaces);
+
+                SendTablesToJavaScript(Services.Tables.GetTablesBySpaceId(spaces.First().Id));
+
+            }
+
         }
 
         private void CoreWebView2_AddWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
@@ -77,7 +86,6 @@ namespace MyNET.Pos.Modules
             SendTablesToJavaScript(tables);
             webView21.Refresh();
         }
-        // Example method to send data from C# to JavaScript
         private async void SendTablesToJavaScript(List<Services.Tables> tables)
         {
             string jsonTables = JsonConvert.SerializeObject(tables);
@@ -93,9 +101,13 @@ namespace MyNET.Pos.Modules
             jsonSpaces = jsonSpaces.Replace("'", "\\'");
 
             await webView21.CoreWebView2.ExecuteScriptAsync($"receiveSpaces('{jsonSpaces}')");
-
+           
         }
-        
+        private async void PassStringToJavaScript(string message)
+        {
+            await webView21.ExecuteScriptAsync($"functionOptionsRestaurant('{message}')");
+            webView21.Refresh();
+        }
         private void Restaurant_Load(object sender, EventArgs e)
         {
 
@@ -330,22 +342,24 @@ namespace MyNET.Pos.Modules
 
         private void Edito_Click(object sender, EventArgs e)
         {
-            //btn_Fshij.Visible = true;
-            //ShtoTavolina.Visible = true;
+            ////btn_Fshij.Visible = true;
+            ////ShtoTavolina.Visible = true;
+            ///
             Ruaj.Visible = true;
-            //btnAddSpace.Visible = true;
+            ////btnAddSpace.Visible = true;
 
-            foreach (Panel button in this.panel1.Controls.OfType<Panel>())
-            {
-                foreach (Control item in button.Controls)
-                {
-                    item.MouseDown += button_MouseDown;
-                    item.MouseMove += button_MouseMove;
-                    item.Click -= button_Click;
-                }
+            //foreach (Panel button in this.panel1.Controls.OfType<Panel>())
+            //{
+            //    foreach (Control item in button.Controls)
+            //    {
+            //        item.MouseDown += button_MouseDown;
+            //        item.MouseMove += button_MouseMove;
+            //        item.Click -= button_Click;
+            //    }
 
-            }
+            //}
 
+            PassStringToJavaScript("Lokacioni");
         }
         private void Ruaj_Click(object sender, EventArgs e)
         {
