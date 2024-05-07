@@ -37,7 +37,7 @@ function receiveTables(jsonData) {
             var forecolor = "white";
 
         }
-        html += "<div class='draggable' id='table' style='left: " + left + "px; top: " + top + "px; background-color:" + backcolor + ";'>";
+        html += "<div class='draggable' id='table' style='left: " + left + "px; top: " + top + "px; background-color:" + backcolor + "; user-select: none;'>";
         html += "<br>"
         html += "<div class='row'>";
         html += "<h5 class='name' style = 'color:" + forecolor + "'>" + element.Name + "</h5>";
@@ -51,7 +51,6 @@ function receiveTables(jsonData) {
     });
 
     container.innerHTML = html;
-
 }
 function sendData() {
     // Example data to send
@@ -63,17 +62,19 @@ function sendSpaceId(value) {
     var data = value;
     window.chrome.webview.postMessage(data);
 }
+function sendTableLocation(value) {
+    var data = value;
+    const customEvent = new CustomEvent('myCustomEvent', { detail: data });
+    document.dispatchEvent(customEvent);
+
+}
 function functionOptionsRestaurant(m) {
-    console.log(m);
     var optionValue = m;
     if (optionValue === 'Lokacioni') {
-        console.log('1');
         var draggableElements = document.querySelectorAll('.draggable');
-        console.log(draggableElements);
 
         draggableElements.forEach(function (element) {
             element.addEventListener('mousedown', startDragging);
-            console.log('2');
 
         });
 
@@ -101,4 +102,23 @@ function functionOptionsRestaurant(m) {
             });
         }
     }
+    else if (optionValue = 'Ruaj') {
+        getDivLocations();
+
+    }
+}
+function getDivLocations() {
+    var divs = document.querySelectorAll('.draggable');
+    var locations = [];
+
+    divs.forEach(function (div) {
+        var rect = div.getBoundingClientRect();
+        var location = {
+            id: div.id,
+            top: rect.top,
+            left: rect.left
+        };
+        locations.push(location);
+    });
+    sendTableLocation(locations);
 }

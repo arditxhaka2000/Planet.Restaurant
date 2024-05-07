@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Services
 {
@@ -103,6 +104,10 @@ namespace Services
             string jsonParams = JsonConvert.SerializeObject(new { Emp_id = empId, Id = id });
             Services.RestHepler<Tables>.RestaurantQuery("updateTableEmpId", jsonParams);
 
+        }
+        public void MyCSharpMethod(string message)
+        {
+            MessageBox.Show(message);
         }
     }
 }

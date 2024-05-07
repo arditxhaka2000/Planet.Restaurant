@@ -46,7 +46,9 @@ namespace MyNET.Pos.Modules
         public static int TotalFontSize;
         public static int FSize;
         public static int gap;
+        public delegate void CustomDataReceivedEventHandler(string data);
 
+        public event CustomDataReceivedEventHandler CustomDataReceived;
         public Restaurant()
         {
             InitializeComponent();
@@ -55,14 +57,29 @@ namespace MyNET.Pos.Modules
         }
         private async void InitializeWebView()
         {
-            await webView21.EnsureCoreWebView2Async(null);
+            await webView21.EnsureCoreWebView2Async();
             // Send data from C# to JavaScript
             webView21.CoreWebView2.WebMessageReceived += CoreWebView2_AddWebMessageReceived;
             webView21.CoreWebView2.DOMContentLoaded += WebView_DOMContentLoaded;
             webView21.CoreWebView2.Navigate(System.Windows.Forms.Application.StartupPath + "\\index.html");
+            webView21.CoreWebView2.DOMContentLoaded += (senders, args) =>
+            {
+                webView21.CoreWebView2.ExecuteScriptAsync(@"
+            document.addEventListener('myCustomEvent', function(event) {
+            var d = event.detail; // Retrieve data from the event
+            console.log(event.detail);
+            var jsonRootNode = JSON.stringify(d);
+
+        });
+    ");
+            };
+            CustomDataReceived += OnCustomDataReceived;
 
         }
-
+        private void OnCustomDataReceived(string data)
+        {
+            MessageBox.Show($"Data received: {data}"); 
+        }
         private void WebView_DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
         {
             var spaces = Services.Spaces.GetSpaces();
@@ -101,7 +118,7 @@ namespace MyNET.Pos.Modules
             jsonSpaces = jsonSpaces.Replace("'", "\\'");
 
             await webView21.CoreWebView2.ExecuteScriptAsync($"receiveSpaces('{jsonSpaces}')");
-           
+
         }
         private async void PassStringToJavaScript(string message)
         {
@@ -110,98 +127,6 @@ namespace MyNET.Pos.Modules
         }
         private void Restaurant_Load(object sender, EventArgs e)
         {
-
-
-            ////AdjustTableSize();
-            //Globals.LoadSettings();
-            ////panel1.BackColor = Color.FromArgb(42, 46, 55);
-            ////comboBox1.Text = Globals.User.Name;
-            //socket = new SocketIO(Services.Connection.GetConnection());
-            //socket.On("connect", (server) =>
-            //{
-            //    MessageBox.Show("Connected to server");
-            //});
-
-            //socket.On("query response", (data) =>
-            //{
-            //    Console.WriteLine($"Received query response: {data}");
-
-            //    dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
-            //    int x = responseObj[0].LocationX;
-            //    int y = responseObj[0].LocationY;
-            //    int id = responseObj[0].Id;
-
-            //    //AdjustTableLocation(x, y, id);
-            //});
-            //socket.On("table info", (data) =>
-            //{
-            //    Console.WriteLine($"Received table info: {data}");
-
-            //    dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
-            //    int inPos = responseObj[0].inPos;
-            //    string id = responseObj[0].Id;
-            //    //AdjustTableColor(inPos, id);
-
-            //});
-            //socket.On("PosTotal", (data) =>
-            //{
-            //    Console.WriteLine($"Received table info: {data}");
-            //    dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
-            //    string total = responseObj[0].inPosTotal;
-            //    string id = responseObj[0].Id;
-
-            //    //AdjustTableTotal(total, id);
-
-            //});
-            //socket.On("AddTable", (data) =>
-            //{
-            //    Console.WriteLine($"Received table info: {data}");
-            //    dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
-            //    ReloadForm();
-
-            //});
-
-            //socket.ConnectAsync();
-
-            //panel1.Controls.Clear();
-            ////panel2.Controls.Clear();
-            //if (Spaces.GetSpaces().Count == 0)
-            //{
-            //    AddSpaces addSpaces = new AddSpaces();
-            //    addSpaces.ShowDialog();
-
-            //    AddTables addTables = new AddTables();
-            //    addTables.ShowDialog();
-            //}
-            //else
-            //{
-            //    int buttonWidth = 120;
-            //    int buttonHeight = 40;
-            //    int margin = 30;
-
-            //    //foreach (var space in Spaces.GetSpaces().Where(p => p.toDelete != "1"))
-            //    //{
-            //    //    Button button = new Button();
-            //    //    button.Name = space.Name;
-            //    //    button.Text = space.Name;
-            //    //    button.BackColor = Color.FromArgb(55, 67, 82);
-            //    //    button.FlatStyle = FlatStyle.Popup;
-            //    //    button.Width = buttonWidth;
-            //    //    button.Height = buttonHeight;
-            //    //    button.Tag = space.Id;
-            //    //    button.Location = new Point(panel2.Controls.Count * (buttonWidth + margin), 5);
-            //    //    button.ForeColor = Color.White;
-            //    //    button.Click += new EventHandler(Button_Click);
-            //    //    panel2.Controls.Add(button);
-
-            //    //    if (panel2.Controls.Count == 1)
-            //    //    {
-            //    //        button.PerformClick();
-            //    //    }
-            //    //}
-
-
-
 
         }
 
@@ -368,32 +293,16 @@ namespace MyNET.Pos.Modules
             Ruaj.Visible = false;
             //btnAddSpace.Visible = false;
 
+            PassStringToJavaScript("Ruaj");
 
-            foreach (Panel button in this.panel1.Controls.OfType<Panel>())
-            {
-                foreach (Control item in button.Controls)
-                {
-                    item.MouseDown -= button_MouseDown;
-                    item.MouseMove -= button_MouseMove;
-                    item.Click += button_Click;
+            decimal x = 0;
+            decimal y = 0;
+            var button = new Services.Tables();
 
-                }
-                decimal x = ((decimal)button.Location.X * 100) / this.Width;
-                decimal y = Math.Round(((decimal)button.Location.Y * 100) / this.Height);
+            string data = await webView1.CoreWebView2.ExecuteScriptAsync("getDataFromWebView()");
 
-                Services.Tables tables = new Services.Tables();
-                tables.Id = (int)button.Tag;
-                tables.Name = button.Name;
-                tables.LocationX = x.ToString();
-                tables.LocationY = y.ToString();
-                tables.Space_id = currentSpaceId;
-                tables.Status = 1;
-                tables.station_id = Globals.Station.Id.ToString();
-                tables.toUpdate = "1";
-                tables.Update();
 
-                Services.Tables.UpdateTableLocation(x, y, button.Tag.ToString());
-            }
+            Services.Tables.UpdateTableLocation(x, y, button.Id.ToString());
         }
 
         private void AdjustTableLocation(int x, int y, int id)
