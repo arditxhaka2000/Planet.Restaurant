@@ -105,9 +105,11 @@ namespace Services
             Services.RestHepler<Tables>.RestaurantQuery("updateTableEmpId", jsonParams);
 
         }
-        public void MyCSharpMethod(string message)
+        public static void UpdateToUpdate(string id)
         {
-            MessageBox.Show(message);
+            string jsonParams = JsonConvert.SerializeObject(new { Id = id });
+            Services.RestHepler<Tables>.RestaurantQuery("updateToUpdateTables", jsonParams);
+
         }
     }
 }

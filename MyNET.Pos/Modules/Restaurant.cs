@@ -62,23 +62,7 @@ namespace MyNET.Pos.Modules
             webView21.CoreWebView2.WebMessageReceived += CoreWebView2_AddWebMessageReceived;
             webView21.CoreWebView2.DOMContentLoaded += WebView_DOMContentLoaded;
             webView21.CoreWebView2.Navigate(System.Windows.Forms.Application.StartupPath + "\\index.html");
-            webView21.CoreWebView2.DOMContentLoaded += (senders, args) =>
-            {
-                webView21.CoreWebView2.ExecuteScriptAsync(@"
-            document.addEventListener('myCustomEvent', function(event) {
-            var d = event.detail; // Retrieve data from the event
-            console.log(event.detail);
-            var jsonRootNode = JSON.stringify(d);
 
-        });
-    ");
-            };
-            CustomDataReceived += OnCustomDataReceived;
-
-        }
-        private void OnCustomDataReceived(string data)
-        {
-            MessageBox.Show($"Data received: {data}"); 
         }
         private void WebView_DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
         {
@@ -95,13 +79,65 @@ namespace MyNET.Pos.Modules
 
         }
 
-        private void CoreWebView2_AddWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
+        private async void CoreWebView2_AddWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
             // Receive messages sent from JavaScript
             string message = e.TryGetWebMessageAsString();
-            var tables = Services.Tables.GetTablesBySpaceId(Convert.ToInt32(message));
-            SendTablesToJavaScript(tables);
-            webView21.Refresh();
+            if (message == "POS")
+            {
+                var id = await webView21.CoreWebView2.ExecuteScriptAsync("openPos()");
+                var tbl = Services.Tables.GetTables().Where(p => p.Id.ToString() == id.ToString()).First();
+
+                if (tbl.inPos == 0)
+                {
+                    Services.Tables.UpdateTablePos(1, id);
+                    Services.Tables.UpdateTableEmpId(Globals.User.Id.ToString(), id);
+                    Globals.NextStep = "RestaurantPos" + id;
+                    if (!IsDisposed && !Disposing)
+                    {
+                        this.Invoke((MethodInvoker)delegate
+                        {
+                            if (!IsDisposed && !Disposing)
+                            {
+                                this.Close();
+                            }
+                        });
+                    }
+
+                }
+                else
+                {
+                    if (tbl.Emp_id == Globals.User.Id)
+                    {
+                        Services.Tables.UpdateTablePos(1, id);
+
+                        Globals.NextStep = "RestaurantPos" + id;
+                        if (!IsDisposed && !Disposing)
+                        {
+                            this.Invoke((MethodInvoker)delegate
+                            {
+                                if (!IsDisposed && !Disposing)
+                                {
+                                    this.Close();
+                                }
+                            });
+                        }
+                    }
+                    else
+                    {
+                        //MessageBox.Show("Tavolina eshte hap nga puntori :" + User.Get(tbl.Emp_id).Name);
+                    }
+
+
+                }
+            }
+            else
+            {
+                var tables = Services.Tables.GetTablesBySpaceId(Convert.ToInt32(message));
+                SendTablesToJavaScript(tables);
+                webView21.Refresh();
+            }
+          
         }
         private async void SendTablesToJavaScript(List<Services.Tables> tables)
         {
@@ -286,25 +322,36 @@ namespace MyNET.Pos.Modules
 
             PassStringToJavaScript("Lokacioni");
         }
-        private void Ruaj_Click(object sender, EventArgs e)
+        private async void Ruaj_Click(object sender, EventArgs e)
         {
             //btn_Fshij.Visible = false;
             //ShtoTavolina.Visible = false;
             Ruaj.Visible = false;
             //btnAddSpace.Visible = false;
 
-            PassStringToJavaScript("Ruaj");
 
-            decimal x = 0;
-            decimal y = 0;
-            var button = new Services.Tables();
+            await GetLocationFromJs();
+            webView21.Reload();
 
-            string data = await webView1.CoreWebView2.ExecuteScriptAsync("getDataFromWebView()");
-
-
-            Services.Tables.UpdateTableLocation(x, y, button.Id.ToString());
         }
+        public async System.Threading.Tasks.Task GetLocationFromJs()
+        {
+            var result = await webView21.CoreWebView2.ExecuteScriptAsync("getDivLocations()");
 
+            var dataArray = JsonConvert.DeserializeObject<Services.Tables[]>(result);
+
+            foreach (var item in dataArray)
+            {
+                decimal x = Convert.ToDecimal(item.LocationX) * 100 / this.Width;
+                decimal y = Convert.ToDecimal(item.LocationY) * 100 / this.Height;
+                string id = item.Id.ToString();
+
+                Services.Tables.UpdateTableLocation(x, y, id);
+                Services.Tables.UpdateToUpdate(id);
+            }
+
+
+        }
         private void AdjustTableLocation(int x, int y, int id)
         {
             var button = panel1.Controls.OfType<Panel>().FirstOrDefault(b => b.Tag.ToString() == id.ToString());
@@ -361,7 +408,8 @@ namespace MyNET.Pos.Modules
         {
             AddTables tables = new AddTables();
             tables.ShowDialog();
-            ReloadForm();
+            webView21.Reload();
+
         }
 
 
@@ -470,7 +518,8 @@ namespace MyNET.Pos.Modules
         {
             AddSpaces spaces = new AddSpaces();
             spaces.ShowDialog();
-            ReloadForm();
+            webView21.Reload();
+
         }
         public void ReloadForm()
         {
@@ -816,10 +865,9 @@ namespace MyNET.Pos.Modules
                     var cTotal = Services.Tables.GetTables().Where(p => p.Id.ToString() == currentTable).First().inPosTotal;
                     Services.Tables.UpdateTotalInPos(cTotal, newTable);
                     Services.Tables.UpdateTotalInPos("0", currentTable);
+                    webView21.Reload();
 
-                    var button = panel1.Controls.OfType<Panel>().FirstOrDefault(b => b.Tag.ToString() == currentTable);
-                    var oldlblFCount = button.Controls.OfType<Label>().FirstOrDefault(b => b.Tag != null && b.Tag.ToString() == currentTable + "fc");
-                    oldlblFCount.Text = "";
+
                 }
 
             }
