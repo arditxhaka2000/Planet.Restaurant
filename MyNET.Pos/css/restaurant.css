@@ -1,3 +1,11 @@
+.container-fluid {
+    background-color: #313237
+}
+#floors-div button {
+    margin-right: 10px;
+    border-radius: 10px;
+    background-color: #454651;
+}
 #table_div .draggable {
     position: absolute;
     border: 1px solid black;

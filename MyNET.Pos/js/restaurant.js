@@ -5,7 +5,7 @@ function receiveSpaces(jsonData) {
     var container = document.getElementById('floors-div');
     var html = "";
     data.forEach(function (element) {
-        html += "<button type='button' id= '" + element.Id + "' class='space-button btn btn-info' style='margin-right: 10px;'> " + element.Name + " </button>";
+        html += "<button type='button' id= '" + element.Id + "' class='space-button btn btn-secondary'> " + element.Name + " </button>";
 
     });
     container.innerHTML = html;

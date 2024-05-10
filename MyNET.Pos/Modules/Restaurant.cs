@@ -540,7 +540,7 @@ namespace MyNET.Pos.Modules
             //{
             //HideSpace(del.spaceIdToDelete);
             //}
-            ReloadForm();
+            webView21.Reload();
         }
         public void HideSpace(int id)
         {
