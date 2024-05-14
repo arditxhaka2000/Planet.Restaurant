@@ -48,6 +48,7 @@ namespace Services.Models
         public decimal PrintedQuantity { get; set; } = 0;
         public decimal PrintedFiscalQuantity { get; set; } = 0;
         public decimal ClientDiscount { get; set; }
+        public decimal DiscountAmount { get; set; }
         public int Sale_Id { get; set; }
         public bool ForReturn { get; set; }
         public int ItemNumber { get; set; }

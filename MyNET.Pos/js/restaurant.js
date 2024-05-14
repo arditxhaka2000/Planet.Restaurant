@@ -31,17 +31,22 @@ function receiveTables(jsonData) {
     data.forEach(function (element) {
         var left = (element.LocationX * screen.width) / 100;
         var top = (element.LocationY * screen.height) / 100;
-        var backcolor = "white";
+        var pic = "Table";
         var forecolor = "black";
         if (element.inPos === 1) {
-            backcolor = "red";
+            backcolor = "#682825";
             var forecolor = "white";
-
+            pic = "Table1";
         }
-        html += "<div class='draggable' id=" + element.Id +" onclick ='sendPOS("+element.Id+")' style='left: " + left + "px; top: " + top + "px; background-color:" + backcolor + "; user-select: none;'>";
+        html += "<div class='draggable' id=" + element.Id + " onclick ='sendPOS(" + element.Id + ")' style='left: " + left + "px; top: " + top + "px; user-select: none; background-image:url(Resources/"+pic+".png);'>";
         html += "<br>"
         html += "<div class='row'>";
-        html += "<h5 class='name' style = 'color:" + forecolor + "'>" + element.Name + "</h5>";
+        if (element.Name.length > 10) {
+            html += "<h5 class='name' style='color:" + forecolor + "; max-width: 70px; word-wrap: break-word;'>" + element.Name + "</h5>";
+            console.log('kty2');
+        } else {
+            html += "<h5 class='name' style='color:" + forecolor + "'>" + element.Name + "</h5>";
+        }
         html += "</div>"
         html += "<br>"
         html += "<div class='row'>";
@@ -122,3 +127,19 @@ function getDivLocations() {
     });
     return locations;
 }
+function changeTheme(v) {
+    console.log(v);
+
+    var divs = document.querySelectorAll('body');
+    divs.forEach(function (div) {
+        if (v === 'dark') {
+            div.style.backgroundColor = '#313237';
+
+        }
+        else {
+            div.style.backgroundColor = 'white';
+
+        }
+    });
+}
+

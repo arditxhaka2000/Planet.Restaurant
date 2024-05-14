@@ -76,7 +76,7 @@ namespace MyNET.Pos.Modules
                 SendTablesToJavaScript(Services.Tables.GetTablesBySpaceId(spaces.First().Id));
 
             }
-
+            pictureBox1_Click(null,null);
         }
 
         private async void CoreWebView2_AddWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
@@ -160,10 +160,15 @@ namespace MyNET.Pos.Modules
         {
             await webView21.ExecuteScriptAsync($"functionOptionsRestaurant('{message}')");
             webView21.Refresh();
+        } 
+        private async void PassTheme(string message)
+        {
+            await webView21.ExecuteScriptAsync($"changeTheme('{message}')");
+            webView21.Refresh();
         }
         private void Restaurant_Load(object sender, EventArgs e)
         {
-
+            pictureBox1.Tag = "dark";
         }
 
         private void AdjustTableSize()
@@ -542,78 +547,7 @@ namespace MyNET.Pos.Modules
             //}
             webView21.Reload();
         }
-        public void HideSpace(int id)
-        {
-            //      var ctrl = panel2.Controls
-            //.OfType<Button>()
-            //.FirstOrDefault(c => c.Tag.ToString() == id.ToString());
-            //      ctrl.Dispose();
-            //      panel2.Refresh();
-
-
-            ////panel2.Controls.Clear();
-
-            ////foreach (var space in Spaces.GetSpaces().Where(p => p.toDelete == "0"))
-            ////{
-            ////    Button button = new Button();
-            ////    button.Name = space.Name;
-            ////    button.Text = space.Name;
-            ////    button.BackColor = Color.FromArgb(55, 67, 82);
-            ////    button.FlatStyle = FlatStyle.Flat;
-            ////    button.Width = 100;
-            ////    button.Height = 30;
-            ////    button.Tag = space.Id;
-            ////    button.Location = new Point(panel2.Controls.Count * (100 + 10), 0);
-            ////    button.ForeColor = Color.White;
-            ////    button.Click += new EventHandler(Button_Click);
-            ////    panel2.Controls.Add(button);
-
-
-            ////    if (panel2.Controls.Count == 1)
-            ////    {
-            ////        button.PerformClick();
-            ////    }
-            ////}
-
-            ////var tables = Services.Tables.GetTablesBySpaceId(id).Where(p => p.toDelete == "0");
-            ////panel1.Controls.Clear();
-
-            ////int buttonWidth = 120;
-            ////int buttonHeight = 60;
-
-            ////foreach (var table in tables)
-            ////{
-            ////    Panel panel = new Panel();
-            ////    panel.Width = buttonWidth;
-            ////    panel.Height = buttonHeight + 20; // Height of PictureBox + Label
-            ////    int pixelX = (int)(Convert.ToDecimal(table.LocationX) * this.Width / 100);
-            ////    int pixelY = (int)(Convert.ToDecimal(table.LocationY) * this.Height / 100);
-            ////    panel.Top = pixelY;
-            ////    panel.Left = pixelX;
-            ////    panel.Click += button_Click;
-            ////    panel.Tag = table.Id;
-            ////    panel.BackColor = table.inPos == 0 ? Color.White : Color.Red;
-            ////    panel.Name = table.Name;
-            ////    panel.BorderStyle = BorderStyle.FixedSingle; // Add border to panel for visual representation
-            ////    panel1.Controls.Add(panel);
-
-            ////    Label label = new Label();
-            ////    label.Text = table.Name;
-            ////    label.Name = table.Name;
-            ////    label.BackColor = Color.White;
-            ////    label.AutoSize = false;
-            ////    label.Width = buttonWidth;
-            ////    label.Height = 20;
-            ////    label.TextAlign = ContentAlignment.MiddleCenter;
-            ////    label.Location = new Point(panel.Width / 2 - label.Width / 2, panel.Height / 2 - label.Height / 2);
-            ////    panel.Controls.Add(label); // Add Label to the panel
-
-            ////}
-
-
-
-
-        }
+        
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -630,102 +564,6 @@ namespace MyNET.Pos.Modules
                 MessageBox.Show("Nuk mund ta mbyllni diten pa i mbyll te gjitha tavolinat!");
             }
 
-            //try
-            //{
-            //    var tables = Services.Tables.GetTables().Where(p => p.inPos == 1);
-
-            //    if (tables.Count() == 0)
-            //    {
-            //        var settings = Settings.Get();
-            //        var printer = Printer.Get().Find(p => p.Id == Globals.DeviceId);
-            //        DateTime foo = DateTime.Now;
-            //        double unixTime = ((DateTimeOffset)foo).ToUnixTimeSeconds();
-
-            //        if (settings.PIN == "0" || settings.PIN == null)
-            //        {
-            //            openAmount = Convert.ToDecimal(RestaurantOptions.totalsum);
-
-            //            DailyOpenCloseBalance b = new DailyOpenCloseBalance();
-            //            b.UserId = Globals.User.Id;
-            //            b.Amount = openAmount;
-            //            b.Status = "close";
-            //            b.StationId = Globals.Station.Id;
-            //            b.Date = DateTime.Now.ToLocalTime().AddHours(1);
-            //            b.TotalShitje = RestaurantPos.totalSumOpenBalance;
-            //            b.neArke = Convert.ToDecimal(RestaurantOptions.gjendjaMomentale);
-            //            b.Insert();
-
-
-
-            //            RestaurantPos.totalSumOpenBalance = 0M;
-            //            RestaurantPos.countNumFiscal = 0;
-            //            frmPayment.Kesh = 0M;
-            //            frmPayment.CreditCard = 0M;
-            //            RestaurantPos.daily.DailyFiscalCount = 0;
-
-            //            if (settings.PosPrinter == "1" && printer.FiscalType == "Tremol")
-            //            {
-            //                btnZRaport_Click(sender, e);
-
-            //            }
-
-            //            Globals.NextStep = "LoginForm";
-            //            this.Close();
-
-            //            Services.StationService.UnLockUserStation(Globals.User.Id, Globals.DeviceId);
-            //            Globals.NextStep = "LoginForm";
-            //            Globals.CashBoxStatus = "Locked";
-            //            this.Close();
-            //        }
-            //        else
-            //        {
-            //            EnterPin enter = new EnterPin();
-            //            enter.ShowDialog();
-            //            if (enter.flag == true)
-            //            {
-            //                openAmount = Convert.ToDecimal(RestaurantOptions.totalsum);
-
-            //                DailyOpenCloseBalance b = new DailyOpenCloseBalance();
-            //                b.UserId = Globals.User.Id;
-            //                b.Amount = openAmount;
-            //                b.Status = "close";
-            //                b.StationId = Globals.Station.Id;
-            //                b.Date = DateTime.Now.ToLocalTime().AddHours(1);
-            //                b.TotalShitje = RestaurantPos.totalSumOpenBalance;
-            //                b.Insert();
-
-
-
-            //                RestaurantPos.totalSumOpenBalance = 0M;
-            //                RestaurantPos.countNumFiscal = 0;
-            //                frmPayment.Kesh = 0M;
-            //                frmPayment.CreditCard = 0M;
-            //                RestaurantPos.daily.DailyFiscalCount = 0;
-
-            //                if (settings.PosPrinter == "1")
-            //                {
-            //                    btnZRaport_Click(sender, e);
-
-            //                }
-
-
-            //                Globals.NextStep = "LoginForm";
-            //                this.Close();
-
-            //                Services.StationService.UnLockUserStation(Globals.User.Id, Globals.DeviceId);
-            //                Globals.NextStep = "LoginForm";
-            //                Globals.CashBoxStatus = "Locked";
-            //                this.Close();
-            //            }
-
-            //        }
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Nuk mund ta mbyllni diten pa i mbyll te gjitha tavolinat!");
-            //    }
-            //}
-            //catch (Exception ex) { MessageBox.Show(ex.Message); }
 
         }
         private void btnZRaport_Click(object sender, EventArgs e)
@@ -773,10 +611,22 @@ namespace MyNET.Pos.Modules
 
             this.Close();
         }
-
+        
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            ReloadForm();
+            PassTheme(pictureBox1.Tag.ToString());
+
+            if (pictureBox1.Tag.ToString() == "dark")
+            {
+                pictureBox1.Image = Properties.Resources.light;
+                pictureBox1.Tag = "light";
+            }
+            else
+            {
+                pictureBox1.Image = Properties.Resources.dark;
+                pictureBox1.Tag = "dark";
+
+            }
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)

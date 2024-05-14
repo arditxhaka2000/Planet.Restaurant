@@ -150,9 +150,9 @@ namespace MyNET.Shops
             }
             numPos1.Text = "0";
 
-            if (PosRestaurant.bonuscardValue >0)
+            if (PosRestaurant.bonuscardValue > 0)
             {
-                
+
                 numPosBonusCard.Text = PosRestaurant.bonuscardValue1.ToString("N");
             }
 
@@ -283,7 +283,7 @@ namespace MyNET.Shops
                 var newCurrentAmount = PosRestaurant.bonuscard.CurrentAmount - PosRestaurant.bonuscardValue;
                 BonusCard.UpdateCurrentAmountBonusCard(newCurrentAmount, PosRestaurant.bonuscard.Id);
             }
-            
+
 
             this.Close();
         }

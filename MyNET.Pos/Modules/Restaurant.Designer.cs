@@ -46,11 +46,11 @@
             // 
             // Ruaj
             // 
-            this.Ruaj.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.Ruaj.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(131)))), ((int)(((byte)(104)))));
             this.Ruaj.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.Ruaj.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ruaj.ForeColor = System.Drawing.Color.White;
-            this.Ruaj.Location = new System.Drawing.Point(930, 3);
+            this.Ruaj.Location = new System.Drawing.Point(928, 3);
             this.Ruaj.Name = "Ruaj";
             this.Ruaj.Size = new System.Drawing.Size(114, 38);
             this.Ruaj.TabIndex = 4;
@@ -85,7 +85,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.77778F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.22222F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 109F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 142F));
             this.tableLayoutPanel2.Controls.Add(this.btnLogOut, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.pictureBox1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.comboBox1, 1, 0);
@@ -101,11 +101,11 @@
             // 
             // btnLogOut
             // 
-            this.btnLogOut.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnLogOut.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.btnLogOut.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnLogOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLogOut.ForeColor = System.Drawing.Color.Black;
-            this.btnLogOut.Location = new System.Drawing.Point(821, 3);
+            this.btnLogOut.ForeColor = System.Drawing.Color.BlanchedAlmond;
+            this.btnLogOut.Location = new System.Drawing.Point(819, 3);
             this.btnLogOut.Name = "btnLogOut";
             this.btnLogOut.Size = new System.Drawing.Size(103, 38);
             this.btnLogOut.TabIndex = 11;
@@ -122,7 +122,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Visible = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // comboBox1
@@ -142,7 +141,7 @@
             "Raportet",
             "Transfero Tavolinen",
             "Bashko Tavolinat"});
-            this.comboBox1.Location = new System.Drawing.Point(640, 3);
+            this.comboBox1.Location = new System.Drawing.Point(638, 3);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(175, 37);
             this.comboBox1.TabIndex = 10;

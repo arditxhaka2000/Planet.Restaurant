@@ -103,6 +103,16 @@ namespace MyNET.Pos.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap dark {
+            get {
+                object obj = ResourceManager.GetObject("dark", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap dynamic_style {
             get {
                 object obj = ResourceManager.GetObject("dynamic_style", resourceCulture);
@@ -133,9 +143,9 @@ namespace MyNET.Pos.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap logout {
+        internal static System.Drawing.Bitmap light {
             get {
-                object obj = ResourceManager.GetObject("logout", resourceCulture);
+                object obj = ResourceManager.GetObject("light", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,9 +153,9 @@ namespace MyNET.Pos.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap luffy {
+        internal static System.Drawing.Bitmap logout {
             get {
-                object obj = ResourceManager.GetObject("luffy", resourceCulture);
+                object obj = ResourceManager.GetObject("logout", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -216,16 +226,6 @@ namespace MyNET.Pos.Properties {
         internal static System.Drawing.Bitmap purple {
             get {
                 object obj = ResourceManager.GetObject("purple", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap restaurantBackground {
-            get {
-                object obj = ResourceManager.GetObject("restaurantBackground", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

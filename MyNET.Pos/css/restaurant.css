@@ -1,23 +1,38 @@
-.container-fluid {
-    background-color: #313237
-}
+
 #floors-div button {
     margin-right: 10px;
     border-radius: 10px;
     background-color: #454651;
 }
+
 #table_div .draggable {
     position: absolute;
-    border: 1px solid black;
-    height: 100px;
-    width: 100px;
+    height: 120px; 
+    width: 120px;
     overflow: hidden;
+    background-size: cover;
 }
 
-#table_div .draggable .row {
-    justify-content:center;
-}
+ #table_div .draggable .row {
+     justify-content: center;
+ }
 
 #table_div .draggable .row h5 {
     font-size: 13px;
+}
+
+.theme-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#theme-toggle {
+    font-size: 24px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
 }
