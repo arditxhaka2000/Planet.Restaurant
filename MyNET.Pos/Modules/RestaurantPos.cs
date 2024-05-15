@@ -1613,7 +1613,7 @@ namespace MyNET.Pos
 
                 Services.Models.TablesSaleDetails.UpdateTableQuantityPrinted((decimal)row.Cells["Quantity"].Value, tableId, (int)row.Cells["ItemId"].Value);
                 TablesSaleDetails tabledt = new TablesSaleDetails();
-                tabledt.UpdateTableItem((decimal)row.Cells["Quantity"].Value, (decimal)row.Cells["Total"].Value, (decimal)row.Cells["TotalWithVat"].Value, row.Cells["ItemName"].Value.ToString());
+                tabledt.UpdateTableItem((decimal)row.Cells["Quantity"].Value, (decimal)row.Cells["Total"].Value, (decimal)row.Cells["TotalWithVat"].Value, row.Cells["ItemName"].Value.ToString(),Convert.ToInt32(row.Cells["Id"].Value.ToString()));
 
             }
             //Print Line
@@ -2636,7 +2636,7 @@ namespace MyNET.Pos
             if (e.RowIndex < 0)
                 return;
 
-            if (e.ColumnIndex == 31)
+            if (e.ColumnIndex == 32)
             {
 
                 e.Paint(e.CellBounds, DataGridViewPaintParts.All);
@@ -4767,6 +4767,7 @@ namespace MyNET.Pos
             ug.Columns[28].Visible = false;
             ug.Columns[29].Visible = false;
             ug.Columns[30].Visible = false;
+            ug.Columns[31].Visible = false;
 
 
             //ug.Columns[14].FillWeight = 50;
@@ -7665,6 +7666,7 @@ namespace MyNET.Pos
                 details.Total = (decimal)item.Cells["Total"].Value;
                 details.TotalWithVat = (decimal)item.Cells["TotalWithVat"].Value;
                 int status = (int)item.Cells["Status"].Value;
+                details.DiscountAmount = (decimal)item.Cells["DiscountAmount"].Value;
                 details.ClientDiscount = Partner.Get(PartnerId).Discount;
                 details.Sale_Id = 0;
                 //details.PrintedFiscalQuantity = (int)details.Quantity;
@@ -7674,12 +7676,12 @@ namespace MyNET.Pos
                 if (result == 0)
                 {
 
-                    details.UpdateTableItem(details.Quantity, details.Total, details.TotalWithVat, details.ItemName);
+                    details.UpdateTableItem(details.Quantity, details.Total, details.TotalWithVat, details.ItemName, details.tableId);
                 }
 
 
             }
-            Services.Tables.UpdateTotalInPos(mTotalSum.ToString(), tableId);
+            Services.Tables.UpdateTotalInPos(mTotalSum.ToString("N"), tableId);
         }
         private void btnSignOut_Click(object sender, EventArgs e)
         {

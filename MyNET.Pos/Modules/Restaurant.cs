@@ -76,7 +76,6 @@ namespace MyNET.Pos.Modules
                 SendTablesToJavaScript(Services.Tables.GetTablesBySpaceId(spaces.First().Id));
 
             }
-            pictureBox1_Click(null,null);
         }
 
         private async void CoreWebView2_AddWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)

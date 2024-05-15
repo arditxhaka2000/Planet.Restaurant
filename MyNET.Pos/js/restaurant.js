@@ -29,6 +29,7 @@ function receiveTables(jsonData) {
 
 
     data.forEach(function (element) {
+        console.log(element);
         var left = (element.LocationX * screen.width) / 100;
         var top = (element.LocationY * screen.height) / 100;
         var pic = "Table";
