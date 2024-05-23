@@ -53,6 +53,7 @@ namespace Services
         public string ChangedBy { get; set; }
         public int Status { get; set; }
         public string Logo { get; set; }
+        public string Theme { get; set; }
 
 
 
@@ -184,6 +185,11 @@ namespace Services
         {
             string jsonParams = JsonConvert.SerializeObject(new { ForReturn = type, id = id });
             Services.RestHepler<Settings>.Query("updateForReturn", jsonParams);
+        } 
+        public static void UpdateThemePreference(string theme, int id)
+        {
+            string jsonParams = JsonConvert.SerializeObject(new { Theme = theme, id = id });
+            Services.RestHepler<Settings>.Query("updateThemePreference", jsonParams);
         }
 
         #endregion

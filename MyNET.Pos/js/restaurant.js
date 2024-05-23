@@ -79,9 +79,7 @@ function functionOptionsRestaurant(m) {
         var draggableElements = document.querySelectorAll('.draggable');
         draggableElements.onclick = null;
 
-        console.log(draggableElements);
-
-        
+                
         draggableElements.forEach(function (element) {
             element.addEventListener('mousedown', startDragging);
             element.setAttribute('data-click-event', element.getAttribute('onclick'));
@@ -126,6 +124,7 @@ function getDivLocations() {
         locations.push(location);
 
     });
+
     return locations;
 }
 function changeTheme(v) {

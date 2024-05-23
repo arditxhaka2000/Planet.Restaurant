@@ -133,8 +133,15 @@ namespace MyNET.Pos
         {
             try
             {
-                //var sett = Services.Settings.Get();
+                //Me printu artikujt ne Termal nese veqse nuk jane shtyp para se me mbyll tavolinen
+                InsertOrderDetails();
 
+                if (Globals.Settings.PosPrinter == "1")
+                {
+                    PrintRestaurantThermal();
+                    Services.Models.TablesSaleDetails.UpdateTableSDPrinted(1, tableId);
+
+                }
                 if (cbPartners.SelectedItem != null)
                 {
                     if (ug.Rows.Count > 0)
@@ -164,8 +171,7 @@ namespace MyNET.Pos
                                 SavePayment();
                                 //print invoice                               
                                 PrintF();
-                                //change sale status . Now sale is ready for sync
-                                Services.Sale.ChngStatus(mSaleId, 0);
+                                //change sale status . Now sale is ready for sync-
                             }
 
 
@@ -185,7 +191,7 @@ namespace MyNET.Pos
 
                             Services.Tables.UpdateTablePos(0, tableId);
                             Services.Models.TablesSaleDetails.UpdateTableSDPrinted(1, tableId);
-                            Services.Models.TablesSaleDetails.UpdateStatus(1, tableId);
+                            //Services.Models.TablesSaleDetails.UpdateStatus(1, tableId);
                             Services.Tables.UpdateTableFiscalCount("0", tableId);
                             Services.Tables.UpdateTableEmpId("0", tableId);
 
@@ -5324,7 +5330,7 @@ namespace MyNET.Pos
                 sale.CreatedBy = Globals.User.Name;
                 sale.Status = -1;
                 sale.id_saler = Globals.User.Id;
-
+                sale.FromRestaurant = 1;
                 //sale.SaleId = Sale.getAllSales().Count > 0 ? Sale.getAllSales().Where(p=>p.StationId==Globals.Station.Id).Last().SaleId + 1 : Globals.Station.LastInvoiceNumber + 1;
                 if (Sale.getSalesCount() > 0)
                 {
@@ -5382,7 +5388,7 @@ namespace MyNET.Pos
                     TotalShitje = totalSumOpenBalance,
                     TotalCash = totalcash,
                     TotalCreditCard = totalcredit,
-                    status = sale.Status.ToString()
+                    status = sale.Status.ToString(),
                 };
                 result = overallObj.UpdateA();
                 if (result > 0)
@@ -5618,7 +5624,8 @@ namespace MyNET.Pos
                     ItemNumber = row.Cells["ItemNumber"].Value.ToString(),
                     DiscountAmount = row.Cells["DiscountAmount"].Value.ToString(),
                     PosId = Globals.DeviceId,
-                    Printed = 0
+                    Printed = 0,
+                    TableId = tableId
                 });
                 wrh.Add(new Warehouse
                 {

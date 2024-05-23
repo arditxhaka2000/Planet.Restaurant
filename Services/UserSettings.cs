@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,7 @@ namespace Services
         public int WarehouseId { get; set; }
         public string WarehouseName { get; set; }
         public string BackupPath { get; set; }
+        public string Theme { get; set; }
 
         #endregion
 
@@ -36,7 +38,11 @@ namespace Services
             var userS = Services.RestHepler<UserSettings>.Get("usersettings", id);
             return userS;
         }
-
+        public static void InsertTheme(string theme,int id)
+        {
+            string jsonParams = JsonConvert.SerializeObject(new { Theme = theme, Id = id});
+            Services.RestHepler<Models.TablesSaleDetails>.Query("InsertThemePreference", jsonParams);
+        }
         #region Update
 
         /// <summary>

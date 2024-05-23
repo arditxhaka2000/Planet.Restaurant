@@ -49,6 +49,7 @@ namespace Services
         public string ItemNumber { get; set; }
         public string DiscountAmount { get; set; } = "0";
         public string PosId { get; set; }
+        public string TableId { get; set; }
 
 
         #endregion

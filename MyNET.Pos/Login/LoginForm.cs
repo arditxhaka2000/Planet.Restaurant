@@ -68,6 +68,7 @@ namespace MyNET.Pos
         private void LoginForm_Load(object sender, EventArgs e)
         {
             var globals = Services.Settings.Get();
+            Globals.LoadSettings();
 
             lblCompany.Text = globals.CompanyName;
              btnLoginMtd.Text = globals.EmpLoginMethod == "0" ? "Me kartelë" : "Me Buton";

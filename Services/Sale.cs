@@ -34,6 +34,7 @@ namespace Services
         public decimal CouponNo { get; set; }
         public int ConvertBill { get; set; } = 0;
         public int SentConvert { get; set; } = 0;
+        public int FromRestaurant { get; set; } = 0;
 
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }

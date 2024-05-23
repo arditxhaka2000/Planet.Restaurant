@@ -76,6 +76,8 @@ namespace MyNET.Pos.Modules
                 SendTablesToJavaScript(Services.Tables.GetTablesBySpaceId(spaces.First().Id));
 
             }
+            PassTheme(pictureBox1.Tag.ToString());
+
         }
 
         private async void CoreWebView2_AddWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
@@ -167,7 +169,18 @@ namespace MyNET.Pos.Modules
         }
         private void Restaurant_Load(object sender, EventArgs e)
         {
-            pictureBox1.Tag = "dark";
+            pictureBox1.Tag = Settings.Get().Theme;
+
+            if(pictureBox1.Tag.ToString() == "dark")
+            {
+                pictureBox1.Image = Properties.Resources.light;
+
+            }
+            else
+            {
+                pictureBox1.Image = Properties.Resources.dark;
+
+            }
         }
 
         private void AdjustTableSize()
@@ -613,19 +626,21 @@ namespace MyNET.Pos.Modules
         
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            PassTheme(pictureBox1.Tag.ToString());
 
             if (pictureBox1.Tag.ToString() == "dark")
             {
-                pictureBox1.Image = Properties.Resources.light;
+                pictureBox1.Image = Properties.Resources.dark;
                 pictureBox1.Tag = "light";
             }
             else
             {
-                pictureBox1.Image = Properties.Resources.dark;
+                pictureBox1.Image = Properties.Resources.light;
                 pictureBox1.Tag = "dark";
 
             }
+            PassTheme(pictureBox1.Tag.ToString());
+            Settings.UpdateThemePreference(pictureBox1.Tag.ToString(), Globals.Settings.Id);
+
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -779,8 +794,8 @@ namespace MyNET.Pos.Modules
                     Services.Tables.UpdateTotalInPos("0", currentTable);
 
                     var button = panel1.Controls.OfType<Panel>().FirstOrDefault(b => b.Tag.ToString() == currentTable);
-                    var oldlblFCount = button.Controls.OfType<Label>().FirstOrDefault(b => b.Tag != null && b.Tag.ToString() == currentTable + "fc");
-                    oldlblFCount.Text = "";
+                    //var oldlblFCount = button.Controls.OfType<Label>().FirstOrDefault(b => b.Tag != null && b.Tag.ToString() == currentTable + "fc");
+                    //oldlblFCount.Text = "";
                 }
             }
             catch (Exception)
