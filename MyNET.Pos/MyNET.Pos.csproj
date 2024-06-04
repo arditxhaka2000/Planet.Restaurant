@@ -860,7 +860,9 @@
     <None Include="Resources\accept %282%291.png" />
     <None Include="Resources\check1.png" />
     <None Include="Resources\accept %282%29.png" />
-    <None Include="Resources\check-button.png" />
+    <None Include="Resources\check-button.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\check.png" />
     <None Include="Resources\accept-removebg-preview.png" />
     <None Include="Resources\accept1.png" />

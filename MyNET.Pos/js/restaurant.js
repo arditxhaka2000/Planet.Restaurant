@@ -1,11 +1,13 @@
 let tableId = 0;
+let selectableDivs = [];
+
 function receiveSpaces(jsonData) {
 
     var data = JSON.parse(jsonData);
     var container = document.getElementById('floors-div');
     var html = "";
     data.forEach(function (element) {
-        html += "<button type='button' id= '" + element.Id + "' class='space-button btn btn-secondary'> " + element.Name + " </button>";
+        html += "<button type='button' class='space-button btn btn-secondary'  id= '" + element.Id + "'> " + element.Name + " </button>";
 
     });
     container.innerHTML = html;
@@ -29,7 +31,6 @@ function receiveTables(jsonData) {
 
 
     data.forEach(function (element) {
-        console.log(element);
         var left = (element.LocationX * screen.width) / 100;
         var top = (element.LocationY * screen.height) / 100;
         var pic = "Table";
@@ -39,12 +40,12 @@ function receiveTables(jsonData) {
             var forecolor = "white";
             pic = "Table1";
         }
-        html += "<div class='draggable' id=" + element.Id + " onclick ='sendPOS(" + element.Id + ")' style='left: " + left + "px; top: " + top + "px; user-select: none; background-image:url(Resources/"+pic+".png);'>";
+        html += "<div class='draggable' id= d" + element.Id + " onclick ='sendPOS(" + element.Id + ")' style='left: " + left + "px; top: " + top + "px; user-select: none; background-image:url(Resources/" + pic + ".png);'>";
+        html += "<div class='check-icon'></div>";
         html += "<br>"
         html += "<div class='row'>";
         if (element.Name.length > 10) {
             html += "<h5 class='name' style='color:" + forecolor + "; max-width: 70px; word-wrap: break-word;'>" + element.Name + "</h5>";
-            console.log('kty2');
         } else {
             html += "<h5 class='name' style='color:" + forecolor + "'>" + element.Name + "</h5>";
         }
@@ -65,21 +66,43 @@ function openPos() {
 }
 function sendPOS(id) {
     tableId = id;
-    window.chrome.webview.postMessage("POS");
+    if (optionValue !== 'Bashko') {
+        window.chrome.webview.postMessage("POS");
 
+    } else {
+        var parentDiv = document.getElementById("d" + id);
+
+        console.log(parentDiv);
+        if (parentDiv) {
+            // If the parentDiv exists, find the check-icon element within it
+            var checkIcon = parentDiv.querySelector('.check-icon');
+
+            if (checkIcon) {
+                selectableDivs.push(id);
+                checkIcon.style.display = 'block';
+            }
+        }
+
+
+    }
+
+}
+function sendBashko() {
+    return selectableDivs;
 }
 function sendSpaceId(value) {
     // Example data to send
     var data = value;
     window.chrome.webview.postMessage(data);
 }
+var optionValue = '';
 function functionOptionsRestaurant(m) {
-    var optionValue = m;
+    optionValue = m;
     if (optionValue === 'Lokacioni') {
         var draggableElements = document.querySelectorAll('.draggable');
         draggableElements.onclick = null;
 
-                
+
         draggableElements.forEach(function (element) {
             element.addEventListener('mousedown', startDragging);
             element.setAttribute('data-click-event', element.getAttribute('onclick'));
@@ -109,6 +132,9 @@ function functionOptionsRestaurant(m) {
             });
         }
     }
+    if (optionValue === 'Bashko') {
+        //toggleCheckIcons();
+    }
 }
 function getDivLocations() {
     var divs = document.querySelectorAll('.draggable');
@@ -128,7 +154,6 @@ function getDivLocations() {
     return locations;
 }
 function changeTheme(v) {
-    console.log(v);
 
     var divs = document.querySelectorAll('body');
     divs.forEach(function (div) {
@@ -143,3 +168,21 @@ function changeTheme(v) {
     });
 }
 
+function toggleSelection(event) {
+
+    const divId = event.target.id;
+    const targetDiv = document.getElementById(divId);
+    if (targetDiv) {
+        var a = container.classList.toggle('show-check');
+
+
+    }
+    selectableDivs.push(divId);
+    console.log(selectableDivs);
+}
+function toggleCheckIcons() {
+    var parentElement = document.querySelector('.container-fluid');
+
+    // Add the 'show-check' class to the parent element
+    parentElement.classList.add('show-check');
+}

@@ -46,6 +46,7 @@ namespace MyNET.Pos.Modules
         public static int TotalFontSize;
         public static int FSize;
         public static int gap;
+        protected string options = "";
         public delegate void CustomDataReceivedEventHandler(string data);
 
         public event CustomDataReceivedEventHandler CustomDataReceived;
@@ -346,8 +347,15 @@ namespace MyNET.Pos.Modules
             Ruaj.Visible = false;
             //btnAddSpace.Visible = false;
 
+            if(options == "Lokacionet")
+            {
+                await GetLocationFromJs();
 
-            await GetLocationFromJs();
+            }
+            else if (options == "Bashko Tavolinat")
+            {
+                await GetBashkoTavolinat();
+            }
             webView21.Reload();
 
         }
@@ -367,6 +375,13 @@ namespace MyNET.Pos.Modules
                 Services.Tables.UpdateToUpdate(id);
             }
 
+
+        }
+        public async System.Threading.Tasks.Task GetBashkoTavolinat()
+        {
+            var result = await webView21.CoreWebView2.ExecuteScriptAsync("sendBashko()");
+
+            var dataArray = JsonConvert.DeserializeObject<int>(result);
 
         }
         private void AdjustTableLocation(int x, int y, int id)
@@ -646,7 +661,7 @@ namespace MyNET.Pos.Modules
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedItem = comboBox1.SelectedItem.ToString();
-
+            options = selectedItem;
             switch (selectedItem)
             {
                 case "Mbyll Ditën":
@@ -744,10 +759,14 @@ namespace MyNET.Pos.Modules
         }
         private void btnJoinTables_Click(object sender, EventArgs e)
         {
-            JoinTables transfer = new JoinTables();
-            transfer.Owner = this;
+            PassStringToJavaScript("Bashko");
 
-            transfer.ShowDialog();
+            //JoinTables transfer = new JoinTables();
+            //transfer.Owner = this;
+
+            //transfer.ShowDialog();
+            Ruaj.Visible = true;
+
             try
             {
                 if (JoinTables.CtableId != null)
