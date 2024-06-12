@@ -1,5 +1,6 @@
 let tableId = 0;
 let selectableDivs = [];
+let bashkocount = 0;
 
 function receiveSpaces(jsonData) {
 
@@ -66,23 +67,97 @@ function openPos() {
 }
 function sendPOS(id) {
     tableId = id;
-    if (optionValue !== 'Bashko') {
-        window.chrome.webview.postMessage("POS");
+    if (optionValue === 'Bashko') {
 
-    } else {
         var parentDiv = document.getElementById("d" + id);
 
-        console.log(parentDiv);
         if (parentDiv) {
-            // If the parentDiv exists, find the check-icon element within it
-            var checkIcon = parentDiv.querySelector('.check-icon');
 
-            if (checkIcon) {
-                selectableDivs.push(id);
-                checkIcon.style.display = 'block';
+            var checkIcon = parentDiv.querySelector('.check-icon');
+            console.log('1', bashkocount);
+            if (checkIcon && bashkocount < 2) {
+                if (checkIcon.style.display === 'block') {
+
+                    checkIcon.style.display = 'none';
+
+                    const index = selectableDivs.indexOf(id);
+                    if (index > -1) {
+                        selectableDivs.splice(index, 1);
+                    }
+                    bashkocount--;
+
+                }
+                else {
+                    selectableDivs.push(id);
+                    checkIcon.style.display = 'block';
+                    bashkocount++;
+                    console.log('2', bashkocount);
+
+                }
+
+            }
+            else {
+                if (checkIcon.style.display === 'block') {
+
+                    checkIcon.style.display = 'none';
+
+                    const index = selectableDivs.indexOf(id);
+                    if (index > -1) {
+                        selectableDivs.splice(index, 1);
+                    }
+                    bashkocount--;
+                    console.log('3', bashkocount);
+
+                }
             }
         }
+    }
+    else if (optionValue === 'Transfero') {
+        var parentDiv = document.getElementById("d" + id);
 
+        if (parentDiv) {
+
+            var checkIcon = parentDiv.querySelector('.check-icon');
+            console.log('1', bashkocount);
+            if (checkIcon && bashkocount < 2) {
+                if (checkIcon.style.display === 'block') {
+
+                    checkIcon.style.display = 'none';
+
+                    const index = selectableDivs.indexOf(id);
+                    if (index > -1) {
+                        selectableDivs.splice(index, 1);
+                    }
+                    bashkocount--;
+
+                }
+                else {
+                    selectableDivs.push(id);
+                    checkIcon.style.display = 'block';
+                    bashkocount++;
+                    console.log('2', bashkocount);
+
+                }
+
+            }
+            else {
+                if (checkIcon.style.display === 'block') {
+
+                    checkIcon.style.display = 'none';
+
+                    const index = selectableDivs.indexOf(id);
+                    if (index > -1) {
+                        selectableDivs.splice(index, 1);
+                    }
+                    bashkocount--;
+                    console.log('3', bashkocount);
+
+                }
+            }
+        }
+    }
+    else {
+        window.chrome.webview.postMessage("POS");
 
     }
 

@@ -47,6 +47,8 @@ namespace MyNET.Pos.Modules
         public static int FSize;
         public static int gap;
         protected string options = "";
+        public string bashko1 = "";
+        public string bashko2 = "";
         public delegate void CustomDataReceivedEventHandler(string data);
 
         public event CustomDataReceivedEventHandler CustomDataReceived;
@@ -94,6 +96,7 @@ namespace MyNET.Pos.Modules
                 {
                     Services.Tables.UpdateTablePos(1, id);
                     Services.Tables.UpdateTableEmpId(Globals.User.Id.ToString(), id);
+                    Services.Tables.UpdateDate(DateTime.Now.ToString(), id);
                     Globals.NextStep = "RestaurantPos" + id;
                     if (!IsDisposed && !Disposing)
                     {
@@ -127,6 +130,27 @@ namespace MyNET.Pos.Modules
                     }
                     else
                     {
+                        if(Globals.Settings.PIN != "0" || Globals.Settings.PIN != null)
+                        {
+                            EnterPin enterPin = new EnterPin();
+                            enterPin.ShowDialog();
+                            if (enterPin.flag == true)
+                            {
+                                Services.Tables.UpdateTablePos(1, id);
+
+                                Globals.NextStep = "RestaurantPos" + id;
+                                if (!IsDisposed && !Disposing)
+                                {
+                                    this.Invoke((MethodInvoker)delegate
+                                    {
+                                        if (!IsDisposed && !Disposing)
+                                        {
+                                            this.Close();
+                                        }
+                                    });
+                                }
+                            }
+                        }
                         //MessageBox.Show("Tavolina eshte hap nga puntori :" + User.Get(tbl.Emp_id).Name);
                     }
 
@@ -139,7 +163,7 @@ namespace MyNET.Pos.Modules
                 SendTablesToJavaScript(tables);
                 webView21.Refresh();
             }
-          
+
         }
         private async void SendTablesToJavaScript(List<Services.Tables> tables)
         {
@@ -162,7 +186,7 @@ namespace MyNET.Pos.Modules
         {
             await webView21.ExecuteScriptAsync($"functionOptionsRestaurant('{message}')");
             webView21.Refresh();
-        } 
+        }
         private async void PassTheme(string message)
         {
             await webView21.ExecuteScriptAsync($"changeTheme('{message}')");
@@ -172,7 +196,7 @@ namespace MyNET.Pos.Modules
         {
             pictureBox1.Tag = Settings.Get().Theme;
 
-            if(pictureBox1.Tag.ToString() == "dark")
+            if (pictureBox1.Tag.ToString() == "dark")
             {
                 pictureBox1.Image = Properties.Resources.light;
 
@@ -347,14 +371,19 @@ namespace MyNET.Pos.Modules
             Ruaj.Visible = false;
             //btnAddSpace.Visible = false;
 
-            if(options == "Lokacionet")
+            if (options == "Lokacionet")
             {
                 await GetLocationFromJs();
 
             }
             else if (options == "Bashko Tavolinat")
             {
+
                 await GetBashkoTavolinat();
+            }
+            else if(options == "Transfero Tavolinen")
+            {
+                await GetTransferoTavolinat();
             }
             webView21.Reload();
 
@@ -381,7 +410,26 @@ namespace MyNET.Pos.Modules
         {
             var result = await webView21.CoreWebView2.ExecuteScriptAsync("sendBashko()");
 
-            var dataArray = JsonConvert.DeserializeObject<int>(result);
+            var dataArray = JsonConvert.DeserializeObject<int[]>(result);
+            if (dataArray.Length > 0)
+            {
+                bashko1 = dataArray[0].ToString();
+                bashko2 = dataArray[1].ToString();
+            }
+            btnJoinTables_Click(null, null);
+
+        }
+        public async System.Threading.Tasks.Task GetTransferoTavolinat()
+        {
+            var result = await webView21.CoreWebView2.ExecuteScriptAsync("sendBashko()");
+
+            var dataArray = JsonConvert.DeserializeObject<int[]>(result);
+            if (dataArray.Length > 0)
+            {
+                bashko1 = dataArray[0].ToString();
+                bashko2 = dataArray[1].ToString();
+            }
+            btnJoinTables_Click(null, null);
 
         }
         private void AdjustTableLocation(int x, int y, int id)
@@ -574,7 +622,7 @@ namespace MyNET.Pos.Modules
             //}
             webView21.Reload();
         }
-        
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -593,6 +641,7 @@ namespace MyNET.Pos.Modules
 
 
         }
+
         private void btnZRaport_Click(object sender, EventArgs e)
         {
             var globals = Services.Settings.Get();
@@ -638,7 +687,7 @@ namespace MyNET.Pos.Modules
 
             this.Close();
         }
-        
+
         private void pictureBox1_Click(object sender, EventArgs e)
         {
 
@@ -666,6 +715,10 @@ namespace MyNET.Pos.Modules
             {
                 case "Mbyll Ditën":
                     button1_Click(sender, null);
+                    break; 
+                
+                case "Shiko Tavolinat":
+                    ManageTables();
                     break;
 
                 case "Edito":
@@ -689,10 +742,12 @@ namespace MyNET.Pos.Modules
                     break;
 
                 case "Transfero Tavolinen":
-                    btnTransferOrder_Click(sender, null);
+                    Ruaj.Visible = true;
+                    PassStringToJavaScript("Transfero");
                     break;
                 case "Bashko Tavolinat":
-                    btnJoinTables_Click(sender, null);
+                    Ruaj.Visible = true;
+                    PassStringToJavaScript("Bashko");
                     break;
 
                 case "Dil":
@@ -717,37 +772,36 @@ namespace MyNET.Pos.Modules
         }
         private void btnTransferOrder_Click(object sender, EventArgs e)
         {
-            TransferOrderDetails transfer = new TransferOrderDetails();
-            transfer.Owner = this;
+            //TransferOrderDetails transfer = new TransferOrderDetails();
+            //transfer.Owner = this;
 
-            transfer.ShowDialog();
+            //transfer.ShowDialog();
             try
             {
-                if (TransferOrderDetails.CtableId != null)
+
+                var currentTable = bashko1;
+                var newTable = bashko2;
+
+                Services.Tables.UpdateTablePos(0, currentTable);
+                Services.Tables.UpdateTablePos(1, newTable);
+                var ts = TableSaleDetails.GetTS();
+                foreach (var item in ts)
                 {
-                    var currentTable = TransferOrderDetails.CtableId;
-                    var newTable = TransferOrderDetails.DtableId;
-
-                    Services.Tables.UpdateTablePos(0, currentTable);
-                    Services.Tables.UpdateTablePos(1, newTable);
-                    var ts = TableSaleDetails.GetTS();
-                    foreach (var item in ts)
+                    if (item.tableId.ToString() == currentTable)
                     {
-                        if (item.tableId.ToString() == currentTable)
-                        {
-                            Services.TableSaleDetails.UpdateTSTableId(newTable, item.Id.ToString());
+                        Services.TableSaleDetails.UpdateTSTableId(newTable, item.Id.ToString());
 
-                        }
                     }
-                    Services.Tables.UpdateTableEmpId("0", currentTable);
-                    Services.Tables.UpdateTableEmpId(Globals.User.Id.ToString(), newTable);
-                    var cTotal = Services.Tables.GetTables().Where(p => p.Id.ToString() == currentTable).First().inPosTotal;
-                    Services.Tables.UpdateTotalInPos(cTotal, newTable);
-                    Services.Tables.UpdateTotalInPos("0", currentTable);
-                    webView21.Reload();
-
-
                 }
+                Services.Tables.UpdateTableEmpId("0", currentTable);
+                Services.Tables.UpdateTableEmpId(Globals.User.Id.ToString(), newTable);
+                var cTotal = Services.Tables.GetTables().Where(p => p.Id.ToString() == currentTable).First().inPosTotal;
+                Services.Tables.UpdateTotalInPos(cTotal, newTable);
+                Services.Tables.UpdateTotalInPos("0", currentTable);
+                webView21.Reload();
+
+                Ruaj.Visible = false;
+
 
             }
             catch (Exception)
@@ -759,63 +813,61 @@ namespace MyNET.Pos.Modules
         }
         private void btnJoinTables_Click(object sender, EventArgs e)
         {
-            PassStringToJavaScript("Bashko");
 
             //JoinTables transfer = new JoinTables();
             //transfer.Owner = this;
 
             //transfer.ShowDialog();
-            Ruaj.Visible = true;
-
             try
             {
-                if (JoinTables.CtableId != null)
+
+                var currentTable = bashko1;
+                var newTable = bashko2;
+
+
+                Services.Tables.UpdateTablePos(0, currentTable);
+                Services.Tables.UpdateTablePos(1, newTable);
+                var ts = TableSaleDetails.GetTS();
+                foreach (var item in ts)
                 {
-                    var currentTable = JoinTables.CtableId;
-                    var newTable = JoinTables.DtableId;
-
-                    Services.Tables.UpdateTablePos(0, currentTable);
-                    Services.Tables.UpdateTablePos(1, newTable);
-                    var ts = TableSaleDetails.GetTS();
-                    foreach (var item in ts)
+                    if (item.tableId.ToString() == currentTable)
                     {
-                        if (item.tableId.ToString() == currentTable)
+                        // Check if an item with the same ID exists in the new table
+                        var existingItem = ts.Where(i => i.tableId.ToString() == newTable && i.ItemId == item.ItemId && i.Status == 0);
+
+                        if (existingItem != null && existingItem.Count() > 0)
                         {
-                            // Check if an item with the same ID exists in the new table
-                            var existingItem = ts.Where(i => i.tableId.ToString() == newTable && i.ItemId == item.ItemId && i.Status == 0);
-
-                            if (existingItem != null && existingItem.Count() > 0)
-                            {
-                                // Update the quantity of the existing item
-                                Services.TableSaleDetails.UpdateTSQuantity(newTable, item.ItemId.ToString(), (existingItem.First().Quantity + item.Quantity).ToString(), (existingItem.First().TotalWithVat + item.TotalWithVat).ToString());
-                                Services.TableSaleDetails.DeleteTableSaleWithId(item.Id.ToString());
-                            }
-                            else
-                            {
-                                // If the item doesn't exist in the new table, add it with quantity 1
-                                Services.TableSaleDetails.UpdateTSTableId(newTable, item.Id.ToString());
-                            }
+                            // Update the quantity of the existing item
+                            Services.TableSaleDetails.UpdateTSQuantity(newTable, item.ItemId.ToString(), (existingItem.First().Quantity + item.Quantity).ToString(), (existingItem.First().TotalWithVat + item.TotalWithVat).ToString());
+                            Services.TableSaleDetails.DeleteTableSaleWithId(item.Id.ToString());
                         }
-
-                        //if (item.tableId.ToString() == currentTable)
-                        //{
-                        //    Services.TableSaleDetails.UpdateTSTableId(newTable, item.Id.ToString());
-
-                        //}
-
+                        else
+                        {
+                            // If the item doesn't exist in the new table, add it with quantity 1
+                            Services.TableSaleDetails.UpdateTSTableId(newTable, item.Id.ToString());
+                        }
                     }
-                    Services.Tables.UpdateTableEmpId("0", currentTable);
-                    Services.Tables.UpdateTableEmpId(Globals.User.Id.ToString(), newTable);
-                    var cTotal = Services.Tables.GetTables().Where(p => p.Id.ToString() == currentTable).First().inPosTotal;
-                    var dTotal = Services.Tables.GetTables().Where(p => p.Id.ToString() == newTable).First().inPosTotal;
-                    var total = Convert.ToDecimal(cTotal) + Convert.ToDecimal(dTotal);
-                    Services.Tables.UpdateTotalInPos(total.ToString(), newTable);
-                    Services.Tables.UpdateTotalInPos("0", currentTable);
 
-                    var button = panel1.Controls.OfType<Panel>().FirstOrDefault(b => b.Tag.ToString() == currentTable);
-                    //var oldlblFCount = button.Controls.OfType<Label>().FirstOrDefault(b => b.Tag != null && b.Tag.ToString() == currentTable + "fc");
-                    //oldlblFCount.Text = "";
+                    //if (item.tableId.ToString() == currentTable)
+                    //{
+                    //    Services.TableSaleDetails.UpdateTSTableId(newTable, item.Id.ToString());
+
+                    //}
+
                 }
+                Services.Tables.UpdateTableEmpId("0", currentTable);
+                Services.Tables.UpdateTableEmpId(Globals.User.Id.ToString(), newTable);
+                var cTotal = Services.Tables.GetTables().Where(p => p.Id.ToString() == currentTable).First().inPosTotal;
+                var dTotal = Services.Tables.GetTables().Where(p => p.Id.ToString() == newTable).First().inPosTotal;
+                var total = Convert.ToDecimal(cTotal) + Convert.ToDecimal(dTotal);
+                Services.Tables.UpdateTotalInPos(total.ToString(), newTable);
+                Services.Tables.UpdateTotalInPos("0", currentTable);
+
+                var button = panel1.Controls.OfType<Panel>().FirstOrDefault(b => b.Tag.ToString() == currentTable);
+                //var oldlblFCount = button.Controls.OfType<Label>().FirstOrDefault(b => b.Tag != null && b.Tag.ToString() == currentTable + "fc");
+                //oldlblFCount.Text = "";
+                Ruaj.Visible = false;
+
             }
             catch (Exception)
             {
@@ -841,6 +893,15 @@ namespace MyNET.Pos.Modules
         {
             Dil_Click(sender, null);
 
+        }
+        private void ManageTables()
+        {
+            Manage_Tables manage_ = new Manage_Tables();
+            manage_.ShowDialog();
+            if(manage_.toOpen ==true)
+            {
+                this.Close();
+            }
         }
     }
 }

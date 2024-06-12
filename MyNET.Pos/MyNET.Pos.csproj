@@ -476,6 +476,12 @@
     <Compile Include="Modules\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Manage Tables.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Manage Tables.Designer.cs">
+      <DependentUpon>Manage Tables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\OpenChashbox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -706,6 +712,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Manage Tables.resx">
+      <DependentUpon>Manage Tables.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\OpenChashbox.resx">
       <DependentUpon>OpenChashbox.cs</DependentUpon>

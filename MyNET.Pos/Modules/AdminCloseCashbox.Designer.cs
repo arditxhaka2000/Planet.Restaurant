@@ -77,6 +77,7 @@
             this.button2.TabIndex = 3;
             this.button2.Text = "Kthehu";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // AdminCloseCashbox
             // 
@@ -90,6 +91,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AdminCloseCashbox";
             this.Text = "Mbyllja e Dites ADMIN";
+            this.Load += new System.EventHandler(this.AdminCloseCashbox_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

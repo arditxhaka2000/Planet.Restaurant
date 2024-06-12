@@ -26,6 +26,7 @@ namespace Services
         public int saleId { get; set; }
         public int FiscalCount { get; set; }
         public int Emp_id { get; set; }
+        public string Date { get; set; }
 
         public static List<Tables> GetTables()
         {
@@ -109,6 +110,11 @@ namespace Services
         {
             string jsonParams = JsonConvert.SerializeObject(new { Id = id });
             Services.RestHepler<Tables>.RestaurantQuery("updateToUpdateTables", jsonParams);
+
+        } public static void UpdateDate(string date,string id)
+        {
+            string jsonParams = JsonConvert.SerializeObject(new { Date = date, Id = id });
+            Services.RestHepler<Tables>.RestaurantQuery("updateDateTables", jsonParams);
 
         }
     }

@@ -1376,7 +1376,6 @@ namespace MyNET.Pos
                             var empl = User.Get(items.First().id_saler).FirstName;
                             //var ta = Math.Round(shumatotale, 2);
                             dt.Rows.Add(item.ItemId, it.FirstOrDefault().ItemName, item.Quantity, shumatotale, empl);
-                            ;
 
                         }
                     }
