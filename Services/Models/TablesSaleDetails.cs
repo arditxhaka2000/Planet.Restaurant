@@ -26,7 +26,7 @@ namespace Services.Models
         public decimal AvgPrice { get; set; }
         public decimal CategoryId { get; set; }
 
-        public decimal CostOfGoods { get; set; }
+        public string CostOfGoods { get; set; }
 
         public decimal Discount { get; set; }
         public decimal DiscountPrice { get; set; }

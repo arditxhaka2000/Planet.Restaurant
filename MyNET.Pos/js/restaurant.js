@@ -30,7 +30,7 @@ function receiveTables(jsonData) {
     var container = document.getElementById('table_div');
     var html = "";
 
-
+    console.log(data);
     data.forEach(function (element) {
         var left = (element.LocationX * screen.width) / 100;
         var top = (element.LocationY * screen.height) / 100;

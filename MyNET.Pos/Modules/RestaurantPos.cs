@@ -146,16 +146,7 @@ namespace MyNET.Pos
                 {
                     if (ug.Rows.Count > 0)
                     {
-                        //mPaymentDialog.TotalForPay = decimal.Parse(txtTotalSum.Text);  
-
-                        //Screen secondScreen = Screen.AllScreens.FirstOrDefault(s => s != Screen.PrimaryScreen);
-                        //if (secondScreen != null)
-
-                        //{
-                        //    displayInfo.Location = secondScreen.Bounds.Location;
-                        //    displayInfo.StartPosition = FormStartPosition.Manual;
-                        //    displayInfo.Show();
-                        //}
+                      
                         DialogResult dialogResult = mPaymentDialog.ShowDialog();
 
                         if (dialogResult == DialogResult.OK)
@@ -1522,7 +1513,7 @@ namespace MyNET.Pos
                 if ((int)row.Cells["Printed"].Value == 0)
                 {
 
-                    var iName = row.Cells["ItemName"].Value.ToString().Count() > 40 ? row.Cells["ItemName"].Value.ToString().Substring(0, 20) : row.Cells["ItemName"].Value.ToString();
+                    var iName = (row.Cells["ItemName"].Value.ToString() + " " +row.Cells["CostOfGoods"].Value).Count() > 40 ? row.Cells["ItemName"].Value.ToString().Substring(0, 20) + row.Cells["CostOfGoods"].Value : row.Cells["ItemName"].Value.ToString() + "\n"+ row.Cells["CostOfGoods"].Value;
 
                     var words = iName.Split(' ');
                     var lines = new List<string>();
@@ -1852,7 +1843,11 @@ namespace MyNET.Pos
                 txtTotalSum.Text = mTotalSum.ToString("N");
                 txtTotalWVatSum.Text = mTotalSumWVat.ToString("N");
             }
-
+            if(Manage_Tables.closeTable == true)
+            {
+                btnPrint_Click(null, null);
+                Manage_Tables.closeTable = false;   
+            }
         }
 
         private void Test_Click(object sender, EventArgs e)
@@ -4740,7 +4735,7 @@ namespace MyNET.Pos
                                          PrintedQuantity = group.First().PrintedQuantity,
                                          PrintedFiscal = group.First().PrintedFiscal,
                                          PrintedFiscalQuantity = group.First().PrintedFiscalQuantity,
-                                         DiscountAmount = group.First().DiscountAmount
+                                         DiscountAmount = group.First().DiscountAmount,
                                      })
                                      .ToList();
 
@@ -4756,7 +4751,7 @@ namespace MyNET.Pos
             ug.Columns[8].Visible = false;
             ug.Columns[9].Visible = false;
             ug.Columns[10].Visible = false;
-            ug.Columns[11].Visible = false;
+            //ug.Columns[11].Visible = false;
             ug.Columns[13].Visible = false;
             ug.Columns[15].Visible = false;
             ug.Columns[16].Visible = false;
@@ -4799,6 +4794,7 @@ namespace MyNET.Pos
             ug.Columns[20].HeaderText = "Totali";
             ug.Columns[14].HeaderText = "Çmimi";
             ug.Columns[12].HeaderText = "Zbritja";
+            ug.Columns[11].HeaderText = "Description";
             ug.Columns[3].HeaderText = "Emërtimi";
             ug.Columns[6].HeaderText = "Sasia";
             ug.Columns[2].HeaderText = "Nr.";
@@ -7663,7 +7659,7 @@ namespace MyNET.Pos
                 details.Price = (decimal)item.Cells["Price"].Value;
                 details.AvgPrice = (decimal)item.Cells["AvgPrice"].Value;
                 details.Vat = (int)item.Cells["Vat"].Value;
-                details.CategoryId = (decimal)item.Cells["CostOfGoods"].Value;
+                details.CategoryId = (decimal)item.Cells["CategoryId"].Value;
                 details.Discount = (decimal)item.Cells["Discount"].Value;
                 details.DiscountPrice = (decimal)item.Cells["DiscountPrice"].Value;
                 details.DiscountPriceWithVat = (decimal)item.Cells["DiscountPriceWithVat"].Value;
