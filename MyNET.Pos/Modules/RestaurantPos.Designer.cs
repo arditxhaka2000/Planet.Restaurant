@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using MyNET.Pos.Helper;
+using System.Windows.Forms;
 
 namespace MyNET.Pos
 {
@@ -157,7 +158,7 @@ namespace MyNET.Pos
             // 
             // word_client
             // 
-            this.word_client.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(67)))), ((int)(((byte)(82)))));
+            this.word_client.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.word_client.Dock = System.Windows.Forms.DockStyle.Top;
             this.word_client.FlatAppearance.BorderSize = 0;
             this.word_client.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -167,7 +168,7 @@ namespace MyNET.Pos
             this.word_client.Location = new System.Drawing.Point(3, 2);
             this.word_client.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.word_client.Name = "word_client";
-            this.word_client.Size = new System.Drawing.Size(71, 40);
+            this.word_client.Size = new System.Drawing.Size(46, 40);
             this.word_client.TabIndex = 213;
             this.word_client.Text = "Klienti";
             this.word_client.UseVisualStyleBackColor = false;
@@ -175,14 +176,14 @@ namespace MyNET.Pos
             // 
             // word_user
             // 
-            this.word_user.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(67)))), ((int)(((byte)(82)))));
+            this.word_user.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.word_user.Dock = System.Windows.Forms.DockStyle.Fill;
             this.word_user.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.word_user.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.word_user.ForeColor = System.Drawing.Color.White;
-            this.word_user.Location = new System.Drawing.Point(818, 3);
+            this.word_user.Location = new System.Drawing.Point(816, 3);
             this.word_user.Name = "word_user";
-            this.word_user.Size = new System.Drawing.Size(99, 44);
+            this.word_user.Size = new System.Drawing.Size(99, 42);
             this.word_user.TabIndex = 221;
             this.word_user.UseVisualStyleBackColor = false;
             this.word_user.Click += new System.EventHandler(this.btnLogedUser_Click);
@@ -196,7 +197,7 @@ namespace MyNET.Pos
             this.label3.Location = new System.Drawing.Point(84, 0);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(122, 50);
+            this.label3.Size = new System.Drawing.Size(121, 48);
             this.label3.TabIndex = 1;
             this.label3.Text = "Planet Accounting";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -204,6 +205,7 @@ namespace MyNET.Pos
             // pnlMenu
             // 
             this.pnlMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(67)))), ((int)(((byte)(82)))));
+            this.pnlMenu.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlMenu.Controls.Add(this.tableLayoutPanel6);
             this.pnlMenu.Controls.Add(this.btnSignOut);
             this.pnlMenu.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -214,6 +216,7 @@ namespace MyNET.Pos
             // 
             // tableLayoutPanel6
             // 
+            this.tableLayoutPanel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.tableLayoutPanel6.ColumnCount = 7;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 23.25581F));
@@ -234,31 +237,33 @@ namespace MyNET.Pos
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(1002, 50);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(1000, 48);
             this.tableLayoutPanel6.TabIndex = 251;
             // 
             // lblTime
             // 
             this.lblTime.AutoSize = true;
+            this.lblTime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.lblTime.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTime.ForeColor = System.Drawing.Color.White;
-            this.lblTime.Location = new System.Drawing.Point(213, 0);
+            this.lblTime.Location = new System.Drawing.Point(212, 0);
             this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(101, 50);
+            this.lblTime.Size = new System.Drawing.Size(101, 48);
             this.lblTime.TabIndex = 223;
             this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // word_station_branch
             // 
             this.word_station_branch.AutoSize = true;
+            this.word_station_branch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.word_station_branch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.word_station_branch.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.word_station_branch.ForeColor = System.Drawing.Color.White;
-            this.word_station_branch.Location = new System.Drawing.Point(317, 0);
+            this.word_station_branch.Location = new System.Drawing.Point(316, 0);
             this.word_station_branch.Margin = new System.Windows.Forms.Padding(0);
             this.word_station_branch.Name = "word_station_branch";
-            this.word_station_branch.Size = new System.Drawing.Size(429, 50);
+            this.word_station_branch.Size = new System.Drawing.Size(428, 48);
             this.word_station_branch.TabIndex = 222;
             this.word_station_branch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -266,9 +271,10 @@ namespace MyNET.Pos
             // 
             this.smlLogo.BackColor = System.Drawing.Color.Transparent;
             this.smlLogo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.smlLogo.Image = global::MyNET.Pos.Properties.Resources.planet_accounting_logo_;
             this.smlLogo.Location = new System.Drawing.Point(3, 3);
             this.smlLogo.Name = "smlLogo";
-            this.smlLogo.Size = new System.Drawing.Size(74, 44);
+            this.smlLogo.Size = new System.Drawing.Size(74, 42);
             this.smlLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.smlLogo.TabIndex = 2;
             this.smlLogo.TabStop = false;
@@ -278,9 +284,9 @@ namespace MyNET.Pos
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Image = global::MyNET.Pos.Properties.Resources.logout;
-            this.pictureBox1.Location = new System.Drawing.Point(923, 3);
+            this.pictureBox1.Location = new System.Drawing.Point(921, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(76, 44);
+            this.pictureBox1.Size = new System.Drawing.Size(76, 42);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 225;
             this.pictureBox1.TabStop = false;
@@ -293,7 +299,7 @@ namespace MyNET.Pos
             this.btnSignOut.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnSignOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSignOut.ForeColor = System.Drawing.Color.White;
-            this.btnSignOut.Location = new System.Drawing.Point(-253, 40);
+            this.btnSignOut.Location = new System.Drawing.Point(-255, 40);
             this.btnSignOut.Name = "btnSignOut";
             this.btnSignOut.Size = new System.Drawing.Size(53, 22);
             this.btnSignOut.TabIndex = 224;
@@ -347,7 +353,7 @@ namespace MyNET.Pos
             this.btnInvoice.Font = new System.Drawing.Font("Arial", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnInvoice.ForeColor = System.Drawing.Color.Black;
             this.btnInvoice.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnInvoice.Location = new System.Drawing.Point(702, -5);
+            this.btnInvoice.Location = new System.Drawing.Point(516, -5);
             this.btnInvoice.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnInvoice.Name = "btnInvoice";
             this.btnInvoice.Size = new System.Drawing.Size(101, 39);
@@ -360,14 +366,14 @@ namespace MyNET.Pos
             this.pnlTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlTotal.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.pnlTotal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(67)))), ((int)(((byte)(82)))));
             this.pnlTotal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlTotal.Controls.Add(this.tableLayoutPanel9);
             this.pnlTotal.Controls.Add(this.btnInvoice);
             this.pnlTotal.Location = new System.Drawing.Point(0, 441);
             this.pnlTotal.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTotal.Name = "pnlTotal";
-            this.pnlTotal.Size = new System.Drawing.Size(584, 165);
+            this.pnlTotal.Size = new System.Drawing.Size(398, 165);
             this.pnlTotal.TabIndex = 2;
             // 
             // tableLayoutPanel9
@@ -384,31 +390,32 @@ namespace MyNET.Pos
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 1;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(582, 163);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(396, 163);
             this.tableLayoutPanel9.TabIndex = 248;
             // 
             // tableLayoutPanel7
             // 
-            this.tableLayoutPanel7.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tableLayoutPanel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.tableLayoutPanel7.ColumnCount = 1;
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel7.Controls.Add(this.tblInfo, 0, 0);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(229, 4);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(157, 4);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 85F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(349, 155);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(235, 155);
             this.tableLayoutPanel7.TabIndex = 1;
             // 
             // tblInfo
             // 
+            this.tblInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.tblInfo.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tblInfo.ColumnCount = 3;
-            this.tblInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.40594F));
-            this.tblInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.59406F));
+            this.tblInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 53.06123F));
+            this.tblInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 46.93877F));
             this.tblInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tblInfo.Controls.Add(this.eurSymbol, 2, 2);
             this.tblInfo.Controls.Add(this.word_total, 0, 2);
@@ -426,17 +433,17 @@ namespace MyNET.Pos
             this.tblInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 46.25F));
             this.tblInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 53.75F));
             this.tblInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
-            this.tblInfo.Size = new System.Drawing.Size(343, 149);
+            this.tblInfo.Size = new System.Drawing.Size(229, 149);
             this.tblInfo.TabIndex = 221;
             // 
             // eurSymbol
             // 
-            this.eurSymbol.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.eurSymbol.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.eurSymbol.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.eurSymbol.Dock = System.Windows.Forms.DockStyle.Fill;
             this.eurSymbol.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.eurSymbol.ForeColor = System.Drawing.Color.Black;
-            this.eurSymbol.Location = new System.Drawing.Point(314, 92);
+            this.eurSymbol.ForeColor = System.Drawing.Color.White;
+            this.eurSymbol.Location = new System.Drawing.Point(200, 92);
             this.eurSymbol.Name = "eurSymbol";
             this.eurSymbol.Size = new System.Drawing.Size(25, 42);
             this.eurSymbol.TabIndex = 152;
@@ -445,16 +452,16 @@ namespace MyNET.Pos
             // 
             // word_total
             // 
-            this.word_total.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.word_total.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.word_total.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.word_total.Dock = System.Windows.Forms.DockStyle.Fill;
             this.word_total.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.word_total.ForeColor = System.Drawing.Color.Black;
+            this.word_total.ForeColor = System.Drawing.Color.White;
             this.word_total.Location = new System.Drawing.Point(4, 91);
             this.word_total.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.word_total.Name = "word_total";
             this.word_total.ReadOnly = true;
-            this.word_total.Size = new System.Drawing.Size(177, 42);
+            this.word_total.Size = new System.Drawing.Size(97, 42);
             this.word_total.TabIndex = 150;
             this.word_total.TabStop = false;
             this.word_total.Text = "Totali:";
@@ -462,17 +469,17 @@ namespace MyNET.Pos
             // 
             // txtTotalSum
             // 
-            this.txtTotalSum.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtTotalSum.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.txtTotalSum.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtTotalSum.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtTotalSum.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotalSum.ForeColor = System.Drawing.Color.Black;
-            this.txtTotalSum.Location = new System.Drawing.Point(188, 91);
+            this.txtTotalSum.ForeColor = System.Drawing.Color.White;
+            this.txtTotalSum.Location = new System.Drawing.Point(108, 91);
             this.txtTotalSum.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtTotalSum.Name = "txtTotalSum";
             this.txtTotalSum.ReadOnly = true;
             this.txtTotalSum.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.txtTotalSum.Size = new System.Drawing.Size(119, 42);
+            this.txtTotalSum.Size = new System.Drawing.Size(85, 42);
             this.txtTotalSum.TabIndex = 149;
             this.txtTotalSum.TabStop = false;
             this.txtTotalSum.Text = "0.00";
@@ -480,12 +487,12 @@ namespace MyNET.Pos
             // 
             // eursymb
             // 
-            this.eursymb.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.eursymb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.eursymb.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.eursymb.Dock = System.Windows.Forms.DockStyle.Fill;
             this.eursymb.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.eursymb.ForeColor = System.Drawing.Color.Black;
-            this.eursymb.Location = new System.Drawing.Point(314, 45);
+            this.eursymb.ForeColor = System.Drawing.Color.White;
+            this.eursymb.Location = new System.Drawing.Point(200, 45);
             this.eursymb.Name = "eursymb";
             this.eursymb.Size = new System.Drawing.Size(25, 28);
             this.eursymb.TabIndex = 152;
@@ -494,33 +501,33 @@ namespace MyNET.Pos
             // 
             // txtTotalWVatSum
             // 
-            this.txtTotalWVatSum.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtTotalWVatSum.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.txtTotalWVatSum.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtTotalWVatSum.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtTotalWVatSum.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotalWVatSum.ForeColor = System.Drawing.Color.Black;
-            this.txtTotalWVatSum.Location = new System.Drawing.Point(188, 44);
+            this.txtTotalWVatSum.ForeColor = System.Drawing.Color.White;
+            this.txtTotalWVatSum.Location = new System.Drawing.Point(108, 44);
             this.txtTotalWVatSum.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtTotalWVatSum.Name = "txtTotalWVatSum";
             this.txtTotalWVatSum.ReadOnly = true;
             this.txtTotalWVatSum.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.txtTotalWVatSum.Size = new System.Drawing.Size(119, 28);
+            this.txtTotalWVatSum.Size = new System.Drawing.Size(85, 28);
             this.txtTotalWVatSum.TabIndex = 149;
             this.txtTotalWVatSum.TabStop = false;
             this.txtTotalWVatSum.Text = "0.00";
             // 
             // word_discount
             // 
-            this.word_discount.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.word_discount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.word_discount.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.word_discount.Dock = System.Windows.Forms.DockStyle.Fill;
             this.word_discount.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.word_discount.ForeColor = System.Drawing.Color.Black;
+            this.word_discount.ForeColor = System.Drawing.Color.White;
             this.word_discount.Location = new System.Drawing.Point(4, 3);
             this.word_discount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.word_discount.Name = "word_discount";
             this.word_discount.ReadOnly = true;
-            this.word_discount.Size = new System.Drawing.Size(177, 28);
+            this.word_discount.Size = new System.Drawing.Size(97, 28);
             this.word_discount.TabIndex = 150;
             this.word_discount.TabStop = false;
             this.word_discount.Text = "Zbritje:";
@@ -528,12 +535,12 @@ namespace MyNET.Pos
             // 
             // percSymb
             // 
-            this.percSymb.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.percSymb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.percSymb.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.percSymb.Dock = System.Windows.Forms.DockStyle.Fill;
             this.percSymb.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.percSymb.ForeColor = System.Drawing.Color.Black;
-            this.percSymb.Location = new System.Drawing.Point(314, 4);
+            this.percSymb.ForeColor = System.Drawing.Color.White;
+            this.percSymb.Location = new System.Drawing.Point(200, 4);
             this.percSymb.Name = "percSymb";
             this.percSymb.Size = new System.Drawing.Size(25, 28);
             this.percSymb.TabIndex = 151;
@@ -542,16 +549,16 @@ namespace MyNET.Pos
             // 
             // word_totalwithoutVat
             // 
-            this.word_totalwithoutVat.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.word_totalwithoutVat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.word_totalwithoutVat.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.word_totalwithoutVat.Dock = System.Windows.Forms.DockStyle.Fill;
             this.word_totalwithoutVat.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.word_totalwithoutVat.ForeColor = System.Drawing.Color.Black;
+            this.word_totalwithoutVat.ForeColor = System.Drawing.Color.White;
             this.word_totalwithoutVat.Location = new System.Drawing.Point(4, 44);
             this.word_totalwithoutVat.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.word_totalwithoutVat.Name = "word_totalwithoutVat";
             this.word_totalwithoutVat.ReadOnly = true;
-            this.word_totalwithoutVat.Size = new System.Drawing.Size(177, 28);
+            this.word_totalwithoutVat.Size = new System.Drawing.Size(97, 28);
             this.word_totalwithoutVat.TabIndex = 150;
             this.word_totalwithoutVat.TabStop = false;
             this.word_totalwithoutVat.Text = "Totali pa TVSH:";
@@ -559,20 +566,21 @@ namespace MyNET.Pos
             // 
             // txtDiscount
             // 
-            this.txtDiscount.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtDiscount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.txtDiscount.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDiscount.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtDiscount.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDiscount.Location = new System.Drawing.Point(188, 4);
+            this.txtDiscount.ForeColor = System.Drawing.Color.White;
+            this.txtDiscount.Location = new System.Drawing.Point(108, 4);
             this.txtDiscount.Name = "txtDiscount";
-            this.txtDiscount.Size = new System.Drawing.Size(119, 24);
+            this.txtDiscount.Size = new System.Drawing.Size(85, 24);
             this.txtDiscount.TabIndex = 153;
             this.txtDiscount.Text = "0.00";
             this.txtDiscount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // tableLayoutPanel8
             // 
-            this.tableLayoutPanel8.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tableLayoutPanel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.tableLayoutPanel8.ColumnCount = 3;
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.68075F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.98592F));
@@ -591,22 +599,22 @@ namespace MyNET.Pos
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 44.3299F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(218, 155);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(146, 155);
             this.tableLayoutPanel8.TabIndex = 247;
             // 
             // btnAddClient
             // 
-            this.btnAddClient.BackColor = System.Drawing.Color.White;
+            this.btnAddClient.BackColor = System.Drawing.Color.DimGray;
             this.btnAddClient.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnAddClient.FlatAppearance.BorderSize = 0;
             this.btnAddClient.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnAddClient.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddClient.ForeColor = System.Drawing.Color.Black;
+            this.btnAddClient.ForeColor = System.Drawing.Color.White;
             this.btnAddClient.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnAddClient.Location = new System.Drawing.Point(80, 2);
+            this.btnAddClient.Location = new System.Drawing.Point(55, 2);
             this.btnAddClient.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddClient.Name = "btnAddClient";
-            this.btnAddClient.Size = new System.Drawing.Size(61, 40);
+            this.btnAddClient.Size = new System.Drawing.Size(39, 40);
             this.btnAddClient.TabIndex = 217;
             this.btnAddClient.Text = "+";
             this.btnAddClient.UseVisualStyleBackColor = false;
@@ -614,17 +622,17 @@ namespace MyNET.Pos
             // 
             // btnnInvoice
             // 
-            this.btnnInvoice.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(67)))), ((int)(((byte)(82)))));
+            this.btnnInvoice.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.btnnInvoice.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnnInvoice.FlatAppearance.BorderSize = 0;
             this.btnnInvoice.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnnInvoice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnnInvoice.ForeColor = System.Drawing.Color.White;
             this.btnnInvoice.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnnInvoice.Location = new System.Drawing.Point(147, 2);
+            this.btnnInvoice.Location = new System.Drawing.Point(100, 2);
             this.btnnInvoice.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnnInvoice.Name = "btnnInvoice";
-            this.btnnInvoice.Size = new System.Drawing.Size(68, 40);
+            this.btnnInvoice.Size = new System.Drawing.Size(43, 40);
             this.btnnInvoice.TabIndex = 218;
             this.btnnInvoice.Text = "Faturë - F10";
             this.btnnInvoice.UseVisualStyleBackColor = false;
@@ -632,16 +640,15 @@ namespace MyNET.Pos
             // 
             // cbPartners
             // 
-            this.cbPartners.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.cbPartners.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.tableLayoutPanel8.SetColumnSpan(this.cbPartners, 3);
             this.cbPartners.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbPartners.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbPartners.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbPartners.ForeColor = System.Drawing.Color.Black;
+            this.cbPartners.ForeColor = System.Drawing.Color.White;
             this.cbPartners.FormattingEnabled = true;
             this.cbPartners.Location = new System.Drawing.Point(3, 50);
             this.cbPartners.Name = "cbPartners";
-            this.cbPartners.Size = new System.Drawing.Size(212, 28);
+            this.cbPartners.Size = new System.Drawing.Size(140, 28);
             this.cbPartners.TabIndex = 215;
             this.cbPartners.SelectedIndexChanged += new System.EventHandler(this.cbPartners_SelectedIndexChanged);
             // 
@@ -657,13 +664,16 @@ namespace MyNET.Pos
             // 
             // txtShortcuts
             // 
+            this.txtShortcuts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
+            this.txtShortcuts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tableLayoutPanel8.SetColumnSpan(this.txtShortcuts, 3);
             this.txtShortcuts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtShortcuts.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtShortcuts.ForeColor = System.Drawing.Color.White;
             this.txtShortcuts.Location = new System.Drawing.Point(3, 112);
             this.txtShortcuts.Multiline = true;
             this.txtShortcuts.Name = "txtShortcuts";
-            this.txtShortcuts.Size = new System.Drawing.Size(212, 40);
+            this.txtShortcuts.Size = new System.Drawing.Size(140, 40);
             this.txtShortcuts.TabIndex = 220;
             // 
             // timer1
@@ -900,7 +910,7 @@ namespace MyNET.Pos
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(175)))), ((int)(((byte)(240)))));
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.panel2.Controls.Add(this.lblNameAndQuant);
             this.panel2.Location = new System.Drawing.Point(0, 56);
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
@@ -932,14 +942,14 @@ namespace MyNET.Pos
             this.pnlButtons.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnlButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlButtons.Controls.Add(this.tableLayoutPanel1);
-            this.pnlButtons.Location = new System.Drawing.Point(587, 444);
+            this.pnlButtons.Location = new System.Drawing.Point(401, 444);
             this.pnlButtons.Name = "pnlButtons";
-            this.pnlButtons.Size = new System.Drawing.Size(418, 159);
+            this.pnlButtons.Size = new System.Drawing.Size(604, 159);
             this.pnlButtons.TabIndex = 3;
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -952,7 +962,7 @@ namespace MyNET.Pos
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(416, 157);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(602, 157);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel5
@@ -960,7 +970,7 @@ namespace MyNET.Pos
             this.tableLayoutPanel5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel5.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tableLayoutPanel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.tableLayoutPanel5.ColumnCount = 2;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 54.06699F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45.93301F));
@@ -972,15 +982,15 @@ namespace MyNET.Pos
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(414, 73);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(600, 73);
             this.tableLayoutPanel5.TabIndex = 215;
             // 
             // word_no_order
             // 
-            this.word_no_order.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.word_no_order.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.word_no_order.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.word_no_order.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.word_no_order.ForeColor = System.Drawing.Color.Black;
+            this.word_no_order.ForeColor = System.Drawing.Color.White;
             this.word_no_order.Location = new System.Drawing.Point(3, 2);
             this.word_no_order.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.word_no_order.Name = "word_no_order";
@@ -997,17 +1007,19 @@ namespace MyNET.Pos
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFiscalCount.AutoSize = true;
+            this.lblFiscalCount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.lblFiscalCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFiscalCount.Location = new System.Drawing.Point(226, 0);
+            this.lblFiscalCount.ForeColor = System.Drawing.Color.White;
+            this.lblFiscalCount.Location = new System.Drawing.Point(327, 0);
             this.lblFiscalCount.Name = "lblFiscalCount";
-            this.lblFiscalCount.Size = new System.Drawing.Size(185, 73);
+            this.lblFiscalCount.Size = new System.Drawing.Size(270, 73);
             this.lblFiscalCount.TabIndex = 213;
             this.lblFiscalCount.Text = "qwdqwd";
             this.lblFiscalCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // tableLayoutPanel4
             // 
-            this.tableLayoutPanel4.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.tableLayoutPanel4.ColumnCount = 5;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.85646F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.89952F));
@@ -1024,7 +1036,7 @@ namespace MyNET.Pos
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(408, 75);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(594, 75);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
             // button3
@@ -1032,16 +1044,16 @@ namespace MyNET.Pos
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(67)))), ((int)(((byte)(82)))));
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(145)))), ((int)(((byte)(96)))));
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.ForeColor = System.Drawing.Color.White;
             this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button3.Location = new System.Drawing.Point(161, 2);
+            this.button3.Location = new System.Drawing.Point(233, 2);
             this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(79, 71);
+            this.button3.Size = new System.Drawing.Size(118, 71);
             this.button3.TabIndex = 211;
             this.button3.Text = "Printo Totalin";
             this.button3.UseVisualStyleBackColor = false;
@@ -1052,16 +1064,16 @@ namespace MyNET.Pos
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(67)))), ((int)(((byte)(82)))));
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(168)))), ((int)(((byte)(121)))), ((int)(((byte)(254)))));
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
             this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button2.Location = new System.Drawing.Point(84, 2);
+            this.button2.Location = new System.Drawing.Point(121, 2);
             this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(71, 71);
+            this.button2.Size = new System.Drawing.Size(106, 71);
             this.button2.TabIndex = 210;
             this.button2.Text = "Mbyll Tavolinen";
             this.button2.UseVisualStyleBackColor = false;
@@ -1072,7 +1084,7 @@ namespace MyNET.Pos
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(67)))), ((int)(((byte)(82)))));
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(138)))), ((int)(((byte)(255)))));
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1081,7 +1093,7 @@ namespace MyNET.Pos
             this.button1.Location = new System.Drawing.Point(3, 2);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 71);
+            this.button1.Size = new System.Drawing.Size(112, 71);
             this.button1.TabIndex = 209;
             this.button1.Text = "Kthehu";
             this.button1.UseVisualStyleBackColor = false;
@@ -1099,10 +1111,10 @@ namespace MyNET.Pos
             this.word_print_the_coupon.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.word_print_the_coupon.ForeColor = System.Drawing.Color.White;
             this.word_print_the_coupon.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.word_print_the_coupon.Location = new System.Drawing.Point(327, 2);
+            this.word_print_the_coupon.Location = new System.Drawing.Point(476, 2);
             this.word_print_the_coupon.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.word_print_the_coupon.Name = "word_print_the_coupon";
-            this.word_print_the_coupon.Size = new System.Drawing.Size(78, 71);
+            this.word_print_the_coupon.Size = new System.Drawing.Size(115, 71);
             this.word_print_the_coupon.TabIndex = 208;
             this.word_print_the_coupon.Text = "Shtyp Kuponin - F7";
             this.word_print_the_coupon.UseVisualStyleBackColor = false;
@@ -1119,10 +1131,10 @@ namespace MyNET.Pos
             this.word_cancel_order.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.word_cancel_order.ForeColor = System.Drawing.Color.White;
             this.word_cancel_order.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.word_cancel_order.Location = new System.Drawing.Point(246, 2);
+            this.word_cancel_order.Location = new System.Drawing.Point(357, 2);
             this.word_cancel_order.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.word_cancel_order.Name = "word_cancel_order";
-            this.word_cancel_order.Size = new System.Drawing.Size(75, 71);
+            this.word_cancel_order.Size = new System.Drawing.Size(113, 71);
             this.word_cancel_order.TabIndex = 207;
             this.word_cancel_order.Text = "Anulo Porosinë - F12";
             this.word_cancel_order.UseVisualStyleBackColor = false;
@@ -1130,10 +1142,10 @@ namespace MyNET.Pos
             // 
             // tableLayoutPanel2
             // 
-            this.tableLayoutPanel2.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 57.93651F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.06349F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.48413F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.51587F));
             this.tableLayoutPanel2.Controls.Add(this.pnlTotal, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.pnlGrids, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel11, 1, 0);
@@ -1160,65 +1172,67 @@ namespace MyNET.Pos
             this.pnlGrids.Controls.Add(this.ug);
             this.pnlGrids.Location = new System.Drawing.Point(3, 3);
             this.pnlGrids.Name = "pnlGrids";
-            this.pnlGrids.Size = new System.Drawing.Size(578, 435);
+            this.pnlGrids.Size = new System.Drawing.Size(392, 435);
             this.pnlGrids.TabIndex = 0;
             // 
             // ug
             // 
             this.ug.AllowUserToAddRows = false;
             this.ug.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.ug.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.ug.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.ug.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.ug.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.ug.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.ug.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SunkenHorizontal;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.ug.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.ug.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ug.Cursor = System.Windows.Forms.Cursors.Default;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(67)))), ((int)(((byte)(82)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.ug.DefaultCellStyle = dataGridViewCellStyle3;
             this.ug.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ug.GridColor = System.Drawing.Color.White;
+            this.ug.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.ug.Location = new System.Drawing.Point(0, 0);
             this.ug.Margin = new System.Windows.Forms.Padding(0);
             this.ug.Name = "ug";
             this.ug.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(67)))), ((int)(((byte)(82)))));
             dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.ug.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.ug.RowHeadersVisible = false;
             this.ug.RowHeadersWidth = 51;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.WhiteSmoke;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(67)))), ((int)(((byte)(82)))));
             dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(175)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Gray;
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.ug.RowsDefaultCellStyle = dataGridViewCellStyle5;
-            this.ug.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
-            this.ug.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
-            this.ug.RowTemplate.DividerHeight = 5;
+            this.ug.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
+            this.ug.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            this.ug.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
+            this.ug.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.LightSkyBlue;
             this.ug.RowTemplate.Height = 24;
             this.ug.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ug.Size = new System.Drawing.Size(576, 433);
+            this.ug.Size = new System.Drawing.Size(390, 433);
             this.ug.TabIndex = 0;
             this.ug.DataSourceChanged += new System.EventHandler(this.ug_DataSourceChanged);
             this.ug.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ug_CellContentClick);
@@ -1229,25 +1243,25 @@ namespace MyNET.Pos
             // tableLayoutPanel11
             // 
             this.tableLayoutPanel11.AutoSize = true;
-            this.tableLayoutPanel11.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.tableLayoutPanel11.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel11.ColumnCount = 1;
             this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel11.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel11.Controls.Add(this.pnlItems, 0, 1);
             this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(584, 0);
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(398, 0);
             this.tableLayoutPanel11.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
             this.tableLayoutPanel11.RowCount = 2;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 66.66667F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(424, 441);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(610, 441);
             this.tableLayoutPanel11.TabIndex = 4;
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.panel1.Controls.Add(this.pnlSubCat);
             this.panel1.Controls.Add(this.pnlCategories);
             this.panel1.Controls.Add(this.txt);
@@ -1257,17 +1271,19 @@ namespace MyNET.Pos
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(416, 139);
+            this.panel1.Size = new System.Drawing.Size(602, 139);
             this.panel1.TabIndex = 247;
             // 
             // pnlSubCat
             // 
             this.pnlSubCat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlSubCat.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.pnlSubCat.AutoScroll = true;
+            this.pnlSubCat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
+            this.pnlSubCat.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlSubCat.Location = new System.Drawing.Point(-2, 109);
             this.pnlSubCat.Name = "pnlSubCat";
-            this.pnlSubCat.Size = new System.Drawing.Size(418, 30);
+            this.pnlSubCat.Size = new System.Drawing.Size(604, 100);
             this.pnlSubCat.TabIndex = 0;
             // 
             // pnlCategories
@@ -1276,18 +1292,19 @@ namespace MyNET.Pos
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlCategories.AutoScroll = true;
-            this.pnlCategories.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.pnlCategories.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.pnlCategories.Location = new System.Drawing.Point(-3, 41);
             this.pnlCategories.Name = "pnlCategories";
-            this.pnlCategories.Size = new System.Drawing.Size(418, 69);
+            this.pnlCategories.Size = new System.Drawing.Size(604, 69);
             this.pnlCategories.TabIndex = 247;
             this.pnlCategories.WrapContents = false;
             // 
             // txt
             // 
-            this.txt.BackColor = System.Drawing.Color.White;
+            this.txt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.txt.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt.ForeColor = System.Drawing.Color.White;
             this.txt.Location = new System.Drawing.Point(4, 3);
             this.txt.Name = "txt";
             this.txt.Size = new System.Drawing.Size(189, 24);
@@ -1303,8 +1320,8 @@ namespace MyNET.Pos
             this.txtsearch.BackColor = System.Drawing.Color.White;
             this.txtsearch.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.txtsearch.DropDownWidth = 200;
-            this.txtsearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.txtsearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtsearch.ForeColor = System.Drawing.Color.White;
             this.txtsearch.FormattingEnabled = true;
             this.txtsearch.Location = new System.Drawing.Point(7, 3);
             this.txtsearch.MaxDropDownItems = 15;
@@ -1326,10 +1343,11 @@ namespace MyNET.Pos
             // txtsrch
             // 
             this.txtsrch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtsrch.BackColor = System.Drawing.Color.White;
+            this.txtsrch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
+            this.txtsrch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtsrch.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtsrch.ForeColor = System.Drawing.Color.Gray;
-            this.txtsrch.Location = new System.Drawing.Point(224, 3);
+            this.txtsrch.ForeColor = System.Drawing.Color.White;
+            this.txtsrch.Location = new System.Drawing.Point(410, 3);
             this.txtsrch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtsrch.Name = "txtsrch";
             this.txtsrch.Size = new System.Drawing.Size(188, 24);
@@ -1339,22 +1357,22 @@ namespace MyNET.Pos
             // pnlItems
             // 
             this.pnlItems.AutoScroll = true;
-            this.pnlItems.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.pnlItems.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.pnlItems.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlItems.Controls.Add(this.pnlDrinks);
             this.pnlItems.Controls.Add(this.pnlItems1);
             this.pnlItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlItems.Location = new System.Drawing.Point(4, 150);
             this.pnlItems.Name = "pnlItems";
-            this.pnlItems.Size = new System.Drawing.Size(416, 287);
+            this.pnlItems.Size = new System.Drawing.Size(602, 287);
             this.pnlItems.TabIndex = 1;
             // 
             // pnlDrinks
             // 
             this.pnlDrinks.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.pnlDrinks.AutoScroll = true;
-            this.pnlDrinks.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.pnlDrinks.Location = new System.Drawing.Point(-2, 165);
+            this.pnlDrinks.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
+            this.pnlDrinks.Location = new System.Drawing.Point(91, 165);
             this.pnlDrinks.Name = "pnlDrinks";
             this.pnlDrinks.Size = new System.Drawing.Size(414, 117);
             this.pnlDrinks.TabIndex = 0;
@@ -1365,14 +1383,15 @@ namespace MyNET.Pos
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlItems1.AutoScroll = true;
             this.pnlItems1.AutoScrollMinSize = new System.Drawing.Size(-10, 0);
-            this.pnlItems1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.pnlItems1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.pnlItems1.Location = new System.Drawing.Point(1, -1);
             this.pnlItems1.Name = "pnlItems1";
-            this.pnlItems1.Size = new System.Drawing.Size(409, 197);
+            this.pnlItems1.Size = new System.Drawing.Size(595, 197);
             this.pnlItems1.TabIndex = 220;
             // 
             // tableLayoutPanel3
             // 
+            this.tableLayoutPanel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Controls.Add(this.panel2, 0, 1);
@@ -1424,6 +1443,7 @@ namespace MyNET.Pos
             // 
             // splitContainer1
             // 
+            this.splitContainer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(50)))), ((int)(((byte)(55)))));
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
@@ -1601,7 +1621,6 @@ namespace MyNET.Pos
         public TextBox word_totalwithoutVat;
         private TextBox txtDiscount;
         private FlowLayoutPanel pnlSubCat;
-        private FlowLayoutPanel pnlCategories;
         private Panel pnlItems;
         private Panel pnlDrinks;
         private FlowLayoutPanel pnlItems1;
@@ -1619,5 +1638,6 @@ namespace MyNET.Pos
         public Button button1;
         private Panel pnlGrids;
         private DataGridView ug;
+        private FlowLayoutPanel pnlCategories;
     }
 }

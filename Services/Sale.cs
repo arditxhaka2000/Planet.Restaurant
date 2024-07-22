@@ -3,6 +3,7 @@ using RestSharp;
 using Services.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -140,7 +141,12 @@ namespace Services
 
             return Services.RestHepler<Sale>.Select("searchS", searchParams);
         }
+        public static Sale GetLastSaleByStation(string posId)
+        {
+            string searchParams = "&PosId=" + posId;
 
+            return Services.RestHepler<Sale>.Select("getlastSaleByStation", searchParams).First();
+        }
         public static void ChngStatus(int saleId, int status)
         {
             string jsonParams = JsonConvert.SerializeObject(new { saleId = saleId, status = status });

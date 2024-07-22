@@ -67,6 +67,7 @@
             this.paragraph_print_the_report.TabIndex = 114;
             this.paragraph_print_the_report.Text = "Shtyp Raportin";
             this.paragraph_print_the_report.UseVisualStyleBackColor = false;
+            this.paragraph_print_the_report.Click += new System.EventHandler(this.paragraph_print_the_report_Click_1);
             // 
             // word_amount_left_in_cashbox
             // 

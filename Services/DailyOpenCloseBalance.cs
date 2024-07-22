@@ -53,7 +53,12 @@ namespace Services
             var last = Services.RestHepler<DailyOpenCloseBalance>.Select("getLastDailyBalanceByEmployee", searchParams);
             return last.FirstOrDefault();
         }
-
+        public static List<DailyOpenCloseBalance> GetDailyBalance(int userId)
+        {
+            string searchParams = "UserId=" + userId;
+            var last = Services.RestHepler<DailyOpenCloseBalance>.Select("getDailyBalance", searchParams);
+            return last;
+        }
         public static List<DailyBalance> GetDailyBalance(int stationId, DateTime date)
         {
             DateTime dateTo = date.AddDays(1);

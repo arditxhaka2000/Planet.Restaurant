@@ -14,6 +14,8 @@ using System.IO;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
 using iText.Layout.Properties;
+using Microsoft.Office.Interop.Word;
+using Spire.Doc;
 
 namespace MyNET.Pos.Modules
 {
@@ -23,7 +25,10 @@ namespace MyNET.Pos.Modules
         Services.DailyOpenCloseBalance dailyOpen = Services.DailyOpenCloseBalance.GetLastDailyBalanceByEmployee(dailyOpenId);
         const int x = 320;
         const int y = 0;
-
+        public decimal totalShitje = 0;
+        public decimal totalCash = 0;
+        public decimal totalBank = 0;
+        public int totalKupona = 0;
 
         public Raporti()
         {
@@ -33,91 +38,54 @@ namespace MyNET.Pos.Modules
         {
             var globals = Services.Settings.Get();
 
-            //if (globals.Language == "Sq")
-            //{
-            //    var data = LoadJson.DataSq;
-            //    foreach(var item in data.dataWords)
-            //    {
-            //        foreach (Control c in this.Controls)
-            //        {
-            //            if (c.Name == item.name)
-            //            {
-            //                c.Text = item.translate;
-            //            }
-            //        }
-            //        foreach (Control c in tableLayoutPanel1.Controls)
-            //        {
-            //            if (c.Name == item.name)
-            //            {
-            //                c.Text = item.translate;
-            //            }
-            //        }
-            //    }
-                
-            //}
-            //else
-            //{
-            //    var data = LoadJson.DataEn;
-            //    foreach (var item in data.dataWords)
-            //    {
-            //        foreach (Control c in this.Controls)
-            //        {
-            //            if (c.Name == item.name)
-            //            {
-            //                c.Text = item.translate;
-            //            }
-            //        }
-            //        foreach (Control c in tableLayoutPanel1.Controls)
-            //        {
-            //            if (c.Name == item.name)
-            //            {
-            //                c.Text = item.translate;
-            //            }
-            //        }
-            //    }
-            //}
             CloseChashbox close = new CloseChashbox();
-           
-            this.Location = new Point(x, y);
+
+            this.Location = new System.Drawing.Point(x, y);
             char[] compName = Globals.Settings.CompanyName.ToCharArray();
 
-            lblCompanyName.Location = new Point(this.Size.Width / 2 - 100, 3);
+            lblCompanyName.Location = new System.Drawing.Point(this.Size.Width / 2 - 100, 3);
 
             if (compName.Length < 10)
             {
-                report_closing_of_the_day_fast_food.Location = new Point(lblCompanyName.Location.X + 20, lblCompanyName.Location.Y + 43);
+                report_closing_of_the_day_fast_food.Location = new System.Drawing.Point(lblCompanyName.Location.X + 20, lblCompanyName.Location.Y + 43);
 
             }
             else
             {
-               report_closing_of_the_day_fast_food.Location = new Point(lblCompanyName.Location.X + 50, lblCompanyName.Location.Y + 43);
+                report_closing_of_the_day_fast_food.Location = new System.Drawing.Point(lblCompanyName.Location.X + 50, lblCompanyName.Location.Y + 43);
             }
 
-            
+
             var totalsale = "";
             if (dailyOpen.Status == "closed")
             {
-                 totalsale = PosRestaurant.totalSumOpenBalance.ToString("N");
+                totalsale = PosRestaurant.totalSumOpenBalance.ToString("N");
 
             }
-            else
 
-            totalsale = dailyOpen.TotalShitje.ToString("N");
-            var daily = Services.DailyOpenCloseBalance.GetLastDailyBalanceByEmployee(Globals.User.Id);
-          
 
-            DataGridViewRow row = (DataGridViewRow)dg.Rows[0].Clone();
-            row.Cells[0].Value = daily.DailyFiscalCount.ToString();
-            row.Cells[1].Value = 0;
-            row.Cells[3].Value = daily.TotalCash.ToString("N");
-            row.Cells[4].Value = daily.TotalCreditCard.ToString("N");
-            row.Cells[5].Value = totalsale;
-            row.Cells[6].Value = dailyOpen.Amount.ToString("N");
-            row.Cells[7].Value = Options.totalsum.ToString("N");
-            row.Cells[8].Value = Options.dorezimi.ToString("N");
-            row.Cells[9].Value = Options.gjendjaMomentale.ToString("N");
-            dg.Rows.Add(row);
 
+            var daily = Services.DailyOpenCloseBalance.GetDailyBalance(Globals.User.Id).Where(p => p.Date.Day == DateTime.Now.Day && p.Status == "open");
+
+            foreach (var item in daily)
+            {
+                DataGridViewRow row = (DataGridViewRow)dg.Rows[0].Clone();
+                row.Cells[0].Value = item.DailyFiscalCount.ToString();
+                row.Cells[1].Value = item.Amount.ToString("N");
+                row.Cells[2].Value = item.TotalCash.ToString("N");
+                row.Cells[3].Value = item.TotalCreditCard;
+                row.Cells[4].Value = item.TotalShitje.ToString("N");
+                totalShitje += item.TotalShitje;
+                totalCash += item.TotalCash;
+                totalBank += item.TotalCreditCard;
+                totalKupona += item.DailyFiscalCount;
+                dg.Rows.Add(row);
+            }
+
+            label1.Text = label1.Text + " " + totalShitje.ToString() + " EUR";
+            label2.Text = label2.Text + " " + totalCash.ToString() + " EUR";
+            label3.Text = label3.Text + " " + totalKupona.ToString();
+            label4.Text = label4.Text + " " + totalBank.ToString() + " EUR";
         }
 
         Bitmap bitmap;
@@ -141,7 +109,7 @@ namespace MyNET.Pos.Modules
             flb.ShowDialog();
 
             string sSelectedPath = flb.SelectedPath;
-            
+
         }
         private void btnPdf_Click(object sender, EventArgs e)
         {
@@ -189,10 +157,39 @@ namespace MyNET.Pos.Modules
                                         if (cell.Value != null) { pdfTable.AddCell(cell.Value.ToString()); }
                                     }
                                 }
+                                PdfPTable pdfTable2 = new PdfPTable(1);
+                                pdfTable2.WidthPercentage = 50;
+                                pdfTable2.HorizontalAlignment = Element.ALIGN_LEFT;
 
+                                for (int col = 1; col < 2; col++)
+                                {
+                                    Control headerControl = tableLayoutPanel1.GetControlFromPosition(col, 0);
+                                    if (headerControl != null)
+                                    {
+                                        PdfPCell cell = new PdfPCell(new Phrase(headerControl.Text));
+                                        pdfTable2.AddCell(cell);
+                                    }
+                                }
+
+                                // Add the tableLayoutPanel1 data cells
+                                for (int row = 0; row < tableLayoutPanel1.RowCount; row++)
+                                {
+                                    for (int col = 0; col < 2; col++)
+                                    {
+                                        Control cellControl = tableLayoutPanel1.GetControlFromPosition(col, row);
+                                        if (cellControl != null)
+                                        {
+                                            PdfPCell cell = new PdfPCell(new Phrase(cellControl.Text));
+                                            pdfTable2.AddCell(cell);
+                                        }
+                                    }
+                                }
+                                iTextSharp.text.Paragraph spacing = new iTextSharp.text.Paragraph(" ");
+                                spacing.SpacingBefore = 10f;
+                                spacing.SpacingAfter = 10f;
                                 using (FileStream stream = new FileStream(sfd.FileName, FileMode.Create))
                                 {
-                                    Document pdfDoc = new Document(PageSize.A4.Rotate(), 5f, 10f, 150f, 5f);
+                                    iTextSharp.text.Document pdfDoc = new iTextSharp.text.Document(PageSize.A4, 5f, 10f, 150f, 5f);
                                     PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
                                     pdfDoc.Open();
                                     PdfContentByte cb = writer.DirectContent;
@@ -201,16 +198,18 @@ namespace MyNET.Pos.Modules
                                     cb.SetColorFill(BaseColor.BLACK);
                                     cb.SetFontAndSize(bf, 14);
                                     cb.BeginText();
-                                    string text = "Mbyllja e Dites";
-                                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 364, 520, 0);
+                                    string text = $"Mbyllja e Dites për Puntorin: {Globals.User.Name}";
+                                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 170, 750, 0);
                                     cb.SetFontAndSize(bf, 22);
 
-                                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, $"{Globals.Station.Name}", 350, 550, 0);
+                                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, $"{Globals.Station.Name}", 220, 800, 0);
                                     cb.SetFontAndSize(bf, 12);
-                                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, $"Gjeneruar me + {DateTime.Now}" + "nga PlanetAccounting.org, info@planetaccounting.org/044 916 828", 200, 20, 0);
+                                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, $"Gjeneruar me {DateTime.Now}" + " nga PlanetAccounting.org, info@planetaccounting.org/044 916 828", 40, 20, 0);
                                     cb.EndText();
 
                                     pdfDoc.Add(pdfTable);
+                                    pdfDoc.Add(spacing);
+                                    pdfDoc.Add(pdfTable2);
                                     pdfDoc.Close();
                                     stream.Close();
                                 }
@@ -235,7 +234,7 @@ namespace MyNET.Pos.Modules
 
                 MessageBox.Show(ex.Message);
             }
-           
+
         }
 
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
@@ -250,6 +249,6 @@ namespace MyNET.Pos.Modules
 
         }
 
-      
+
     }
 }

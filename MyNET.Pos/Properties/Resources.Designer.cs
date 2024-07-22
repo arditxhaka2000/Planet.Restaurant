@@ -183,16 +183,6 @@ namespace MyNET.Pos.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap output_onlinepngtools__2_ {
-            get {
-                object obj = ResourceManager.GetObject("output_onlinepngtools__2_", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap planet_accounting_logo_ {
             get {
                 object obj = ResourceManager.GetObject("planet_accounting_logo_", resourceCulture);
@@ -226,6 +216,16 @@ namespace MyNET.Pos.Properties {
         internal static System.Drawing.Bitmap purple {
             get {
                 object obj = ResourceManager.GetObject("purple", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap redTrash {
+            get {
+                object obj = ResourceManager.GetObject("redTrash", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -59,6 +59,12 @@ namespace Services.Models
 
             return item;
         }
+        public static List<Models.TablesSaleDetails> GetTSItemWithId(int id)
+        {
+            var item = Services.RestHepler<Models.TablesSaleDetails>.Search("TablesSaleDetails", $"Id={id}");
+
+            return item;
+        }
         public static List<Models.TablesSaleDetails> GetSaleDetailsBySaleId(int tableId)
         {
             var items = Services.RestHepler<Models.TablesSaleDetails>.Select("GetTablesSaleDetails", "tableId=" + tableId);

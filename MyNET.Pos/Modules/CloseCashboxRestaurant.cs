@@ -223,5 +223,13 @@ namespace MyNET.Pos.Modules
             txtKesh.Text = daily.TotalCash.ToString("N");
             txtBankat.Text = daily.TotalCreditCard.ToString("N");
         }
+
+        private void paragraph_print_the_report_Click_1(object sender, EventArgs e)
+        {
+            Raporti raporti = new Raporti();
+
+            raporti.Owner = this;
+            raporti.ShowDialog();
+        }
     }
 }

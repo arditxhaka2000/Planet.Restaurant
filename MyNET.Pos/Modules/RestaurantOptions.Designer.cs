@@ -30,6 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Options));
             this.word_configuration = new System.Windows.Forms.Button();
             this.word_logout = new System.Windows.Forms.Button();
             this.word_close_cashbox = new System.Windows.Forms.Button();
@@ -41,31 +44,14 @@
             this.paragraph_close_cashbox = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.lblTotal = new System.Windows.Forms.Label();
-            this.word_total_sales = new System.Windows.Forms.Label();
-            this.dg = new System.Windows.Forms.DataGridView();
-            this.dtDate = new System.Windows.Forms.DateTimePicker();
-            this.word_date = new System.Windows.Forms.Label();
-            this.word_show = new System.Windows.Forms.Button();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.cmbUsers = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
-            this.btn_print = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.word_to = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.dFDate = new System.Windows.Forms.DateTimePicker();
-            this.word_from = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.btn_bonusCard = new System.Windows.Forms.Button();
+            this.btn_updatePOS = new System.Windows.Forms.Button();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.chckStockRibbon = new System.Windows.Forms.CheckBox();
             this.chckUnitCol = new System.Windows.Forms.CheckBox();
@@ -93,11 +79,13 @@
             this.txtCountry = new System.Windows.Forms.TextBox();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.AddItem = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.word_save = new System.Windows.Forms.Button();
             this.word_choose_all = new System.Windows.Forms.RadioButton();
             this.word_choose_fav_items = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.DelItem = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -121,13 +109,14 @@
             this.word_bitrate = new System.Windows.Forms.Label();
             this.COMcmb = new System.Windows.Forms.ComboBox();
             this.word_choose_port = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.SyncFiscC = new System.Windows.Forms.Button();
             this.cmbFiscalPrinterType = new System.Windows.Forms.ComboBox();
             this.txtPath = new System.Windows.Forms.TextBox();
             this.word_path = new System.Windows.Forms.Label();
             this.word_printer_type = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.button15 = new System.Windows.Forms.Button();
             this.paragraph_print_the_x_report = new System.Windows.Forms.Button();
             this.paragraph_print_the_report = new System.Windows.Forms.Button();
             this.word_amount_left_in_cashbox = new System.Windows.Forms.Label();
@@ -148,16 +137,47 @@
             this.word_cancel = new System.Windows.Forms.Button();
             this.paragraph_initail_balance_sheet = new System.Windows.Forms.Label();
             this.word_complete = new System.Windows.Forms.Button();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.txtToUnFavorite = new System.Windows.Forms.TextBox();
-            this.txtToFavorite = new System.Windows.Forms.TextBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button14 = new System.Windows.Forms.Button();
+            this.dataGridView5 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button13 = new System.Windows.Forms.Button();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.button10 = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.label9 = new System.Windows.Forms.Label();
+            this.dataGridView4 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.cmbUser2 = new System.Windows.Forms.ComboBox();
+            this.button7 = new System.Windows.Forms.Button();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
+            this.word_from = new System.Windows.Forms.Label();
+            this.dFDate = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.word_to = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btn_print = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cmbUsers = new System.Windows.Forms.ComboBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabControl2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dg)).BeginInit();
-            this.tabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -173,6 +193,13 @@
             this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage8.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).BeginInit();
+            this.tabPage9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.tabControl2.SuspendLayout();
             this.SuspendLayout();
             // 
             // word_configuration
@@ -341,334 +368,6 @@
             this.tabPage1.Text = "Raportet";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabControl2
-            // 
-            this.tabControl2.Controls.Add(this.tabPage3);
-            this.tabControl2.Controls.Add(this.tabPage4);
-            this.tabControl2.Location = new System.Drawing.Point(0, 0);
-            this.tabControl2.Name = "tabControl2";
-            this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(845, 618);
-            this.tabControl2.TabIndex = 0;
-            this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.tabPage3.Controls.Add(this.lblTotal);
-            this.tabPage3.Controls.Add(this.word_total_sales);
-            this.tabPage3.Controls.Add(this.dg);
-            this.tabPage3.Controls.Add(this.dtDate);
-            this.tabPage3.Controls.Add(this.word_date);
-            this.tabPage3.Controls.Add(this.word_show);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(837, 592);
-            this.tabPage3.TabIndex = 0;
-            this.tabPage3.Text = "Raporti Ditor";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // lblTotal
-            // 
-            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTotal.AutoSize = true;
-            this.lblTotal.BackColor = System.Drawing.Color.Transparent;
-            this.lblTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotal.ForeColor = System.Drawing.Color.Black;
-            this.lblTotal.Location = new System.Drawing.Point(565, 436);
-            this.lblTotal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(79, 20);
-            this.lblTotal.TabIndex = 82;
-            this.lblTotal.Text = "__ __ __";
-            // 
-            // word_total_sales
-            // 
-            this.word_total_sales.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.word_total_sales.AutoSize = true;
-            this.word_total_sales.BackColor = System.Drawing.Color.Transparent;
-            this.word_total_sales.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.word_total_sales.ForeColor = System.Drawing.Color.Black;
-            this.word_total_sales.Location = new System.Drawing.Point(409, 436);
-            this.word_total_sales.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.word_total_sales.Name = "word_total_sales";
-            this.word_total_sales.Size = new System.Drawing.Size(133, 20);
-            this.word_total_sales.TabIndex = 81;
-            this.word_total_sales.Text = "Totali i shitjeve:";
-            // 
-            // dg
-            // 
-            this.dg.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dg.BackgroundColor = System.Drawing.Color.White;
-            this.dg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dg.Location = new System.Drawing.Point(66, 136);
-            this.dg.Margin = new System.Windows.Forms.Padding(2);
-            this.dg.Name = "dg";
-            this.dg.ReadOnly = true;
-            this.dg.RowHeadersWidth = 51;
-            this.dg.RowTemplate.Height = 24;
-            this.dg.Size = new System.Drawing.Size(579, 285);
-            this.dg.TabIndex = 80;
-            // 
-            // dtDate
-            // 
-            this.dtDate.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtDate.Location = new System.Drawing.Point(66, 88);
-            this.dtDate.Margin = new System.Windows.Forms.Padding(2);
-            this.dtDate.Name = "dtDate";
-            this.dtDate.Size = new System.Drawing.Size(191, 26);
-            this.dtDate.TabIndex = 79;
-            // 
-            // word_date
-            // 
-            this.word_date.AutoSize = true;
-            this.word_date.BackColor = System.Drawing.Color.Transparent;
-            this.word_date.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.word_date.ForeColor = System.Drawing.Color.Black;
-            this.word_date.Location = new System.Drawing.Point(62, 58);
-            this.word_date.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.word_date.Name = "word_date";
-            this.word_date.Size = new System.Drawing.Size(53, 20);
-            this.word_date.TabIndex = 78;
-            this.word_date.Text = "Data:";
-            // 
-            // word_show
-            // 
-            this.word_show.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.word_show.BackColor = System.Drawing.Color.SteelBlue;
-            this.word_show.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
-            this.word_show.FlatAppearance.BorderSize = 0;
-            this.word_show.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
-            this.word_show.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
-            this.word_show.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.word_show.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.word_show.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.word_show.Location = new System.Drawing.Point(535, 85);
-            this.word_show.Margin = new System.Windows.Forms.Padding(2);
-            this.word_show.Name = "word_show";
-            this.word_show.Size = new System.Drawing.Size(110, 34);
-            this.word_show.TabIndex = 77;
-            this.word_show.Text = "Shfaq";
-            this.word_show.UseVisualStyleBackColor = false;
-            this.word_show.Click += new System.EventHandler(this.btnOpen_Click);
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.tabPage4.Controls.Add(this.cmbUsers);
-            this.tabPage4.Controls.Add(this.label5);
-            this.tabPage4.Controls.Add(this.button5);
-            this.tabPage4.Controls.Add(this.btn_print);
-            this.tabPage4.Controls.Add(this.dataGridView1);
-            this.tabPage4.Controls.Add(this.word_to);
-            this.tabPage4.Controls.Add(this.dateTimePicker1);
-            this.tabPage4.Controls.Add(this.label1);
-            this.tabPage4.Controls.Add(this.label2);
-            this.tabPage4.Controls.Add(this.dFDate);
-            this.tabPage4.Controls.Add(this.word_from);
-            this.tabPage4.Controls.Add(this.button1);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(837, 592);
-            this.tabPage4.TabIndex = 1;
-            this.tabPage4.Text = "Raporti i Shitjeve";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // cmbUsers
-            // 
-            this.cmbUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbUsers.FormattingEnabled = true;
-            this.cmbUsers.Location = new System.Drawing.Point(111, 213);
-            this.cmbUsers.Name = "cmbUsers";
-            this.cmbUsers.Size = new System.Drawing.Size(187, 28);
-            this.cmbUsers.TabIndex = 101;
-            this.cmbUsers.Text = "Të gjithë";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(107, 190);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(71, 20);
-            this.label5.TabIndex = 100;
-            this.label5.Text = "Puntori:";
-            // 
-            // button5
-            // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.BackColor = System.Drawing.Color.SteelBlue;
-            this.button5.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
-            this.button5.FlatAppearance.BorderSize = 0;
-            this.button5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
-            this.button5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.button5.Location = new System.Drawing.Point(722, 5);
-            this.button5.Margin = new System.Windows.Forms.Padding(2);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(110, 34);
-            this.button5.TabIndex = 99;
-            this.button5.Text = "Shfaq";
-            this.button5.UseVisualStyleBackColor = false;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // btn_print
-            // 
-            this.btn_print.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_print.BackColor = System.Drawing.Color.SteelBlue;
-            this.btn_print.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
-            this.btn_print.FlatAppearance.BorderSize = 0;
-            this.btn_print.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
-            this.btn_print.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
-            this.btn_print.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btn_print.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_print.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btn_print.Location = new System.Drawing.Point(1, 676);
-            this.btn_print.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_print.Name = "btn_print";
-            this.btn_print.Size = new System.Drawing.Size(62, 28);
-            this.btn_print.TabIndex = 98;
-            this.btn_print.Text = "Printo";
-            this.btn_print.UseVisualStyleBackColor = false;
-            this.btn_print.Click += new System.EventHandler(this.btn_print_Click);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridView1.Location = new System.Drawing.Point(111, 268);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(612, 210);
-            this.dataGridView1.TabIndex = 97;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Nr.";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Visible = false;
-            this.Column1.Width = 50;
-            // 
-            // word_to
-            // 
-            this.word_to.AutoSize = true;
-            this.word_to.BackColor = System.Drawing.Color.Transparent;
-            this.word_to.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.word_to.ForeColor = System.Drawing.Color.Black;
-            this.word_to.Location = new System.Drawing.Point(107, 110);
-            this.word_to.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.word_to.Name = "word_to";
-            this.word_to.Size = new System.Drawing.Size(42, 20);
-            this.word_to.TabIndex = 96;
-            this.word_to.Text = "Deri";
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(111, 132);
-            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(2);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(187, 26);
-            this.dateTimePicker1.TabIndex = 95;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(557, 536);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 20);
-            this.label1.TabIndex = 94;
-            this.label1.Text = "__ __ __";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(394, 536);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(133, 20);
-            this.label2.TabIndex = 93;
-            this.label2.Text = "Totali i shitjeve:";
-            // 
-            // dFDate
-            // 
-            this.dFDate.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dFDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dFDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dFDate.Location = new System.Drawing.Point(111, 60);
-            this.dFDate.Margin = new System.Windows.Forms.Padding(2);
-            this.dFDate.Name = "dFDate";
-            this.dFDate.Size = new System.Drawing.Size(187, 26);
-            this.dFDate.TabIndex = 92;
-            // 
-            // word_from
-            // 
-            this.word_from.AutoSize = true;
-            this.word_from.BackColor = System.Drawing.Color.Transparent;
-            this.word_from.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.word_from.ForeColor = System.Drawing.Color.Black;
-            this.word_from.Location = new System.Drawing.Point(107, 31);
-            this.word_from.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.word_from.Name = "word_from";
-            this.word_from.Size = new System.Drawing.Size(40, 20);
-            this.word_from.TabIndex = 91;
-            this.word_from.Text = "Prej";
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.Color.SteelBlue;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.button1.Location = new System.Drawing.Point(267, 268);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(110, 34);
-            this.button1.TabIndex = 90;
-            this.button1.Text = "Shfaq";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.tabControl3);
@@ -695,6 +394,11 @@
             // tabPage5
             // 
             this.tabPage5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tabPage5.Controls.Add(this.btn_bonusCard);
+            this.tabPage5.Controls.Add(this.btn_updatePOS);
+            this.tabPage5.Controls.Add(this.checkBox6);
+            this.tabPage5.Controls.Add(this.checkBox5);
+            this.tabPage5.Controls.Add(this.checkBox4);
             this.tabPage5.Controls.Add(this.checkBox3);
             this.tabPage5.Controls.Add(this.chckStockRibbon);
             this.tabPage5.Controls.Add(this.chckUnitCol);
@@ -711,6 +415,74 @@
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "Info rreth kompanise";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // btn_bonusCard
+            // 
+            this.btn_bonusCard.BackColor = System.Drawing.Color.SteelBlue;
+            this.btn_bonusCard.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.btn_bonusCard.FlatAppearance.BorderSize = 0;
+            this.btn_bonusCard.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.btn_bonusCard.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.btn_bonusCard.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_bonusCard.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_bonusCard.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btn_bonusCard.Location = new System.Drawing.Point(713, 451);
+            this.btn_bonusCard.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_bonusCard.Name = "btn_bonusCard";
+            this.btn_bonusCard.Size = new System.Drawing.Size(101, 40);
+            this.btn_bonusCard.TabIndex = 121;
+            this.btn_bonusCard.Text = "Shto Bonus Kartelë";
+            this.btn_bonusCard.UseVisualStyleBackColor = false;
+            this.btn_bonusCard.Click += new System.EventHandler(this.btn_bonusCard_Click);
+            // 
+            // btn_updatePOS
+            // 
+            this.btn_updatePOS.BackColor = System.Drawing.Color.SteelBlue;
+            this.btn_updatePOS.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.btn_updatePOS.FlatAppearance.BorderSize = 0;
+            this.btn_updatePOS.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.btn_updatePOS.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.btn_updatePOS.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_updatePOS.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_updatePOS.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btn_updatePOS.Location = new System.Drawing.Point(713, 395);
+            this.btn_updatePOS.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_updatePOS.Name = "btn_updatePOS";
+            this.btn_updatePOS.Size = new System.Drawing.Size(101, 40);
+            this.btn_updatePOS.TabIndex = 120;
+            this.btn_updatePOS.Text = "Update POS";
+            this.btn_updatePOS.UseVisualStyleBackColor = false;
+            this.btn_updatePOS.Click += new System.EventHandler(this.btn_updatePOS_Click);
+            // 
+            // checkBox6
+            // 
+            this.checkBox6.AutoSize = true;
+            this.checkBox6.Location = new System.Drawing.Point(17, 556);
+            this.checkBox6.Name = "checkBox6";
+            this.checkBox6.Size = new System.Drawing.Size(76, 17);
+            this.checkBox6.TabIndex = 119;
+            this.checkBox6.Text = "Per Printim";
+            this.checkBox6.UseVisualStyleBackColor = true;
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Location = new System.Drawing.Point(17, 533);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(85, 17);
+            this.checkBox5.TabIndex = 118;
+            this.checkBox5.Text = "Share Arken";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(17, 510);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(105, 17);
+            this.checkBox4.TabIndex = 117;
+            this.checkBox4.Text = "Kolona për kthim";
+            this.checkBox4.UseVisualStyleBackColor = true;
             // 
             // checkBox3
             // 
@@ -784,7 +556,7 @@
             // checkboxDisc
             // 
             this.checkboxDisc.AutoSize = true;
-            this.checkboxDisc.Location = new System.Drawing.Point(17, 374);
+            this.checkboxDisc.Location = new System.Drawing.Point(17, 372);
             this.checkboxDisc.Name = "checkboxDisc";
             this.checkboxDisc.Size = new System.Drawing.Size(185, 17);
             this.checkboxDisc.TabIndex = 111;
@@ -793,7 +565,7 @@
             // 
             // word_company_data
             // 
-            this.word_company_data.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.word_company_data.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.word_company_data.BackColor = System.Drawing.Color.Transparent;
             this.word_company_data.Controls.Add(this.txtFiscalNumber);
@@ -895,7 +667,7 @@
             // 
             // word_others
             // 
-            this.word_others.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.word_others.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.word_others.BackColor = System.Drawing.Color.Transparent;
             this.word_others.Controls.Add(this.label3);
@@ -1014,7 +786,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.txtToFavorite);
+            this.splitContainer1.Panel1.Controls.Add(this.textBox2);
             this.splitContainer1.Panel1.Controls.Add(this.dataGridView2);
             this.splitContainer1.Panel1.Controls.Add(this.word_save);
             this.splitContainer1.Panel1.Controls.Add(this.word_choose_all);
@@ -1022,44 +794,55 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.txtToUnFavorite);
+            this.splitContainer1.Panel2.Controls.Add(this.textBox1);
             this.splitContainer1.Panel2.Controls.Add(this.radioButton1);
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView3);
             this.splitContainer1.Panel2.Controls.Add(this.word_favorite_items);
             this.splitContainer1.Panel2.Controls.Add(this.word_delete);
             this.splitContainer1.Size = new System.Drawing.Size(815, 578);
-            this.splitContainer1.SplitterDistance = 407;
+            this.splitContainer1.SplitterDistance = 405;
             this.splitContainer1.TabIndex = 9;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(105, 40);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(158, 20);
+            this.textBox2.TabIndex = 8;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // dataGridView2
             // 
-            this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView2.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.AddItem});
-            this.dataGridView2.Location = new System.Drawing.Point(12, 72);
+            this.dataGridView2.Location = new System.Drawing.Point(12, 66);
             this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(392, 443);
+            this.dataGridView2.RowHeadersWidth = 51;
+            this.dataGridView2.Size = new System.Drawing.Size(391, 449);
             this.dataGridView2.TabIndex = 0;
             // 
             // AddItem
             // 
             this.AddItem.HeaderText = "Favorite";
+            this.AddItem.MinimumWidth = 6;
             this.AddItem.Name = "AddItem";
+            this.AddItem.Width = 125;
             // 
             // word_save
             // 
-            this.word_save.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.word_save.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.word_save.BackColor = System.Drawing.Color.SteelBlue;
             this.word_save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.word_save.ForeColor = System.Drawing.Color.White;
-            this.word_save.Location = new System.Drawing.Point(124, 534);
+            this.word_save.Location = new System.Drawing.Point(134, 534);
             this.word_save.Name = "word_save";
-            this.word_save.Size = new System.Drawing.Size(108, 34);
+            this.word_save.Size = new System.Drawing.Size(106, 34);
             this.word_save.TabIndex = 3;
             this.word_save.Text = "Ruaj";
             this.word_save.UseVisualStyleBackColor = false;
@@ -1067,10 +850,10 @@
             // 
             // word_choose_all
             // 
-            this.word_choose_all.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.word_choose_all.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.word_choose_all.AutoSize = true;
-            this.word_choose_all.Location = new System.Drawing.Point(290, 534);
+            this.word_choose_all.Location = new System.Drawing.Point(290, 535);
             this.word_choose_all.Name = "word_choose_all";
             this.word_choose_all.Size = new System.Drawing.Size(104, 17);
             this.word_choose_all.TabIndex = 6;
@@ -1088,12 +871,20 @@
             this.word_choose_fav_items.TabIndex = 7;
             this.word_choose_fav_items.Text = "Zgjedh Produktet Favorite";
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(126, 40);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(158, 20);
+            this.textBox1.TabIndex = 8;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
             // radioButton1
             // 
-            this.radioButton1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.radioButton1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(297, 534);
+            this.radioButton1.Location = new System.Drawing.Point(297, 535);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(104, 17);
             this.radioButton1.TabIndex = 7;
@@ -1105,22 +896,25 @@
             // dataGridView3
             // 
             this.dataGridView3.AllowUserToAddRows = false;
-            this.dataGridView3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dataGridView3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView3.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView3.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.DelItem});
-            this.dataGridView3.Location = new System.Drawing.Point(3, 72);
+            this.dataGridView3.Location = new System.Drawing.Point(3, 66);
             this.dataGridView3.Name = "dataGridView3";
-            this.dataGridView3.Size = new System.Drawing.Size(384, 443);
+            this.dataGridView3.RowHeadersWidth = 51;
+            this.dataGridView3.Size = new System.Drawing.Size(385, 449);
             this.dataGridView3.TabIndex = 1;
             // 
             // DelItem
             // 
             this.DelItem.HeaderText = "Fshij";
+            this.DelItem.MinimumWidth = 6;
             this.DelItem.Name = "DelItem";
+            this.DelItem.Width = 125;
             // 
             // word_favorite_items
             // 
@@ -1133,14 +927,14 @@
             // 
             // word_delete
             // 
-            this.word_delete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.word_delete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.word_delete.BackColor = System.Drawing.Color.SteelBlue;
             this.word_delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.word_delete.ForeColor = System.Drawing.Color.White;
             this.word_delete.Location = new System.Drawing.Point(156, 534);
             this.word_delete.Name = "word_delete";
-            this.word_delete.Size = new System.Drawing.Size(108, 34);
+            this.word_delete.Size = new System.Drawing.Size(109, 34);
             this.word_delete.TabIndex = 5;
             this.word_delete.Text = "Fshi";
             this.word_delete.UseVisualStyleBackColor = false;
@@ -1166,12 +960,12 @@
             this.tabPage7.Controls.Add(this.word_bitrate);
             this.tabPage7.Controls.Add(this.COMcmb);
             this.tabPage7.Controls.Add(this.word_choose_port);
+            this.tabPage7.Controls.Add(this.pictureBox1);
             this.tabPage7.Controls.Add(this.SyncFiscC);
             this.tabPage7.Controls.Add(this.cmbFiscalPrinterType);
             this.tabPage7.Controls.Add(this.txtPath);
             this.tabPage7.Controls.Add(this.word_path);
             this.tabPage7.Controls.Add(this.word_printer_type);
-            this.tabPage7.Controls.Add(this.pictureBox1);
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Size = new System.Drawing.Size(832, 585);
@@ -1275,7 +1069,7 @@
             // 
             this.chk_BllokoParametrat.AutoSize = true;
             this.chk_BllokoParametrat.BackColor = System.Drawing.Color.Transparent;
-            this.chk_BllokoParametrat.Location = new System.Drawing.Point(597, 430);
+            this.chk_BllokoParametrat.Location = new System.Drawing.Point(625, 430);
             this.chk_BllokoParametrat.Name = "chk_BllokoParametrat";
             this.chk_BllokoParametrat.Size = new System.Drawing.Size(15, 14);
             this.chk_BllokoParametrat.TabIndex = 45;
@@ -1286,7 +1080,7 @@
             // 
             this.chkPrintCopy.AutoSize = true;
             this.chkPrintCopy.BackColor = System.Drawing.Color.Transparent;
-            this.chkPrintCopy.Location = new System.Drawing.Point(597, 388);
+            this.chkPrintCopy.Location = new System.Drawing.Point(625, 388);
             this.chkPrintCopy.Name = "chkPrintCopy";
             this.chkPrintCopy.Size = new System.Drawing.Size(15, 14);
             this.chkPrintCopy.TabIndex = 44;
@@ -1375,6 +1169,17 @@
             this.word_choose_port.TabIndex = 37;
             this.word_choose_port.Text = "Zgjedh Portin";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Image = global::MyNET.Pos.Properties.Resources.planet_accounting_logo_;
+            this.pictureBox1.Location = new System.Drawing.Point(29, 21);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(246, 198);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 36;
+            this.pictureBox1.TabStop = false;
+            // 
             // SyncFiscC
             // 
             this.SyncFiscC.BackColor = System.Drawing.Color.SteelBlue;
@@ -1432,20 +1237,10 @@
             this.word_printer_type.TabIndex = 25;
             this.word_printer_type.Text = "Tipi i Printerit";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::MyNET.Pos.Properties.Resources.planet_accounting_logo_;
-            this.pictureBox1.Location = new System.Drawing.Point(29, 21);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(246, 198);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 36;
-            this.pictureBox1.TabStop = false;
-            // 
             // tabPage8
             // 
             this.tabPage8.BackColor = System.Drawing.Color.White;
+            this.tabPage8.Controls.Add(this.button15);
             this.tabPage8.Controls.Add(this.paragraph_print_the_x_report);
             this.tabPage8.Controls.Add(this.paragraph_print_the_report);
             this.tabPage8.Controls.Add(this.word_amount_left_in_cashbox);
@@ -1472,9 +1267,30 @@
             this.tabPage8.TabIndex = 2;
             this.tabPage8.Text = "Mbyll Diten";
             // 
+            // button15
+            // 
+            this.button15.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button15.BackColor = System.Drawing.Color.SteelBlue;
+            this.button15.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.button15.FlatAppearance.BorderSize = 0;
+            this.button15.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.button15.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.button15.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button15.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button15.Location = new System.Drawing.Point(7, 560);
+            this.button15.Margin = new System.Windows.Forms.Padding(2);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(77, 47);
+            this.button15.TabIndex = 144;
+            this.button15.Text = "Raporti Z";
+            this.button15.UseVisualStyleBackColor = false;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
+            // 
             // paragraph_print_the_x_report
             // 
-            this.paragraph_print_the_x_report.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.paragraph_print_the_x_report.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paragraph_print_the_x_report.BackColor = System.Drawing.Color.SteelBlue;
             this.paragraph_print_the_x_report.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
@@ -1487,7 +1303,7 @@
             this.paragraph_print_the_x_report.Location = new System.Drawing.Point(110, 560);
             this.paragraph_print_the_x_report.Margin = new System.Windows.Forms.Padding(2);
             this.paragraph_print_the_x_report.Name = "paragraph_print_the_x_report";
-            this.paragraph_print_the_x_report.Size = new System.Drawing.Size(82, 47);
+            this.paragraph_print_the_x_report.Size = new System.Drawing.Size(77, 47);
             this.paragraph_print_the_x_report.TabIndex = 143;
             this.paragraph_print_the_x_report.Text = "Raporti X";
             this.paragraph_print_the_x_report.UseVisualStyleBackColor = false;
@@ -1495,7 +1311,7 @@
             // 
             // paragraph_print_the_report
             // 
-            this.paragraph_print_the_report.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.paragraph_print_the_report.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paragraph_print_the_report.BackColor = System.Drawing.Color.SteelBlue;
             this.paragraph_print_the_report.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
@@ -1505,10 +1321,10 @@
             this.paragraph_print_the_report.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.paragraph_print_the_report.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.paragraph_print_the_report.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.paragraph_print_the_report.Location = new System.Drawing.Point(16, 560);
+            this.paragraph_print_the_report.Location = new System.Drawing.Point(773, 2);
             this.paragraph_print_the_report.Margin = new System.Windows.Forms.Padding(2);
             this.paragraph_print_the_report.Name = "paragraph_print_the_report";
-            this.paragraph_print_the_report.Size = new System.Drawing.Size(66, 47);
+            this.paragraph_print_the_report.Size = new System.Drawing.Size(71, 47);
             this.paragraph_print_the_report.TabIndex = 142;
             this.paragraph_print_the_report.Text = "Shtyp Raportin";
             this.paragraph_print_the_report.UseVisualStyleBackColor = false;
@@ -1516,7 +1332,7 @@
             // 
             // word_amount_left_in_cashbox
             // 
-            this.word_amount_left_in_cashbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.word_amount_left_in_cashbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.word_amount_left_in_cashbox.AutoSize = true;
             this.word_amount_left_in_cashbox.BackColor = System.Drawing.Color.Transparent;
@@ -1531,7 +1347,7 @@
             // 
             // txtGjendjaMomentale
             // 
-            this.txtGjendjaMomentale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtGjendjaMomentale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtGjendjaMomentale.BackColor = System.Drawing.Color.White;
             this.txtGjendjaMomentale.Enabled = false;
@@ -1547,7 +1363,7 @@
             // 
             // txtDorzimi
             // 
-            this.txtDorzimi.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtDorzimi.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDorzimi.BackColor = System.Drawing.Color.White;
             this.txtDorzimi.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1562,7 +1378,7 @@
             // 
             // txtBankat
             // 
-            this.txtBankat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtBankat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBankat.BackColor = System.Drawing.Color.White;
             this.txtBankat.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -1579,7 +1395,7 @@
             // 
             // txtTotaliShitje
             // 
-            this.txtTotaliShitje.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtTotaliShitje.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTotaliShitje.BackColor = System.Drawing.Color.White;
             this.txtTotaliShitje.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -1596,7 +1412,7 @@
             // 
             // txtNrKuponav
             // 
-            this.txtNrKuponav.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtNrKuponav.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtNrKuponav.BackColor = System.Drawing.Color.White;
             this.txtNrKuponav.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -1613,7 +1429,7 @@
             // 
             // txtKesh
             // 
-            this.txtKesh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtKesh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtKesh.BackColor = System.Drawing.Color.White;
             this.txtKesh.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -1630,7 +1446,7 @@
             // 
             // txtTotali
             // 
-            this.txtTotali.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtTotali.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTotali.BackColor = System.Drawing.Color.White;
             this.txtTotali.Enabled = false;
@@ -1646,7 +1462,7 @@
             // 
             // txtOpenAmount
             // 
-            this.txtOpenAmount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtOpenAmount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtOpenAmount.BackColor = System.Drawing.Color.White;
             this.txtOpenAmount.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -1663,7 +1479,7 @@
             // 
             // word_delivery
             // 
-            this.word_delivery.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.word_delivery.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.word_delivery.AutoSize = true;
             this.word_delivery.BackColor = System.Drawing.Color.Transparent;
@@ -1678,7 +1494,7 @@
             // 
             // word_totalpaid_wBanks
             // 
-            this.word_totalpaid_wBanks.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.word_totalpaid_wBanks.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.word_totalpaid_wBanks.AutoSize = true;
             this.word_totalpaid_wBanks.BackColor = System.Drawing.Color.Transparent;
@@ -1693,7 +1509,7 @@
             // 
             // word_nr_kuponav
             // 
-            this.word_nr_kuponav.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.word_nr_kuponav.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.word_nr_kuponav.AutoSize = true;
             this.word_nr_kuponav.BackColor = System.Drawing.Color.Transparent;
@@ -1708,7 +1524,7 @@
             // 
             // label4
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
@@ -1723,7 +1539,7 @@
             // 
             // word_cash
             // 
-            this.word_cash.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.word_cash.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.word_cash.AutoSize = true;
             this.word_cash.BackColor = System.Drawing.Color.Transparent;
@@ -1738,7 +1554,7 @@
             // 
             // word_total_in_cashbox
             // 
-            this.word_total_in_cashbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.word_total_in_cashbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.word_total_in_cashbox.AutoSize = true;
             this.word_total_in_cashbox.BackColor = System.Drawing.Color.Transparent;
@@ -1753,7 +1569,7 @@
             // 
             // word_cancel
             // 
-            this.word_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.word_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.word_cancel.BackColor = System.Drawing.Color.SteelBlue;
             this.word_cancel.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
@@ -1774,7 +1590,7 @@
             // 
             // paragraph_initail_balance_sheet
             // 
-            this.paragraph_initail_balance_sheet.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.paragraph_initail_balance_sheet.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paragraph_initail_balance_sheet.AutoSize = true;
             this.paragraph_initail_balance_sheet.BackColor = System.Drawing.Color.Transparent;
@@ -1789,7 +1605,7 @@
             // 
             // word_complete
             // 
-            this.word_complete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.word_complete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.word_complete.BackColor = System.Drawing.Color.SteelBlue;
             this.word_complete.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
@@ -1808,27 +1624,632 @@
             this.word_complete.UseVisualStyleBackColor = false;
             this.word_complete.Click += new System.EventHandler(this.word_complete_Click);
             // 
-            // txtToUnFavorite
+            // tabPage3
             // 
-            this.txtToUnFavorite.Location = new System.Drawing.Point(130, 46);
-            this.txtToUnFavorite.Name = "txtToUnFavorite";
-            this.txtToUnFavorite.Size = new System.Drawing.Size(158, 20);
-            this.txtToUnFavorite.TabIndex = 9;
-            this.txtToUnFavorite.TextChanged += new System.EventHandler(this.txtToUnFavorite_TextChanged);
+            this.tabPage3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tabPage3.Controls.Add(this.label13);
+            this.tabPage3.Controls.Add(this.button11);
+            this.tabPage3.Controls.Add(this.button12);
+            this.tabPage3.Controls.Add(this.button13);
+            this.tabPage3.Controls.Add(this.dataGridView5);
+            this.tabPage3.Controls.Add(this.button14);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(837, 592);
+            this.tabPage3.TabIndex = 4;
+            this.tabPage3.Text = "Lista e Stokut me minus";
+            this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // txtToFavorite
+            // button14
             // 
-            this.txtToFavorite.Location = new System.Drawing.Point(96, 46);
-            this.txtToFavorite.Name = "txtToFavorite";
-            this.txtToFavorite.Size = new System.Drawing.Size(158, 20);
-            this.txtToFavorite.TabIndex = 10;
-            this.txtToFavorite.TextChanged += new System.EventHandler(this.txtToFavorite_TextChanged);
+            this.button14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button14.BackColor = System.Drawing.Color.SteelBlue;
+            this.button14.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.button14.FlatAppearance.BorderSize = 0;
+            this.button14.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.button14.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.button14.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button14.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button14.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button14.Location = new System.Drawing.Point(267, 268);
+            this.button14.Margin = new System.Windows.Forms.Padding(2);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(110, 34);
+            this.button14.TabIndex = 90;
+            this.button14.Text = "Shfaq";
+            this.button14.UseVisualStyleBackColor = false;
             // 
-            // RestaurantOptions
+            // dataGridView5
+            // 
+            this.dataGridView5.AllowUserToAddRows = false;
+            this.dataGridView5.AllowUserToDeleteRows = false;
+            this.dataGridView5.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView5.BackgroundColor = System.Drawing.Color.White;
+            this.dataGridView5.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView5.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn2});
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView5.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridView5.Location = new System.Drawing.Point(111, 103);
+            this.dataGridView5.Name = "dataGridView5";
+            this.dataGridView5.ReadOnly = true;
+            this.dataGridView5.RowHeadersWidth = 51;
+            this.dataGridView5.Size = new System.Drawing.Size(612, 375);
+            this.dataGridView5.TabIndex = 97;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "Nr.";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Visible = false;
+            // 
+            // button13
+            // 
+            this.button13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button13.BackColor = System.Drawing.Color.SteelBlue;
+            this.button13.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.button13.FlatAppearance.BorderSize = 0;
+            this.button13.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.button13.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.button13.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button13.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button13.Location = new System.Drawing.Point(1, 676);
+            this.button13.Margin = new System.Windows.Forms.Padding(2);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(62, 28);
+            this.button13.TabIndex = 98;
+            this.button13.Text = "Printo";
+            this.button13.UseVisualStyleBackColor = false;
+            // 
+            // button12
+            // 
+            this.button12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button12.BackColor = System.Drawing.Color.SteelBlue;
+            this.button12.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.button12.FlatAppearance.BorderSize = 0;
+            this.button12.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.button12.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.button12.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button12.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button12.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button12.Location = new System.Drawing.Point(613, 498);
+            this.button12.Margin = new System.Windows.Forms.Padding(2);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(110, 34);
+            this.button12.TabIndex = 99;
+            this.button12.Text = "Shfaq";
+            this.button12.UseVisualStyleBackColor = false;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // button11
+            // 
+            this.button11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button11.BackColor = System.Drawing.Color.SteelBlue;
+            this.button11.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.button11.FlatAppearance.BorderSize = 0;
+            this.button11.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.button11.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button11.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button11.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button11.Location = new System.Drawing.Point(478, 498);
+            this.button11.Margin = new System.Windows.Forms.Padding(2);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(110, 34);
+            this.button11.TabIndex = 102;
+            this.button11.Text = "Printo";
+            this.button11.UseVisualStyleBackColor = false;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(274, 13);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(302, 31);
+            this.label13.TabIndex = 103;
+            this.label13.Text = "Lista e Stokut me minus";
+            // 
+            // tabPage9
+            // 
+            this.tabPage9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tabPage9.Controls.Add(this.button7);
+            this.tabPage9.Controls.Add(this.cmbUser2);
+            this.tabPage9.Controls.Add(this.label8);
+            this.tabPage9.Controls.Add(this.button8);
+            this.tabPage9.Controls.Add(this.button9);
+            this.tabPage9.Controls.Add(this.dataGridView4);
+            this.tabPage9.Controls.Add(this.label9);
+            this.tabPage9.Controls.Add(this.dateTimePicker2);
+            this.tabPage9.Controls.Add(this.label10);
+            this.tabPage9.Controls.Add(this.label11);
+            this.tabPage9.Controls.Add(this.dateTimePicker3);
+            this.tabPage9.Controls.Add(this.label12);
+            this.tabPage9.Controls.Add(this.button10);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage9.Size = new System.Drawing.Size(837, 592);
+            this.tabPage9.TabIndex = 3;
+            this.tabPage9.Text = "Raporti i Shitjeve Me Minus";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // button10
+            // 
+            this.button10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button10.BackColor = System.Drawing.Color.SteelBlue;
+            this.button10.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.button10.FlatAppearance.BorderSize = 0;
+            this.button10.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.button10.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button10.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button10.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button10.Location = new System.Drawing.Point(267, 268);
+            this.button10.Margin = new System.Windows.Forms.Padding(2);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(110, 34);
+            this.button10.TabIndex = 90;
+            this.button10.Text = "Shfaq";
+            this.button10.UseVisualStyleBackColor = false;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.BackColor = System.Drawing.Color.Transparent;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.ForeColor = System.Drawing.Color.Black;
+            this.label12.Location = new System.Drawing.Point(107, 31);
+            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(40, 20);
+            this.label12.TabIndex = 91;
+            this.label12.Text = "Prej";
+            // 
+            // dateTimePicker3
+            // 
+            this.dateTimePicker3.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker3.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker3.Location = new System.Drawing.Point(111, 60);
+            this.dateTimePicker3.Margin = new System.Windows.Forms.Padding(2);
+            this.dateTimePicker3.Name = "dateTimePicker3";
+            this.dateTimePicker3.Size = new System.Drawing.Size(187, 26);
+            this.dateTimePicker3.TabIndex = 92;
+            // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.Transparent;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.Black;
+            this.label11.Location = new System.Drawing.Point(394, 535);
+            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(133, 20);
+            this.label11.TabIndex = 93;
+            this.label11.Text = "Totali i shitjeve:";
+            // 
+            // label10
+            // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.Black;
+            this.label10.Location = new System.Drawing.Point(557, 535);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(79, 20);
+            this.label10.TabIndex = 94;
+            this.label10.Text = "__ __ __";
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker2.Location = new System.Drawing.Point(111, 132);
+            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(2);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(187, 26);
+            this.dateTimePicker2.TabIndex = 95;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.Transparent;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.Black;
+            this.label9.Location = new System.Drawing.Point(107, 110);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(42, 20);
+            this.label9.TabIndex = 96;
+            this.label9.Text = "Deri";
+            // 
+            // dataGridView4
+            // 
+            this.dataGridView4.AllowUserToAddRows = false;
+            this.dataGridView4.AllowUserToDeleteRows = false;
+            this.dataGridView4.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView4.BackgroundColor = System.Drawing.Color.White;
+            this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView4.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1});
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView4.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridView4.Location = new System.Drawing.Point(111, 268);
+            this.dataGridView4.Name = "dataGridView4";
+            this.dataGridView4.ReadOnly = true;
+            this.dataGridView4.RowHeadersWidth = 51;
+            this.dataGridView4.Size = new System.Drawing.Size(612, 210);
+            this.dataGridView4.TabIndex = 97;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Nr.";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Visible = false;
+            // 
+            // button9
+            // 
+            this.button9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button9.BackColor = System.Drawing.Color.SteelBlue;
+            this.button9.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.button9.FlatAppearance.BorderSize = 0;
+            this.button9.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.button9.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button9.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button9.Location = new System.Drawing.Point(1, 676);
+            this.button9.Margin = new System.Windows.Forms.Padding(2);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(62, 28);
+            this.button9.TabIndex = 98;
+            this.button9.Text = "Printo";
+            this.button9.UseVisualStyleBackColor = false;
+            // 
+            // button8
+            // 
+            this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button8.BackColor = System.Drawing.Color.SteelBlue;
+            this.button8.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.button8.FlatAppearance.BorderSize = 0;
+            this.button8.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.button8.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button8.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button8.Location = new System.Drawing.Point(722, 5);
+            this.button8.Margin = new System.Windows.Forms.Padding(2);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(110, 34);
+            this.button8.TabIndex = 99;
+            this.button8.Text = "Shfaq";
+            this.button8.UseVisualStyleBackColor = false;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.Color.Transparent;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.Black;
+            this.label8.Location = new System.Drawing.Point(107, 190);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(71, 20);
+            this.label8.TabIndex = 100;
+            this.label8.Text = "Puntori:";
+            // 
+            // cmbUser2
+            // 
+            this.cmbUser2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbUser2.FormattingEnabled = true;
+            this.cmbUser2.Location = new System.Drawing.Point(111, 213);
+            this.cmbUser2.Name = "cmbUser2";
+            this.cmbUser2.Size = new System.Drawing.Size(187, 28);
+            this.cmbUser2.TabIndex = 101;
+            this.cmbUser2.Text = "Të gjithë";
+            // 
+            // button7
+            // 
+            this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button7.BackColor = System.Drawing.Color.SteelBlue;
+            this.button7.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.button7.FlatAppearance.BorderSize = 0;
+            this.button7.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.button7.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button7.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button7.Location = new System.Drawing.Point(576, 5);
+            this.button7.Margin = new System.Windows.Forms.Padding(2);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(110, 34);
+            this.button7.TabIndex = 102;
+            this.button7.Text = "Printo";
+            this.button7.UseVisualStyleBackColor = false;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tabPage4.Controls.Add(this.button4);
+            this.tabPage4.Controls.Add(this.cmbUsers);
+            this.tabPage4.Controls.Add(this.label5);
+            this.tabPage4.Controls.Add(this.button5);
+            this.tabPage4.Controls.Add(this.btn_print);
+            this.tabPage4.Controls.Add(this.dataGridView1);
+            this.tabPage4.Controls.Add(this.word_to);
+            this.tabPage4.Controls.Add(this.dateTimePicker1);
+            this.tabPage4.Controls.Add(this.label1);
+            this.tabPage4.Controls.Add(this.label2);
+            this.tabPage4.Controls.Add(this.dFDate);
+            this.tabPage4.Controls.Add(this.word_from);
+            this.tabPage4.Controls.Add(this.button1);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(837, 592);
+            this.tabPage4.TabIndex = 1;
+            this.tabPage4.Text = "Raporti i Shitjeve";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.BackColor = System.Drawing.Color.SteelBlue;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button1.Location = new System.Drawing.Point(267, 268);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(110, 34);
+            this.button1.TabIndex = 90;
+            this.button1.Text = "Shfaq";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // word_from
+            // 
+            this.word_from.AutoSize = true;
+            this.word_from.BackColor = System.Drawing.Color.Transparent;
+            this.word_from.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.word_from.ForeColor = System.Drawing.Color.Black;
+            this.word_from.Location = new System.Drawing.Point(107, 31);
+            this.word_from.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.word_from.Name = "word_from";
+            this.word_from.Size = new System.Drawing.Size(40, 20);
+            this.word_from.TabIndex = 91;
+            this.word_from.Text = "Prej";
+            // 
+            // dFDate
+            // 
+            this.dFDate.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dFDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dFDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dFDate.Location = new System.Drawing.Point(111, 60);
+            this.dFDate.Margin = new System.Windows.Forms.Padding(2);
+            this.dFDate.Name = "dFDate";
+            this.dFDate.Size = new System.Drawing.Size(187, 26);
+            this.dFDate.TabIndex = 92;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Black;
+            this.label2.Location = new System.Drawing.Point(394, 535);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(133, 20);
+            this.label2.TabIndex = 93;
+            this.label2.Text = "Totali i shitjeve:";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Location = new System.Drawing.Point(557, 535);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(79, 20);
+            this.label1.TabIndex = 94;
+            this.label1.Text = "__ __ __";
+            this.label1.TextChanged += new System.EventHandler(this.label1_TextChanged);
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker1.Location = new System.Drawing.Point(111, 132);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(2);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(187, 26);
+            this.dateTimePicker1.TabIndex = 95;
+            // 
+            // word_to
+            // 
+            this.word_to.AutoSize = true;
+            this.word_to.BackColor = System.Drawing.Color.Transparent;
+            this.word_to.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.word_to.ForeColor = System.Drawing.Color.Black;
+            this.word_to.Location = new System.Drawing.Point(107, 110);
+            this.word_to.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.word_to.Name = "word_to";
+            this.word_to.Size = new System.Drawing.Size(42, 20);
+            this.word_to.TabIndex = 96;
+            this.word_to.Text = "Deri";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1});
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView1.Location = new System.Drawing.Point(111, 268);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.Size = new System.Drawing.Size(612, 210);
+            this.dataGridView1.TabIndex = 97;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Nr.";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Visible = false;
+            // 
+            // btn_print
+            // 
+            this.btn_print.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_print.BackColor = System.Drawing.Color.SteelBlue;
+            this.btn_print.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.btn_print.FlatAppearance.BorderSize = 0;
+            this.btn_print.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.btn_print.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.btn_print.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_print.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_print.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btn_print.Location = new System.Drawing.Point(1, 676);
+            this.btn_print.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_print.Name = "btn_print";
+            this.btn_print.Size = new System.Drawing.Size(62, 28);
+            this.btn_print.TabIndex = 98;
+            this.btn_print.Text = "Printo";
+            this.btn_print.UseVisualStyleBackColor = false;
+            this.btn_print.Click += new System.EventHandler(this.btn_print_Click);
+            // 
+            // button5
+            // 
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button5.BackColor = System.Drawing.Color.SteelBlue;
+            this.button5.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.button5.FlatAppearance.BorderSize = 0;
+            this.button5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.button5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button5.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button5.Location = new System.Drawing.Point(722, 5);
+            this.button5.Margin = new System.Windows.Forms.Padding(2);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(110, 34);
+            this.button5.TabIndex = 99;
+            this.button5.Text = "Shfaq";
+            this.button5.UseVisualStyleBackColor = false;
+            this.button5.Click += new System.EventHandler(this.SalesReportByDate);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.Black;
+            this.label5.Location = new System.Drawing.Point(107, 190);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(71, 20);
+            this.label5.TabIndex = 100;
+            this.label5.Text = "Puntori:";
+            // 
+            // cmbUsers
+            // 
+            this.cmbUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbUsers.FormattingEnabled = true;
+            this.cmbUsers.Location = new System.Drawing.Point(111, 213);
+            this.cmbUsers.Name = "cmbUsers";
+            this.cmbUsers.Size = new System.Drawing.Size(187, 28);
+            this.cmbUsers.TabIndex = 101;
+            this.cmbUsers.Text = "Të gjithë";
+            // 
+            // button4
+            // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button4.BackColor = System.Drawing.Color.SteelBlue;
+            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button4.Location = new System.Drawing.Point(576, 5);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(110, 34);
+            this.button4.TabIndex = 102;
+            this.button4.Text = "Printo";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click_1);
+            // 
+            // tabControl2
+            // 
+            this.tabControl2.Controls.Add(this.tabPage4);
+            this.tabControl2.Controls.Add(this.tabPage9);
+            this.tabControl2.Controls.Add(this.tabPage3);
+            this.tabControl2.Location = new System.Drawing.Point(0, 0);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(845, 618);
+            this.tabControl2.TabIndex = 0;
+            this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
+            // 
+            // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(852, 646);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.paragraph_close_cashbox);
@@ -1841,22 +2262,16 @@
             this.Controls.Add(this.word_configuration);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(596, 401);
-            this.Name = "RestaurantOptions";
+            this.MinimumSize = new System.Drawing.Size(596, 400);
+            this.Name = "Options";
             this.Text = "Options";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Options_FormClosing);
             this.Load += new System.EventHandler(this.Options_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabControl2.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dg)).EndInit();
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabControl3.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
@@ -1879,6 +2294,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).EndInit();
+            this.tabPage9.ResumeLayout(false);
+            this.tabPage9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.tabControl2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1952,7 +2377,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn AddItem;
         private System.Windows.Forms.DataGridViewCheckBoxColumn DelItem;
         private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button paragraph_print_the_x_report;
         private System.Windows.Forms.Button paragraph_print_the_report;
@@ -1975,15 +2399,27 @@
         private System.Windows.Forms.Label paragraph_initail_balance_sheet;
         private System.Windows.Forms.Button word_complete;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.CheckBox chckUnitCol;
+        private System.Windows.Forms.ComboBox cmbPrinterType;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox chckStockRibbon;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.ComboBox cmbDatecsType;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.DateTimePicker dFSDate;
+        private System.Windows.Forms.DateTimePicker dTSDate;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.CheckBox checkBox6;
+        private System.Windows.Forms.Button btn_updatePOS;
+        private System.Windows.Forms.Button btn_bonusCard;
         private System.Windows.Forms.TabControl tabControl2;
-        private System.Windows.Forms.TabPage tabPage3;
-        public System.Windows.Forms.Label lblTotal;
-        private System.Windows.Forms.Label word_total_sales;
-        private System.Windows.Forms.DataGridView dg;
-        private System.Windows.Forms.DateTimePicker dtDate;
-        private System.Windows.Forms.Label word_date;
-        private System.Windows.Forms.Button word_show;
         private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.ComboBox cmbUsers;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button5;
@@ -1997,15 +2433,28 @@
         private System.Windows.Forms.DateTimePicker dFDate;
         private System.Windows.Forms.Label word_from;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.CheckBox chckUnitCol;
-        private System.Windows.Forms.ComboBox cmbPrinterType;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.CheckBox chckStockRibbon;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.ComboBox cmbDatecsType;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox txtToFavorite;
-        private System.Windows.Forms.TextBox txtToUnFavorite;
+        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.ComboBox cmbUser2;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.DataGridView dataGridView4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        public System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.DateTimePicker dateTimePicker3;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.DataGridView dataGridView5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.Button button14;
     }
 }

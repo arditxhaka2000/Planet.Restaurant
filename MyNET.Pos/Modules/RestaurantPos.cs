@@ -146,7 +146,7 @@ namespace MyNET.Pos
                 {
                     if (ug.Rows.Count > 0)
                     {
-                      
+
                         DialogResult dialogResult = mPaymentDialog.ShowDialog();
 
                         if (dialogResult == DialogResult.OK)
@@ -1513,7 +1513,7 @@ namespace MyNET.Pos
                 if ((int)row.Cells["Printed"].Value == 0)
                 {
 
-                    var iName = (row.Cells["ItemName"].Value.ToString() + " " +row.Cells["CostOfGoods"].Value).Count() > 40 ? row.Cells["ItemName"].Value.ToString().Substring(0, 20) + row.Cells["CostOfGoods"].Value : row.Cells["ItemName"].Value.ToString() + "\n"+ row.Cells["CostOfGoods"].Value;
+                    var iName = (row.Cells["ItemName"].Value.ToString() + " " + row.Cells["CostOfGoods"].Value).Count() > 40 ? row.Cells["ItemName"].Value.ToString().Substring(0, 20) + row.Cells["CostOfGoods"].Value : row.Cells["ItemName"].Value.ToString() + "\n" + row.Cells["CostOfGoods"].Value;
 
                     var words = iName.Split(' ');
                     var lines = new List<string>();
@@ -1610,7 +1610,7 @@ namespace MyNET.Pos
 
                 Services.Models.TablesSaleDetails.UpdateTableQuantityPrinted((decimal)row.Cells["Quantity"].Value, tableId, (int)row.Cells["ItemId"].Value);
                 TablesSaleDetails tabledt = new TablesSaleDetails();
-                tabledt.UpdateTableItem((decimal)row.Cells["Quantity"].Value, (decimal)row.Cells["Total"].Value, (decimal)row.Cells["TotalWithVat"].Value, row.Cells["ItemName"].Value.ToString(),Convert.ToInt32(row.Cells["Id"].Value.ToString()));
+                tabledt.UpdateTableItem((decimal)row.Cells["Quantity"].Value, (decimal)row.Cells["Total"].Value, (decimal)row.Cells["TotalWithVat"].Value, row.Cells["ItemName"].Value.ToString(), Convert.ToInt32(row.Cells["Id"].Value.ToString()));
 
             }
             //Print Line
@@ -1843,10 +1843,10 @@ namespace MyNET.Pos
                 txtTotalSum.Text = mTotalSum.ToString("N");
                 txtTotalWVatSum.Text = mTotalSumWVat.ToString("N");
             }
-            if(Manage_Tables.closeTable == true)
+            if (Manage_Tables.closeTable == true)
             {
                 btnPrint_Click(null, null);
-                Manage_Tables.closeTable = false;   
+                Manage_Tables.closeTable = false;
             }
         }
 
@@ -2617,7 +2617,7 @@ namespace MyNET.Pos
                 ButtonText = new Font("Arial", 9, FontStyle.Regular),
                 ButtonFlat = FlatStyle.Flat,
                 ButtonAnchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
-                ButtonColor = Color.FromArgb(52, 58, 64),
+                ButtonColor = Color.FromArgb(49, 50, 55),
                 TextColor = Color.White,
                 ImageAlignButton = TextImageRelation.TextAboveImage,
 
@@ -2631,7 +2631,7 @@ namespace MyNET.Pos
             //txtsrch.Focus();
         }
 
-        Image trash = Properties.Resources.trash_removebg_preview;
+        Image trash = Properties.Resources.redTrash;
         private void grid_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex < 0)
@@ -3664,6 +3664,7 @@ namespace MyNET.Pos
             var settings = Services.Settings.Get();
 
             var id = (int)ug[ug.Columns["ItemId"].Index, e.RowIndex].Value;
+            var sId = (int)ug[ug.Columns["Id"].Index, e.RowIndex].Value;
             var name = ug[ug.Columns["ItemName"].Index, e.RowIndex].Value.ToString();
             var vat = (int)ug[ug.Columns["VAT"].Index, e.RowIndex].Value;
             var categoryId = ug[ug.Columns["CategoryId"].Index, e.RowIndex].Value.ToString();
@@ -3819,7 +3820,26 @@ namespace MyNET.Pos
                     }
                     else
                     {
-                        ug[totalRowIndex, e.RowIndex].Value = totalprice;
+                        var ts = Services.Models.TablesSaleDetails.GetTSItemWithId(sId);
+                        decimal tsQuantity = 0;
+                        if (ts.Count > 0)
+                        {
+                            tsQuantity = ts.First().Quantity;
+                        }
+
+                        if (tsQuantity <= quantity)
+                        {
+                            ug[totalRowIndex, e.RowIndex].Value = totalprice;
+
+                            ug[DiscountPrice, e.RowIndex].Value = "0";
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Nuk mund te editoni sasine. Sasia e shtypur ne kupon fiskal eshte {tsQuantity}!");
+                            ug[quantityRowIndex, e.RowIndex].Value = tsQuantity;
+
+                        }
+
                         //ug[DiscountPrice, e.RowIndex].Value = "0";
                         CalculateGridColumns();
 
@@ -4127,7 +4147,7 @@ namespace MyNET.Pos
                     item.BackColor = Color.FromArgb(0, 175, 240);
                 }
                 else
-                    item.BackColor = Color.FromArgb(52, 58, 64);
+                    item.BackColor = Color.FromArgb(49, 50, 55);
             }
 
             if (mAllSubCat.Count > 0)
@@ -4143,7 +4163,7 @@ namespace MyNET.Pos
                     ButtonSize = subCbSize,
                     ButtonText = new Font("Arial", 9, FontStyle.Regular),
                     ButtonFlat = FlatStyle.Flat,
-                    ButtonColor = Color.FromArgb(75, 95, 113),
+                    ButtonColor = Color.FromArgb(55, 67, 82),
                     TextColor = Color.White,
                     ImageAlignButton = TextImageRelation.TextAboveImage,
 
@@ -4151,7 +4171,7 @@ namespace MyNET.Pos
                 MakeButtons.ClickedHandler += buttonSubCategory_Clicker;
                 MakeButtons.CreateCatfromList(mAllSubCat);
 
-                pnlSubCat.Height = subCbSize.Height + subCbSize.Height / 4;
+                pnlSubCat.Height = subCbSize.Height + subCbSize.Height;
 
                 // Set the new panel height
                 AddButtonsBasedOnScreenResolution();
@@ -4836,9 +4856,11 @@ namespace MyNET.Pos
                 ug.Columns[24].Visible = true;
 
             }
+            ug.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(49, 50, 55);
+            ug.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(49, 50, 55);
 
+            ug.EnableHeadersVisualStyles = false;
         }
-
 
         /// <summary>
         /// I pastrton fushat
@@ -4966,7 +4988,7 @@ namespace MyNET.Pos
 
             foreach (DataGridViewColumn col in ug.Columns)
             {
-                dt.Columns.Add(col.Name);   
+                dt.Columns.Add(col.Name);
             }
 
             foreach (DataGridViewRow row in ug.Rows)
@@ -5031,7 +5053,7 @@ namespace MyNET.Pos
                     {
                         if (dt.Rows.Count > 0)
                         {
-                            if (TremolPrint.CreateReceipt(dt,clientPayed))
+                            if (TremolPrint.CreateReceipt(dt, clientPayed))
                             {
                                 Services.SaleDetails.UpdatePrinted(mSaleId);
                             }
@@ -5045,7 +5067,7 @@ namespace MyNET.Pos
                         {
                             if (dt.Rows.Count > 0)
                             {
-                                FiscalPrinterHelper.GekosPrint(global.FiscalCount, num.ToString(), dt, mTotalSum, num, withBank,clientPayed);
+                                FiscalPrinterHelper.GekosPrint(global.FiscalCount, num.ToString(), dt, mTotalSum, num, withBank, clientPayed);
 
                             }
                         }
@@ -5053,7 +5075,7 @@ namespace MyNET.Pos
                         {
                             if (dt.Rows.Count > 0)
                             {
-                                FiscalPrinterHelper.GekosPrintOldV(global.FiscalCount, num.ToString(), dt, mTotalSum, num, withBank,clientPayed);
+                                FiscalPrinterHelper.GekosPrintOldV(global.FiscalCount, num.ToString(), dt, mTotalSum, num, withBank, clientPayed);
                             }
                         }
                         //LoadJson.DataTabletoJsonDatecs(dt);
@@ -5326,13 +5348,14 @@ namespace MyNET.Pos
                 sale.CreatedBy = Globals.User.Name;
                 sale.Status = -1;
                 sale.id_saler = Globals.User.Id;
-                sale.FromRestaurant = 1;
+                sale.FromRestaurant = 0;
+
                 //sale.SaleId = Sale.getAllSales().Count > 0 ? Sale.getAllSales().Where(p=>p.StationId==Globals.Station.Id).Last().SaleId + 1 : Globals.Station.LastInvoiceNumber + 1;
                 if (Sale.getSalesCount() > 0)
                 {
                     if (Sale.getSalesCountWithPosId(Globals.Station.Id.ToString()) > 0)
                     {
-                        sale.SaleId = Sale.getAllSalesPosId(Globals.Station.Id.ToString()).Last().SaleId + 1;
+                        sale.SaleId = Sale.GetLastSaleByStation(Globals.Station.Id.ToString()).SaleId + 1;
                     }
                     else
                     {
@@ -5384,7 +5407,7 @@ namespace MyNET.Pos
                     TotalShitje = totalSumOpenBalance,
                     TotalCash = totalcash,
                     TotalCreditCard = totalcredit,
-                    status = sale.Status.ToString(),
+                    status = sale.Status.ToString()
                 };
                 result = overallObj.UpdateA();
                 if (result > 0)
@@ -5415,7 +5438,7 @@ namespace MyNET.Pos
         protected int SaveSaleInvoice()
         {
             Services.Sale sale = Services.Sale.Get(mSaleId);
-            var partner = Services.Partner.Search("Status=0");
+            var partner = Services.Partner.Search("Status=0").OrderBy(p => p.Name).ToList();
             var client = partner.Where(p => p.Id == (int)cbPartners.SelectedValue);
             if (sale == null)
                 sale = new Services.Sale();
@@ -5451,14 +5474,13 @@ namespace MyNET.Pos
                 sale.CreatedBy = Globals.User.Name;
                 sale.Status = -1;
                 sale.id_saler = Globals.User.Id;
-
                 sale.CouponNo = 0;
 
                 if (Sale.getSalesCount() > 0)
                 {
                     if (Sale.getSalesCountWithPosId(Globals.Station.Id.ToString()) > 0)
                     {
-                        sale.SaleId = Sale.getAllSalesPosId(Globals.Station.Id.ToString()).Last().SaleId + 1;
+                        sale.SaleId = Sale.GetLastSaleByStation(Globals.Station.Id.ToString()).SaleId + 1;
                     }
                     else
                     {
@@ -5503,7 +5525,6 @@ namespace MyNET.Pos
                 daily.UpdateDFC(DailyOpenFiscalCount.ToString(), totalSumOpenBalance, totalcash, totalcredit, lastdaily.Id);
 
                 Globals.Station.LastInvoiceNumber++;
-                DailyOpenFiscalCount += 1;
 
                 OverallObj overallObj = new OverallObj
                 {
@@ -5621,7 +5642,7 @@ namespace MyNET.Pos
                     DiscountAmount = row.Cells["DiscountAmount"].Value.ToString(),
                     PosId = Globals.DeviceId,
                     Printed = 0,
-                    TableId = tableId
+                    TableId = ""
                 });
                 wrh.Add(new Warehouse
                 {
@@ -5768,9 +5789,19 @@ namespace MyNET.Pos
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            var printedOrder = TablesSaleDetails.GetSaleDetailsBySaleId(Convert.ToInt32(tableId)).Where(p => p.Status == 0 && p.PrintedFiscalQuantity > 0 || p.PrintedQuantity > 0);
+            var listId = 0;
 
-            if (printedOrder.Count() == 0)
+            foreach (DataGridViewRow item in ug.Rows)
+            {
+                var ts = Services.Models.TablesSaleDetails.GetTSItemWithId(Convert.ToInt16(item.Cells["Id"].Value)).Where(p => p.PrintedFiscalQuantity > 0);
+                if (ts.Count() > 0)
+                {
+                    listId++;
+                    break;
+                }
+            }
+
+            if (listId == 0)
             {
                 if (Globals.Settings.PIN == "0" || Globals.Settings.PIN == null)
                 {
@@ -5779,7 +5810,6 @@ namespace MyNET.Pos
                         ug.Columns.RemoveAt(27);
 
                     }
-                    New();
 
                     Globals.NextStep = "Restaurant";
 
@@ -5797,10 +5827,17 @@ namespace MyNET.Pos
 
                         }
 
-                        New();
                     }
                 }
                 Services.Tables.UpdateTablePos(0, tableId);
+                List<int> idsToDelete = (from DataGridViewRow row in ug.Rows
+                                         where row.Cells["Id"].Value != null
+                                         select Convert.ToInt32(row.Cells["Id"].Value)).ToList();
+
+                // Use ForEach to delete each record by id
+                idsToDelete.ForEach(id => Services.Models.TablesSaleDetails.DeleteTableSaleWithId(id.ToString()));
+                New();
+
             }
             else
             {
@@ -5924,7 +5961,7 @@ namespace MyNET.Pos
             decimal totalDiscount = 0;
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
-                var printedOrder = TablesSaleDetails.GetSaleDetailsBySaleId(Convert.ToInt32(tableId)).Where(p => p.Status == 0 && p.PrintedFiscalQuantity > 0);
+                var printedOrder = TablesSaleDetails.GetTSItemWithId(Convert.ToInt32(ug.Rows[e.RowIndex].Cells["Id"].Value)).Where(p => p.PrintedFiscalQuantity > 0);
                 if (printedOrder.Count() == 0)
                 {
 
@@ -6053,17 +6090,21 @@ namespace MyNET.Pos
             }
             else if (senderGrid.Columns[e.ColumnIndex].Index == ug.Columns["ItemName"].Index && senderGrid.Columns[e.ColumnIndex] is DataGridViewTextBoxColumn)
             {
-                int id = Convert.ToInt32(ug.Rows[e.RowIndex].Cells["ItemId"].Value);
-                string name = (ug.Rows[e.RowIndex].Cells["ItemName"].Value).ToString();
-
-                var item = Services.Item.GetById(id).First();
-
-                if (settings.StockRibbon == 1 && settings.LocationRibbon == 1)
+                try
                 {
-                    lblNameAndQuant.Text = ug.Rows[e.RowIndex].Cells["ItemName"].Value.ToString() + " / Sasia e disponueshme: " + Warehouse.GetbyId(id).InStock + ((Globals.ItemLocation.Find(p => p.Id == item.Location)?.Name != null) ? " / Lokacioni: " + Globals.ItemLocation.Find(p => p.Id == item.Location).Name : "");
+                    int id = Convert.ToInt32(ug.Rows[e.RowIndex].Cells["ItemId"].Value);
+                    string name = (ug.Rows[e.RowIndex].Cells["ItemName"].Value).ToString();
+
+                    var item = Services.Item.GetById(id).First();
+
+                    if (settings.StockRibbon == 1 && settings.LocationRibbon == 1)
+                    {
+                        lblNameAndQuant.Text = ug.Rows[e.RowIndex].Cells["ItemName"].Value.ToString() + " / Sasia e disponueshme: " + Warehouse.GetbyId(id).InStock + ((Globals.ItemLocation.Find(p => p.Id == item.Location)?.Name != null) ? " / Lokacioni: " + Globals.ItemLocation.Find(p => p.Id == item.Location).Name : "");
+                    }
                 }
-
-
+                catch (Exception)
+                {
+                }
 
             }
             else if (senderGrid.Columns[e.ColumnIndex].Index == ug.Columns["ForReturn"].Index && senderGrid.Columns[e.ColumnIndex] is DataGridViewCheckBoxColumn && e.RowIndex >= 0)
@@ -6220,7 +6261,7 @@ namespace MyNET.Pos
             //    Options.flag = false;
             //}
 
-            Test_Click(null,null);
+            Test_Click(null, null);
             count++;
         }
 
@@ -6471,7 +6512,7 @@ namespace MyNET.Pos
                     }
                     else
                     {
-                        FiscalPrinterHelper.GekosPrint(sale.Id, sale.InvoiceNo, dt, mTotalSum, sale.SaleId, withBank,clientPayed);
+                        FiscalPrinterHelper.GekosPrint(sale.Id, sale.InvoiceNo, dt, mTotalSum, sale.SaleId, withBank, clientPayed);
                         //LoadJson.DataTabletoJsonDatecs(dt);
 
                         int x = 0;
@@ -9298,7 +9339,7 @@ namespace MyNET.Pos
         }
         private void txtsrchB_TextChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -9454,7 +9495,7 @@ namespace MyNET.Pos
                         {
                             if (dt.Rows.Count > 0)
                             {
-                                FiscalPrinterHelper.GekosPrint(global.FiscalCount, num.ToString(), dt, mTotalSum, num, withBank,clientPayed);
+                                FiscalPrinterHelper.GekosPrint(global.FiscalCount, num.ToString(), dt, mTotalSum, num, withBank, clientPayed);
 
                             }
                         }
@@ -10571,8 +10612,11 @@ namespace MyNET.Pos
                 }
             }
         }
+
+
     }
 }
+
 
 
 /*
