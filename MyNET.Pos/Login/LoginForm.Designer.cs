@@ -608,7 +608,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.85714F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 111F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 134F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 135F));
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblCompany, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnLoginMtd, 2, 0);
@@ -639,7 +639,7 @@
             this.lblCompany.AutoSize = true;
             this.lblCompany.Font = new System.Drawing.Font("Arial", 16F);
             this.lblCompany.ForeColor = System.Drawing.Color.White;
-            this.lblCompany.Location = new System.Drawing.Point(400, 0);
+            this.lblCompany.Location = new System.Drawing.Point(399, 0);
             this.lblCompany.Name = "lblCompany";
             this.lblCompany.Size = new System.Drawing.Size(0, 25);
             this.lblCompany.TabIndex = 2;
@@ -647,7 +647,7 @@
             // btnLoginMtd
             // 
             this.btnLoginMtd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLoginMtd.Location = new System.Drawing.Point(716, 3);
+            this.btnLoginMtd.Location = new System.Drawing.Point(715, 3);
             this.btnLoginMtd.Name = "btnLoginMtd";
             this.btnLoginMtd.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnLoginMtd.Size = new System.Drawing.Size(75, 28);
@@ -670,12 +670,13 @@
             // btnRestaurantEnable
             // 
             this.btnRestaurantEnable.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnRestaurantEnable.Location = new System.Drawing.Point(827, 3);
+            this.btnRestaurantEnable.Location = new System.Drawing.Point(826, 3);
             this.btnRestaurantEnable.Name = "btnRestaurantEnable";
             this.btnRestaurantEnable.Size = new System.Drawing.Size(75, 28);
             this.btnRestaurantEnable.TabIndex = 15;
             this.btnRestaurantEnable.Text = "Restaurant";
             this.btnRestaurantEnable.UseVisualStyleBackColor = true;
+            this.btnRestaurantEnable.Visible = false;
             this.btnRestaurantEnable.Click += new System.EventHandler(this.btnRestaurantEnable_Click);
             // 
             // txtCodeScan

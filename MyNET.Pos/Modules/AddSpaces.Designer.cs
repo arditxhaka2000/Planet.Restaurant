@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddSpaces));
             this.txtSpaceName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -41,6 +40,7 @@
             this.txtSpaceName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSpaceName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSpaceName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSpaceName.Location = new System.Drawing.Point(180, 105);
             this.txtSpaceName.Name = "txtSpaceName";
@@ -113,7 +113,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(434, 232);
             this.Controls.Add(this.Save);
@@ -125,6 +124,7 @@
             this.MinimumSize = new System.Drawing.Size(450, 271);
             this.Name = "AddSpaces";
             this.Text = "AddSpaces";
+            this.Load += new System.EventHandler(this.AddSpaces_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

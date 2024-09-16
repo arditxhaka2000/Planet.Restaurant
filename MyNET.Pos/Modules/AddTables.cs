@@ -66,10 +66,35 @@ namespace MyNET.Pos.Modules
 
         private void AddTables_Load(object sender, EventArgs e)
         {
+            var settings = Settings.Get();
             cmbSpace.DataSource = Spaces.GetSpaces();
             cmbSpace.DisplayMember = "Name";
             cmbSpace.ValueMember = "Id";
+            
+            if(settings.Theme == "dark")
+            {
+                this.BackColor = Color.FromArgb(49, 50, 55);
+                label1.ForeColor = Color.White;
+                label2.ForeColor = Color.White;
+                label3.ForeColor = Color.White;
+                txtTableName.BackColor = Color.FromArgb(49, 50, 55);
+                txtTableName.ForeColor = Color.White;
+                cmbSpace.BackColor = Color.FromArgb(49, 50, 55);
+                cmbSpace.ForeColor = Color.White;
 
+            }
+            else
+            {
+                this.BackColor = Color.WhiteSmoke;
+                label1.ForeColor = Color.Black;
+                label2.ForeColor = Color.Black;
+                label3.ForeColor = Color.Black;
+                txtTableName.BackColor = Color.White;
+                txtTableName.ForeColor = Color.FromArgb(49, 50, 55);
+                cmbSpace.BackColor = Color.White;
+                cmbSpace.ForeColor = Color.FromArgb(49, 50, 55);
+
+            }
         }
     }
 }

@@ -40,7 +40,28 @@ namespace MyNET.Pos.Modules
 
         private void Close_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Close(); 
+        }
+
+        private void AddSpaces_Load(object sender, EventArgs e)
+        {
+            var settings = Settings.Get();
+            if (settings.Theme == "dark")
+            {
+                this.BackColor = Color.FromArgb(49, 50, 55);
+                label1.ForeColor = Color.White;
+                label2.ForeColor = Color.White;
+                txtSpaceName.BackColor = Color.FromArgb(49, 50, 55);
+                txtSpaceName.ForeColor = Color.White;
+            }
+            else
+            {
+                this.BackColor = Color.White;
+                label1.ForeColor = Color.Black;
+                label2.ForeColor = Color.Black;
+                txtSpaceName.ForeColor = Color.FromArgb(49, 50, 55);
+                txtSpaceName.BackColor = Color.White;
+            }
         }
     }
 }

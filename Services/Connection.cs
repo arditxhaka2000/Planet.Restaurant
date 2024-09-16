@@ -18,7 +18,24 @@ namespace Services
             Host = host;
             Port = port;
         }
+        public static void SetLocalServerIp(string ipWithPort)
+        {
+            string[] parts = ipWithPort.Split(':');
 
+            if (parts.Length == 2)
+            {
+                string host = parts[0];
+                int port = int.Parse(parts[1]);
+
+                Host = host;
+                Port = port;
+
+            }
+            else
+            {
+                Console.WriteLine("Invalid IP format. It should be in the format: IP:Port");
+            }
+        }
         public static string GetActiveConnection()
         {
             string serverUrl = "http://" + Host + ":" + Port + "/api";

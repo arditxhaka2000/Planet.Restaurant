@@ -32,11 +32,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.dgItemsDetails = new System.Windows.Forms.DataGridView();
+            this.btnSearch = new System.Windows.Forms.Button();
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colBarcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PriceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnSearch = new System.Windows.Forms.Button();
+            this.colDisable = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgItemsDetails)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,11 +72,24 @@
             this.colName,
             this.colBarcode,
             this.colQuantity,
-            this.PriceCol});
+            this.PriceCol,
+            this.colDisable});
             this.dgItemsDetails.Location = new System.Drawing.Point(58, 112);
             this.dgItemsDetails.Name = "dgItemsDetails";
             this.dgItemsDetails.Size = new System.Drawing.Size(722, 448);
             this.dgItemsDetails.TabIndex = 2;
+            this.dgItemsDetails.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgItemsDetails_CellValueChanged);
+            this.dgItemsDetails.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgItemsDetails_CurrentCellDirtyStateChanged);
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(486, 37);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(92, 24);
+            this.btnSearch.TabIndex = 3;
+            this.btnSearch.Text = "Kerko";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // colName
             // 
@@ -97,15 +111,10 @@
             this.PriceCol.HeaderText = "Çmimi";
             this.PriceCol.Name = "PriceCol";
             // 
-            // btnSearch
+            // colDisable
             // 
-            this.btnSearch.Location = new System.Drawing.Point(486, 37);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(92, 24);
-            this.btnSearch.TabIndex = 3;
-            this.btnSearch.Text = "Kerko";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            this.colDisable.HeaderText = "Artikull Aktiv";
+            this.colDisable.Name = "colDisable";
             // 
             // ItemDetails
             // 
@@ -131,10 +140,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.DataGridView dgItemsDetails;
+        private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.DataGridViewTextBoxColumn colName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colBarcode;
         private System.Windows.Forms.DataGridViewTextBoxColumn colQuantity;
-        private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.DataGridViewTextBoxColumn PriceCol;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colDisable;
     }
 }

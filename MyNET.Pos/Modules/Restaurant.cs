@@ -28,6 +28,11 @@ using Microsoft.Web.WebView2.Wpf;
 using Microsoft.Web.WebView2.Core;
 using Quobject.SocketIoClientDotNet.Client;
 using System.Windows.Markup;
+using Microsoft.AspNet.SignalR;
+using MyNET.Pos.Helper;
+using System.Net.Http;
+using System.Text;
+using System.Threading;
 
 namespace MyNET.Pos.Modules
 {
@@ -50,12 +55,55 @@ namespace MyNET.Pos.Modules
         public string bashko1 = "";
         public string bashko2 = "";
         public delegate void CustomDataReceivedEventHandler(string data);
-
+        public static string toUpdateTableId;
         public event CustomDataReceivedEventHandler CustomDataReceived;
+        private readonly SynchronizationContext syncContext;
         public Restaurant()
         {
             InitializeComponent();
             InitializeWebView();
+            syncContext = SynchronizationContext.Current;
+        }
+        private async void Restaurant_Load(object sender, EventArgs e)
+        {
+           await webView21.EnsureCoreWebView2Async();
+
+            socket = new SocketIO(Services.Connection.GetConnection());
+            socket.On("connect", (server) =>
+            {
+                MessageBox.Show("Connected to server");
+            });
+
+            socket.On("table info", (data) =>
+            {
+                Console.WriteLine($"Received query response: {data}");
+
+                dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
+                int inPos = responseObj[0].inPos;
+                string id = responseObj[0].Id;
+                string color = inPos == 0 ? "green" : "red";
+                UpdateTableColor(id,color);
+
+
+            });
+
+            pictureBox1.Tag = Settings.Get().Theme;
+
+            if (pictureBox1.Tag.ToString() == "dark")
+            {
+                pictureBox1.Image = Properties.Resources.light;
+
+            }
+            else
+            {
+                pictureBox1.Image = Properties.Resources.dark;
+
+            }
+
+            await socket.ConnectAsync();
+
+            
+
 
         }
         private async void InitializeWebView()
@@ -65,7 +113,7 @@ namespace MyNET.Pos.Modules
             webView21.CoreWebView2.WebMessageReceived += CoreWebView2_AddWebMessageReceived;
             webView21.CoreWebView2.DOMContentLoaded += WebView_DOMContentLoaded;
             webView21.CoreWebView2.Navigate(System.Windows.Forms.Application.StartupPath + "\\index.html");
-
+          
         }
         private void WebView_DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
         {
@@ -130,7 +178,7 @@ namespace MyNET.Pos.Modules
                     }
                     else
                     {
-                        if(Globals.Settings.PIN != "0" || Globals.Settings.PIN != null)
+                        if (Globals.Settings.PIN != "0" || Globals.Settings.PIN != null)
                         {
                             EnterPin enterPin = new EnterPin();
                             enterPin.ShowDialog();
@@ -192,21 +240,28 @@ namespace MyNET.Pos.Modules
             await webView21.ExecuteScriptAsync($"changeTheme('{message}')");
             webView21.Refresh();
         }
-        private void Restaurant_Load(object sender, EventArgs e)
+        private void UpdateTableColor(string id, string color)
         {
-            pictureBox1.Tag = Settings.Get().Theme;
-
-            if (pictureBox1.Tag.ToString() == "dark")
+            syncContext.Post(async _ =>
             {
-                pictureBox1.Image = Properties.Resources.light;
+                if (webView21.IsDisposed || !webView21.IsHandleCreated)
+                {
+                    return;
+                }
 
-            }
-            else
-            {
-                pictureBox1.Image = Properties.Resources.dark;
-
-            }
+                try
+                {
+                    await webView21.ExecuteScriptAsync($"changeTableColor('{id}', '{color}')");
+                }
+                catch (Exception ex)
+                {
+                    // Handle or log the exception here
+                    Console.WriteLine("Error executing script: " + ex.Message);
+                }
+            }, null);
         }
+
+
 
         private void AdjustTableSize()
         {
@@ -363,6 +418,7 @@ namespace MyNET.Pos.Modules
             //}
 
             PassStringToJavaScript("Lokacioni");
+
         }
         private async void Ruaj_Click(object sender, EventArgs e)
         {
@@ -381,7 +437,7 @@ namespace MyNET.Pos.Modules
 
                 await GetBashkoTavolinat();
             }
-            else if(options == "Transfero Tavolinen")
+            else if (options == "Transfero Tavolinen")
             {
                 await GetTransferoTavolinat();
             }
@@ -542,14 +598,10 @@ namespace MyNET.Pos.Modules
                     {
                         //MessageBox.Show("Tavolina eshte hap nga puntori :" + User.Get(tbl.Emp_id).Name);
                     }
-
-
                 }
-
             }
-
-
         }
+
 
         public void button_MouseDown(object sender, MouseEventArgs e)
         {
@@ -704,61 +756,79 @@ namespace MyNET.Pos.Modules
             }
             PassTheme(pictureBox1.Tag.ToString());
             Settings.UpdateThemePreference(pictureBox1.Tag.ToString(), Globals.Settings.Id);
+            Globals.LoadSettings();
 
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string selectedItem = comboBox1.SelectedItem.ToString();
-            options = selectedItem;
-            switch (selectedItem)
+            if (Ruaj.Visible == false)
             {
-                case "Mbyll Ditën":
-                    button1_Click(sender, null);
-                    break; 
-                
-                case "Shiko Tavolinat":
-                    ManageTables();
-                    break;
+                if (Globals.Settings.PIN != "0" || Globals.Settings.PIN != null)
+                {
+                    EnterPin enterPin = new EnterPin();
+                    enterPin.ShowDialog();
+                    if (enterPin.flag == true)
+                    {
 
-                case "Edito":
-                    btn_Fshij_Click(sender, null);
-                    break;
 
-                case "Shto Tavolinë":
-                    ShtoTavolina_Click(sender, null);
-                    break;
+                        string selectedItem = comboBox1.SelectedItem.ToString();
+                        options = selectedItem;
+                        switch (selectedItem)
+                        {
+                            case "Mbyll Ditën":
+                                button1_Click(sender, null);
+                                break;
 
-                case "Shto Hapsirë":
-                    btnAddSpace_Click(sender, null);
-                    break;
+                            case "Shiko Tavolinat":
+                                ManageTables();
+                                break;
 
-                case "Lokacionet":
-                    Edito_Click(sender, null);
-                    break;
+                            case "Edito":
+                                btn_Fshij_Click(sender, null);
+                                break;
 
-                case "Raportet":
-                    Raportet_Click(sender, null);
-                    break;
+                            case "Shto Tavolinë":
+                                ShtoTavolina_Click(sender, null);
+                                break;
 
-                case "Transfero Tavolinen":
-                    Ruaj.Visible = true;
-                    PassStringToJavaScript("Transfero");
-                    break;
-                case "Bashko Tavolinat":
-                    Ruaj.Visible = true;
-                    PassStringToJavaScript("Bashko");
-                    break;
+                            case "Shto Hapsirë":
+                                btnAddSpace_Click(sender, null);
+                                break;
 
-                case "Dil":
-                    Dil_Click(sender, null);
-                    break;
+                            case "Lokacionet":
+                                Edito_Click(sender, null);
+                                break;
 
-                default:
-                    // Handle other cases if needed
-                    break;
+                            case "Raportet":
+                                Raportet_Click(sender, null);
+                                break;
+
+                            case "Transfero Tavolinen":
+                                Ruaj.Visible = true;
+                                PassStringToJavaScript("Transfero");
+                                break;
+                            case "Bashko Tavolinat":
+                                Ruaj.Visible = true;
+                                PassStringToJavaScript("Bashko");
+                                break;
+
+                            case "Dil":
+                                Dil_Click(sender, null);
+                                break;
+
+                            default:
+                                // Handle other cases if needed
+                                break;
+                        }
+                    }
+
+                }
             }
-
+            else
+            {
+                MessageBox.Show("Ruani ndryshimet!");
+            }
         }
 
         private void Dil_Click(object sender, EventArgs value)
@@ -898,7 +968,7 @@ namespace MyNET.Pos.Modules
         {
             Manage_Tables manage_ = new Manage_Tables();
             manage_.ShowDialog();
-            if(manage_.toOpen ==true)
+            if (manage_.toOpen == true)
             {
                 this.Close();
             }

@@ -54,7 +54,7 @@ namespace Services
         public int Status { get; set; }
         public string Logo { get; set; }
         public string Theme { get; set; }
-
+        public int DescriptionCol { get; set; }
 
 
         #endregion
@@ -99,6 +99,12 @@ namespace Services
         {
             string jsonParams = JsonConvert.SerializeObject(new {UnitCol = unit, id = stationId });
             Services.RestHepler<Settings>.Query("updateUnitCol", jsonParams);
+            
+        } 
+        public void UpdateDescriptionCol(int descr,int stationId)
+        {
+            string jsonParams = JsonConvert.SerializeObject(new {DescriptionCol = descr, id = stationId });
+            Services.RestHepler<Settings>.Query("updateDescription", jsonParams);
             
         }  
         public void UpdatePath(string path,int stationId)

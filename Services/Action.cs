@@ -16,8 +16,8 @@ namespace Services
         public ActionCategory[] category { get; set; }
         public ActionCollection[] collection { get; set; }
         public int id { get; set; }
-        public string from { get; set; }
-        public string to { get; set; }
+        public string DateFrom { get; set; }
+        public string DateTo { get; set; }
         public int item_id { get; set; }
         public decimal quantity { get; set; }
         public int group_item { get; set; }

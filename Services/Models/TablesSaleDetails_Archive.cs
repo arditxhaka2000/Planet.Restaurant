@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Services.Models
 {
-    public class TablesSaleDetails : IBaseObj
+    public class TablesSaleDetails_Archive : IBaseObj
     {
 
         public int Id { get; set; }
@@ -26,7 +26,7 @@ namespace Services.Models
         public decimal AvgPrice { get; set; }
         public decimal CategoryId { get; set; }
 
-        public string CostOfGoods { get; set; }
+        public decimal CostOfGoods { get; set; }
 
         public decimal Discount { get; set; }
         public decimal DiscountPrice { get; set; }
@@ -40,6 +40,7 @@ namespace Services.Models
         public decimal VatPrice { get; set; }
         public decimal Total { get; set; }
         public decimal TotalWithVat { get; set; }
+
         public int Status { get; set; }
         public int tableId { get; set; }
         public int Printed { get; set; } = 0;
@@ -50,88 +51,75 @@ namespace Services.Models
         public int Sale_Id { get; set; }
         public bool ForReturn { get; set; }
         public int ItemNumber { get; set; }
-        public decimal DiscountAmount { get; set; }
-        public int toClose { get; set; }
 
 
-        public static List<Models.TablesSaleDetails> GetTS()
+        public static List<Models.TablesSaleDetails_Archive> GetTS()
         {
-            var item = Services.RestHepler<Models.TablesSaleDetails>.Search("TablesSaleDetails", "");
+            var item = Services.RestHepler<Models.TablesSaleDetails_Archive>.Search("TablesSaleDetails", "");
 
             return item;
         }
-        public static List<Models.TablesSaleDetails> GetTSItemWithId(int id)
+        public static List<Models.TablesSaleDetails_Archive> GetSaleDetailsBySaleId(int tableId)
         {
-            var item = Services.RestHepler<Models.TablesSaleDetails>.Search("TablesSaleDetails", $"Id={id}");
-
-            return item;
-        }
-        public static List<Models.TablesSaleDetails> GetSaleDetailsBySaleId(int tableId)
-        {
-            var items = Services.RestHepler<Models.TablesSaleDetails>.Select("GetTablesSaleDetails", "tableId=" + tableId);
+            var items = Services.RestHepler<Models.TablesSaleDetails_Archive>.Select("GetTablesSaleDetails", "tableId=" + tableId);
             return items;
         }
         public int Insert()
         {
-            int rows = Services.RestHepler<Models.TablesSaleDetails>.Insert("TablesSaleDetails", this);
+            int rows = Services.RestHepler<Models.TablesSaleDetails_Archive>.Insert("TablesSaleDetails", this);
 
             return rows;
         }
         public int Update()
         {
-            int rows = Services.RestHepler<Models.TablesSaleDetails>.Update("TablesSaleDetails", this);
+            int rows = Services.RestHepler<Models.TablesSaleDetails_Archive>.Update("TablesSaleDetails", this);
 
             return rows;
         }
-        public void UpdateTableItem(decimal quantity, decimal total, decimal totalWithVat, string itemname, int tableId)
+        public void UpdateTableItem(decimal quantity, decimal total, decimal totalWithVat, string itemName)
         {
-            string jsonParams = JsonConvert.SerializeObject(new { Quantity = quantity, Total = total, TotalWithVat = totalWithVat, ItemName = itemname, tableId = tableId });
-            Services.RestHepler<Models.TablesSaleDetails>.Query("updateTablesSaleDetails", jsonParams);
+            string jsonParams = JsonConvert.SerializeObject(new { Quantity = quantity, Total = total, TotalWithVat = totalWithVat, ItemName = itemName });
+            Services.RestHepler<Models.TablesSaleDetails_Archive>.Query("updateTablesSaleDetails", jsonParams);
         }
         public static void UpdateTableSDPrinted(int printed, string id)
         {
             string jsonParams = JsonConvert.SerializeObject(new { Printed = printed, tableId = id });
-            Services.RestHepler<Models.TablesSaleDetails>.Query("updateTSDPrined", jsonParams);
-        } 
-        public static void UpdateTStoClose(int toClose, string id)
-        {
-            string jsonParams = JsonConvert.SerializeObject(new { toClose = toClose, tableId = id });
-            Services.RestHepler<Models.TablesSaleDetails>.Query("updateTStoClose", jsonParams);
+            Services.RestHepler<Models.TablesSaleDetails_Archive>.Query("updateTSDPrined", jsonParams);
         } 
         public static void UpdateTableSDFiscalPrinted(int printed, string id)
         {
             string jsonParams = JsonConvert.SerializeObject(new { PrintedFiscal = printed, tableId = id });
-            Services.RestHepler<Models.TablesSaleDetails>.Query("updateTSDPrinedFiscal", jsonParams);
+            Services.RestHepler<Models.TablesSaleDetails_Archive>.Query("updateTSDPrinedFiscal", jsonParams);
         } 
         public static void UpdateTableQuantityPrinted(decimal printedQ, string id, int itemId)
         {
             string jsonParams = JsonConvert.SerializeObject(new { PrintedQuantity = printedQ, ItemId = itemId, tableId = id });
-            Services.RestHepler<Models.TablesSaleDetails>.Query("updatePrinedQuantity", jsonParams);
+            Services.RestHepler<Models.TablesSaleDetails_Archive>.Query("updatePrinedQuantity", jsonParams);
         }
         public static void UpdateTableFiscalQuantityPrinted(decimal printedQ, string id)
         {
             string jsonParams = JsonConvert.SerializeObject(new { PrintedFiscalQuantity = printedQ, Id = id });
-            Services.RestHepler<Models.TablesSaleDetails>.Query("updatePrinedFiscalQuantity", jsonParams);
+            Services.RestHepler<Models.TablesSaleDetails_Archive>.Query("updatePrinedFiscalQuantity", jsonParams);
         }
         public static void UpdateStatus(int status, string id)
         {
             string jsonParams = JsonConvert.SerializeObject(new { Status = status, tableId = id });
-            Services.RestHepler<Models.TablesSaleDetails>.Query("updateStatus", jsonParams);
+            Services.RestHepler<Models.TablesSaleDetails_Archive>.Query("updateStatus", jsonParams);
         } public static void UpdateSaleId(int SaleId, string id)
         {
             string jsonParams = JsonConvert.SerializeObject(new { Sale_Id = SaleId, tableId = id });
-            Services.RestHepler<Models.TablesSaleDetails>.Query("updateSaleId", jsonParams);
+            Services.RestHepler<Models.TablesSaleDetails_Archive>.Query("updateSaleId", jsonParams);
         }
         public static void UpdateTSQuantity(string tableId, string itemId, string quantity, string total)
         {
             string jsonParams = JsonConvert.SerializeObject(new { tableId = tableId, itemId = itemId, quantity = quantity, TotalWithVat = total });
-            Services.RestHepler<Models.TablesSaleDetails>.RestaurantQuery("updateTSQuantity", jsonParams);
+            Services.RestHepler<Models.TablesSaleDetails_Archive>.RestaurantQuery("updateTSQuantity", jsonParams);
 
         }
         public static void DeleteTableSaleWithId(string id)
         {
             string jsonParams = JsonConvert.SerializeObject(new { Id = id });
-            Services.RestHepler<Models.TablesSaleDetails>.RestaurantQuery("deleteTableSaleWithId", jsonParams);
+            Services.RestHepler<Models.TablesSaleDetails_Archive>.RestaurantQuery("deleteTableSaleWithId", jsonParams);
 
         }
     }

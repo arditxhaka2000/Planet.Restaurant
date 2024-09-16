@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddTables));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtTableName = new System.Windows.Forms.TextBox();
@@ -69,6 +68,8 @@
             this.txtTableName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtTableName.BackColor = System.Drawing.SystemColors.Window;
+            this.txtTableName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtTableName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTableName.Location = new System.Drawing.Point(178, 64);
             this.txtTableName.Name = "txtTableName";
@@ -125,6 +126,7 @@
             // 
             // cmbSpace
             // 
+            this.cmbSpace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmbSpace.FormattingEnabled = true;
             this.cmbSpace.Location = new System.Drawing.Point(178, 134);
             this.cmbSpace.Name = "cmbSpace";
@@ -135,7 +137,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(434, 232);
             this.Controls.Add(this.cmbSpace);

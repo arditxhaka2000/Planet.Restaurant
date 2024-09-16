@@ -213,7 +213,6 @@
             this.word_scan.TabIndex = 42;
             this.word_scan.Text = "Skeno ";
             this.word_scan.UseVisualStyleBackColor = false;
-            this.word_scan.Visible = false;
             this.word_scan.Click += new System.EventHandler(this.word_scan_Click);
             // 
             // txtHost

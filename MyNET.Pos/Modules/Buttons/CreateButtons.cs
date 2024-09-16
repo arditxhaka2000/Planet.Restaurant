@@ -159,6 +159,17 @@ namespace MyNET.Pos.Modules
                     {
                         ButtonT = item.Name;
                     }
+                    if(Globals.Settings.Theme == "dark")
+                    {
+                        ButtonColor = Color.FromArgb(52, 53, 59);
+                        TextColor = Color.White;
+                    }
+                    else
+                    {
+                        ButtonColor = Color.WhiteSmoke;
+                        TextColor = Color.Black;
+
+                    }
                     if (File.Exists(path))
                     {
 
@@ -178,8 +189,8 @@ namespace MyNET.Pos.Modules
                             TextAlign = ContentAlignment.BottomCenter,
                             Image = Image.FromFile(Path.GetFullPath(Application.StartupPath + @"\ImagesPath" + Globals.Settings.Id.ToString()) + "\\" + item.Id.ToString() + ".jpg"),
                             ImageAlign = ContentAlignment.TopCenter,
-                            BackColor = Color.FromArgb(52, 53, 59),
-                            ForeColor = Color.White,
+                            BackColor = ButtonColor,
+                            ForeColor = TextColor,
                             //Location = new Point(5, this.Base),
                             Location = new Point(i * (ButtonSize.Width + 10), 10),
                             Parent = ParentControl,
@@ -232,8 +243,8 @@ namespace MyNET.Pos.Modules
                             TextImageRelation = ImageAlignButton,
                             TextAlign = ContentAlignment.BottomCenter,
                             ImageAlign = ContentAlignment.TopCenter,
-                            BackColor = Color.FromArgb(52,53,59),
-                            ForeColor = Color.White,
+                            BackColor = ButtonColor,
+                            ForeColor = TextColor,
                             Location = new Point(i * (ButtonSize.Width + 10), 10),
                             Parent = ParentControl,
                             Visible = true,

@@ -10,6 +10,8 @@ using System.IO;
 using Services;
 using System.Data.Entity.Core;
 using System.Linq;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
+using Microsoft.Office.Interop.Word;
 
 namespace MyNET.Shops
 {
@@ -94,7 +96,7 @@ namespace MyNET.Shops
             string command = "";
 
             int i = 0;
-
+            int articleCount = 0;
             string invoiceN = "Q,1,______,_,__; 1;Fatura Nr.:" + SaleId;
             string planet = "Q,1,______,_,__; 2;PlanetAccounting.org";
             command = command + invoiceN + "\r\n";
@@ -124,7 +126,15 @@ namespace MyNET.Shops
 
                     if (quantity == printedFiscalQuantity)
                     {
+                        articleCount++;
                         continue;
+                    }
+                    else if(quantity > printedFiscalQuantity)
+                    {
+                        quantity -= printedFiscalQuantity;
+                        var id = dt.Rows[i - 1]["Id"].ToString();
+                        Services.Models.TablesSaleDetails.UpdateTableFiscalQuantityPrinted(quantity, id);
+
                     }
 
                     //Dim discount As Decimal = (price - discountprice) * quantity
@@ -274,7 +284,6 @@ namespace MyNET.Shops
                     //[grupi i TVSH]
                     salerow = salerow + vatgroup.ToString() + ";0;";
 
-
                     salerow = salerow + dt.Rows[i - 1]["ItemId"].ToString() + ";";
 
                     command = command + salerow + "\r\n";
@@ -283,6 +292,11 @@ namespace MyNET.Shops
                     discountprice += discountprc;
                 }
 
+            }
+
+            if (articleCount == dt.Rows.Count)
+            {
+                return false;
             }
 
             if (discountprice > 0)
@@ -308,12 +322,12 @@ namespace MyNET.Shops
             {
                 if (item.BankId > 0 && item.AmountPaid > 0.0m)
                 {
-                    command = command + $"T,1,______,_,__;3;{Math.Round(item.AmountPaid,5)};" + "\r\n";
+                    command = command + $"T,1,______,_,__;3;" + "\r\n";
 
                 }
                 else if (item.BankId == 0 && item.AmountPaid > 0.0m)
                 {
-                    command = command + $"T,1,______,_,__;0;{clientPayed};" + "\r\n";
+                    command = command + $"T,1,______,_,__;0;" + "\r\n";
 
                 }
             }
@@ -362,6 +376,7 @@ namespace MyNET.Shops
 
             decimal payedsum = 0;
             string command = "";
+            int articleCount = 0;
 
             int i = 0;
 
@@ -395,7 +410,12 @@ namespace MyNET.Shops
 
                     if (quantity == printedFiscalQuantity)
                     {
+                        articleCount++;
                         continue;
+                    }
+                    else if (quantity > printedFiscalQuantity)
+                    {
+                        quantity -= printedFiscalQuantity;
                     }
                     //Dim discount As Decimal = (price - discountprice) * quantity
                     decimal discountpercent = decimal.Parse(dt.Rows[i - 1]["Discount"].ToString());
@@ -553,6 +573,10 @@ namespace MyNET.Shops
                 }
 
             }
+            if (articleCount == dt.Rows.Count)
+            {
+                return false;
+            }
             if (discountprice > 0)
             {
                 command = command + "C,1,______,_,__;0;0;" + "-" + Math.Round(discountprice, 5) + ";" + "\r\n";
@@ -576,12 +600,12 @@ namespace MyNET.Shops
             {
                 if (item.BankId > 0 && item.AmountPaid > 0.0m)
                 {
-                    command = command + $"T,1,______,_,__;3;{Math.Round(item.AmountPaid, 5)};" + "\r\n";
+                    command = command + $"T,1,______,_,__;3;" + "\r\n";
 
                 }
                 else if (item.BankId == 0 && item.AmountPaid > 0.0m)
                 {
-                    command = command + $"T,1,______,_,__;0;{clientPayed};" + "\r\n";
+                    command = command + $"T,1,______,_,__;0;" + "\r\n";
 
                 }
             }

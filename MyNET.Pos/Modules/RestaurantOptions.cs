@@ -479,6 +479,14 @@ namespace MyNET.Pos.Modules
                 {
                     chckUnitCol.Checked = false;
                 }
+                if (globals.DescriptionCol == 1)
+                {
+                    checkBox7.Checked = true;
+                }
+                else
+                {
+                    checkBox7.Checked = false;
+                }
                 if (globals.BarcMode == 1)
                 {
                     checkBox2.Checked = true;
@@ -548,6 +556,7 @@ namespace MyNET.Pos.Modules
                 checkBox4.CheckedChanged += new EventHandler(checkBox4_CheckedChanged);
                 checkBox5.CheckedChanged += new EventHandler(checkBox5_CheckedChanged);
                 checkBox6.CheckedChanged += new EventHandler(checkBox6_CheckedChanged);
+                checkBox7.CheckedChanged += new EventHandler(checkBox7_CheckedChanged);
 
             }
             if (tabControl1.SelectedIndex == 2)
@@ -576,6 +585,24 @@ namespace MyNET.Pos.Modules
 
             }
 
+        }
+
+        private void checkBox7_CheckedChanged(object sender, EventArgs e)
+        {
+            var sett = Services.Settings.Get();
+
+            if (checkBox7.Checked == true)
+            {
+                sett.UpdateDescriptionCol(1, sett.Id);
+                MessageBox.Show("Veprimi perfundoi me sukses!");
+
+            }
+            if (checkBox7.Checked == false)
+            {
+                sett.UpdateDescriptionCol(0, sett.Id);
+                MessageBox.Show("Veprimi perfundoi me sukses!");
+
+            }
         }
 
         private void checkBox6_CheckedChanged(object sender, EventArgs e)
@@ -1613,7 +1640,7 @@ namespace MyNET.Pos.Modules
 
         private void Options_FormClosing(object sender, FormClosingEventArgs e)
         {
-            PosRestaurant parentForm = (PosRestaurant)this.Owner;
+            RestaurantPos parentForm = (RestaurantPos)this.Owner;
 
             // Reload the visual settings in the parent form
             if (flag == true)

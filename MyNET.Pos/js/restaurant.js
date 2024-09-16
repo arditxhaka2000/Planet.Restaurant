@@ -41,7 +41,7 @@ function receiveTables(jsonData) {
             var forecolor = "white";
             pic = "Table1";
         }
-        html += "<div class='draggable' id= d" + element.Id + " onclick ='sendPOS(" + element.Id + ")' style='left: " + left + "px; top: " + top + "px; user-select: none; background-image:url(Resources/" + pic + ".png);'>";
+        html += "<div class='draggable' id= " + element.Id + " onclick ='sendPOS(" + element.Id + ")' style='left: " + left + "px; top: " + top + "px; user-select: none; background-image:url(Resources/" + pic + ".png);'>";
         html += "<div class='check-icon'></div>";
         html += "<br>"
         html += "<div class='row'>";
@@ -211,6 +211,28 @@ function functionOptionsRestaurant(m) {
         //toggleCheckIcons();
     }
 }
+function changeTableColor(tableId,color) {
+    const tableElement = document.getElementById(tableId);
+    console.log('ktu12', color);
+    if (tableElement) {
+        const h5 = tableElement.getElementsByTagName('h5');
+
+        if (color === 'red') {
+            tableElement.style.backgroundImage = "url('Resources/Table1.png')";
+            for (let i = 0; i < h5.length; i++) {
+                h5[i].style.color = 'white';  
+            }
+
+        }
+        else {
+            tableElement.style.backgroundImage = "url('Resources/Table.png')";
+            for (let i = 0; i < h5.length; i++) {
+                h5[i].style.color = 'black';
+            }
+        }
+
+    }
+}
 function getDivLocations() {
     var divs = document.querySelectorAll('.draggable');
     var locations = [];
@@ -223,6 +245,7 @@ function getDivLocations() {
             LocationY: rect.top.toString()
         };
         locations.push(location);
+        console.log(locations);
 
     });
 

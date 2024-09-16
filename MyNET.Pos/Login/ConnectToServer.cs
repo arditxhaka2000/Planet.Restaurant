@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Services;
+using System;
+using System.Drawing;
+using System.Net.NetworkInformation;
 using System.Windows.Forms;
 //using Etl.Services;
 
@@ -21,7 +24,8 @@ namespace MyNET.Pos
             }
 
             int port = 0;
-            if(int.TryParse(txtPort.Text, out port)){
+            if (int.TryParse(txtPort.Text, out port))
+            {
                 //test conncetion to server
                 try
                 {
@@ -52,10 +56,11 @@ namespace MyNET.Pos
             }
             else
             {
+
                 MessageBox.Show(paragraph_port_requirement.Text);
             }
 
-               
+
         }
 
         private void ScanIp_Load(object sender, EventArgs e)
@@ -75,43 +80,32 @@ namespace MyNET.Pos
                 {
                     return;
                 }
-                
-                if (Services.NetworkService.CheckHostPort(host,port))
+
+                if (Services.NetworkService.CheckHostPort(host, port))
                 {
+                    config.LocalServerHost = txtHost.Text;
+                    config.LocalServerPort = port;
+                    config.DeviceId = (string.IsNullOrEmpty(config.DeviceId)) ? Guid.NewGuid().ToString() : config.DeviceId;
+                    Globals.DeviceId = config.DeviceId;
+                    Globals.SaveConfig(config);
                     Services.Connection.SetLocalServerProperties(txtHost.Text, port);
                     var s = Services.Settings.Get();
 
-                    //if (s.Language == "Sq")
-                    //{
-                    //    var data = LoadJson.DataSq;
-                    //    foreach (var item in data.dataWords)
-                    //    {
-                    //        foreach (Control c in splitContainer1.Panel1.Controls)
-                    //        {
-                    //            if (c.Name == item.name)
-                    //            {
-                    //                c.Text = item.translate;
-                    //            }
-                    //        }
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    var data = LoadJson.DataEn;
-                    //    foreach (var item in data.dataWords)
-                    //    {
-                    //        foreach (Control c in splitContainer1.Panel1.Controls)
-                    //        {
-                    //            if (c.Name == item.name)
-                    //            {
-                    //                c.Text = item.translate;
-                    //            }
-                    //        }
-                    //    }
-                    //}
                     Globals.NextStep = "SelectStation";
                     this.Close();
-                }               
+                }
+                else if (Services.NetworkService.CheckHostPort(GetLocalIPAddress(), port))
+                {
+                    config.LocalServerHost = txtHost.Text;
+                    config.LocalServerPort = port;
+                    config.DeviceId = (string.IsNullOrEmpty(config.DeviceId)) ? Guid.NewGuid().ToString() : config.DeviceId;
+                    Globals.DeviceId = config.DeviceId;
+                    Globals.SaveConfig(config);
+                    Services.Connection.SetLocalServerProperties(GetLocalIPAddress(), port);
+                    var s = Services.Settings.Get();
+                    Globals.NextStep = "SelectStation";
+                    this.Close();
+                }
             }
             catch (Exception ex)
             {
@@ -119,16 +113,81 @@ namespace MyNET.Pos
                 MessageBox.Show("Error while connecting! See the log for details.");
             }
         }
+        public static string GetLocalIPAddress()
+        {
+            string ipAddress = "";
 
+            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 || ni.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
+                {
+                    Console.WriteLine(ni.Name);
+                    IPInterfaceStatistics stat = ni.GetIPStatistics();
+                    if (ni.OperationalStatus == OperationalStatus.Up)
+                    {
+                        if (stat.BytesReceived != 0 || stat.BytesSent != 0)
+                        {
+                            foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses)
+                            {
+                                if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                                {
+                                    ipAddress = ip.Address.ToString();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return ipAddress;
+        }
         private void btnClose_Click(object sender, EventArgs e)
         {
             Globals.NextStep = "Exit";
-            this.Close();
+
         }
 
-        private void word_scan_Click(object sender, EventArgs e)
+        private async void word_scan_Click(object sender, EventArgs e)
         {
+            var config = Globals.GetConfig();
 
+            this.word_scan.Text = "";
+            this.word_scan.Image = Properties.Resources.LoadingSpinner;
+            this.word_scan.ImageAlign = ContentAlignment.MiddleCenter;
+
+            int port = config.LocalServerPort;
+            NetworkScanner scanner = new NetworkScanner(port, "/api/scan");
+            string serverIP = await scanner.ScanNetworkForServer();
+
+            if (serverIP != null)
+            {
+                Services.Connection.SetLocalServerIp(serverIP);
+                config.LocalServerHost = Connection.Host;
+                config.LocalServerPort = Connection.Port;
+                config.DeviceId = (string.IsNullOrEmpty(config.DeviceId)) ? Guid.NewGuid().ToString() : config.DeviceId;
+                Globals.DeviceId = config.DeviceId;
+                Globals.SaveConfig(config);
+                var s = Services.Settings.Get();
+
+                this.word_scan.Text = "Skeno";
+                this.word_scan.Image = null;
+                this.word_scan.ImageAlign = ContentAlignment.MiddleCenter;
+
+                Globals.NextStep = "SelectStation";
+
+                this.Close();
+
+            }
+            else
+            {
+                this.word_scan.Text = "Skeno";
+                this.word_scan.Image = null;
+                this.word_scan.ImageAlign = ContentAlignment.MiddleCenter;
+
+                config.LocalServerHost = "";
+                Globals.SaveConfig(config);
+
+                MessageBox.Show("Serveri nuk u gjet.");
+            }
         }
     }
 }

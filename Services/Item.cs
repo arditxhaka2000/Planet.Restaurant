@@ -137,6 +137,11 @@ namespace Services
         {   
             return RestHepler<Models.ItemsDiscount>.Select("getAll","");
         } 
+        public static void UpdateActiveItem(int active, string id)
+        {
+            string jsonParams = JsonConvert.SerializeObject(new { Active = active, Id = id });
+            Services.RestHepler<Item>.Query("changeStatusItem", jsonParams);
+        } 
         public static List<Models.ItemsDiscount> GetAllItemSS()
         {   
             return RestHepler<Models.ItemsDiscount>.Select("getItemsWithPosStock", "");

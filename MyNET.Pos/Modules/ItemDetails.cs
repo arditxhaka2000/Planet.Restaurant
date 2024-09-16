@@ -40,11 +40,11 @@ namespace MyNET.Pos.Modules
 
                 foreach (var i in item)
                 {
-                    var stock = Services.Warehouse.GetbyId(i.Id);
+                    var stock = Services.Warehouse.GetbyId(i.Id); 
                     var quantityStck = stock != null ? stock.InStock : 0;
                     var qmimi = Math.Round(i.RetailPrice+(i.RetailPrice* (decimal)(i.Vat*0.01)),2);
-
-                    dgItemsDetails.Rows.Add(i.ItemName, i.Barcode, quantityStck, qmimi);
+                    var status = i.Active;
+                    dgItemsDetails.Rows.Add(i.ItemName, i.Barcode, quantityStck, qmimi,status);
                 }
             }
             else
@@ -64,7 +64,8 @@ namespace MyNET.Pos.Modules
                     var stock = Services.Warehouse.GetbyId(i.Id);
                     var quantityStck = stock != null ? stock.InStock : 0;
                     var qmimi = Math.Round(i.RetailPrice+(i.RetailPrice* (decimal)(i.Vat*0.01)),2);
-                    dgItemsDetails.Rows.Add(i.ItemName, i.Barcode, quantityStck, qmimi);
+                    var status = i.Active;
+                    dgItemsDetails.Rows.Add(i.ItemName, i.Barcode, quantityStck, qmimi,status);
                 }
             }
         }
@@ -88,8 +89,8 @@ namespace MyNET.Pos.Modules
                 foreach (var i in item)
                 {
                     var quantityStck = Services.Warehouse.GetbyId(i.Id);
-
-                    dgItemsDetails.Rows.Add(i.ItemName, i.Barcode, quantityStck.InStock);
+                    var status = i.Active;
+                    dgItemsDetails.Rows.Add(i.ItemName, i.Barcode, quantityStck.InStock, status);
                 }
             }
             else
@@ -108,7 +109,7 @@ namespace MyNET.Pos.Modules
                 {
                     var stock = Services.Warehouse.GetbyId(i.Id);
                     var quantityStck = stock != null ? stock.InStock : 0;
-                    dgItemsDetails.Rows.Add(i.ItemName, i.Barcode, quantityStck);
+                    dgItemsDetails.Rows.Add(i.ItemName, i.Barcode, quantityStck,i.Active);
                 }
             }
            
@@ -127,6 +128,32 @@ namespace MyNET.Pos.Modules
             {
                 btnSearch_Click(null,null);
                 e.SuppressKeyPress = true; // Suppress the Enter key from being processed by the control
+            }
+        }
+
+        private void dgItemsDetails_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dgItemsDetails.CurrentCell is DataGridViewCheckBoxCell)
+            {
+                dgItemsDetails.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
+        private void dgItemsDetails_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgItemsDetails.Columns[e.ColumnIndex] is DataGridViewCheckBoxColumn && e.RowIndex >= 0)
+            {
+                bool isChecked = (bool)dgItemsDetails.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                var item = Item.GetItemWithName(dgItemsDetails.Rows[e.RowIndex].Cells[0].Value.ToString()).First();
+                if (isChecked)
+                {
+                    Services.Item.UpdateActiveItem(1, item.Id.ToString());
+                }
+                else
+                {
+                    Services.Item.UpdateActiveItem(0, item.Id.ToString());
+
+                }
             }
         }
     }

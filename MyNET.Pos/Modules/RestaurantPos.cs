@@ -38,6 +38,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using DataTable = System.Data.DataTable;
 using Font = System.Drawing.Font;
 using Image = System.Drawing.Image;
+using Item = Services.Item;
 using Label = System.Windows.Forms.Label;
 using MessageBox = System.Windows.Forms.MessageBox;
 using Point = System.Drawing.Point;
@@ -133,24 +134,25 @@ namespace MyNET.Pos
         {
             try
             {
-                //Me printu artikujt ne Termal nese veqse nuk jane shtyp para se me mbyll tavolinen
-                InsertOrderDetails();
 
-                if (Globals.Settings.PosPrinter == "1")
-                {
-                    PrintRestaurantThermal();
-                    Services.Models.TablesSaleDetails.UpdateTableSDPrinted(1, tableId);
-
-                }
+               
                 if (cbPartners.SelectedItem != null)
                 {
                     if (ug.Rows.Count > 0)
                     {
 
+
                         DialogResult dialogResult = mPaymentDialog.ShowDialog();
 
                         if (dialogResult == DialogResult.OK)
                         {
+                            InsertOrderDetails();
+
+                            if (Globals.Settings.PosPrinter == "1")
+                            {
+                                PrintRestaurantThermal();
+                                Services.Models.TablesSaleDetails.UpdateTableSDPrinted(1, tableId);
+                            }
 
                             mSaleId = SaveSale();
                             //save sales details
@@ -163,13 +165,15 @@ namespace MyNET.Pos
                                 //print invoice                               
                                 PrintF();
                                 //change sale status . Now sale is ready for sync-
+                                Services.Sale.ChngStatus(mSaleId, 0);
+
                             }
 
 
 
                             if (ug.Columns.Contains(" ") == true)
                             {
-                                ug.Columns.RemoveAt(27);
+                                ug.Columns.RemoveAt(33);
                             }
 
                             countNumFiscal++;
@@ -182,7 +186,7 @@ namespace MyNET.Pos
 
                             Services.Tables.UpdateTablePos(0, tableId);
                             Services.Models.TablesSaleDetails.UpdateTableSDPrinted(1, tableId);
-                            //Services.Models.TablesSaleDetails.UpdateStatus(1, tableId);
+                            Services.Models.TablesSaleDetails.UpdateTStoClose(1, tableId);
                             Services.Tables.UpdateTableFiscalCount("0", tableId);
                             Services.Tables.UpdateTableEmpId("0", tableId);
 
@@ -1095,7 +1099,7 @@ namespace MyNET.Pos
                         }
                     }
 
-                }
+                 }
                 catch (Exception ex)
                 {
 
@@ -1478,16 +1482,16 @@ namespace MyNET.Pos
 
 
             //Print Company Name
-            e.Graphics.DrawString("ORDER BILL", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
+            e.Graphics.DrawString("Porosia", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
             height += 30;
             //Print Company Address
             e.Graphics.DrawString(company, normalFont, Brushes.Black, total_width / company_address, height, new StringFormat());
             height += 40;
 
             //Print Receipt No
-            e.Graphics.DrawString("Receipt No :\n " + receipt_no, boldFont, Brushes.Black, total_width / receipt_number, height, new StringFormat());
+            e.Graphics.DrawString("Numri i porosisë :\n " + receipt_no, boldFont, Brushes.Black, total_width / receipt_number, height, new StringFormat());
             //Print Receipt Date
-            e.Graphics.DrawString("Date :\n " + receipt_date, boldFont, Brushes.Black, total_width / rec_date, height, new StringFormat());
+            e.Graphics.DrawString("Date :\n " + receipt_date, boldFont, Brushes.Black, total_width / rec_date-27, height, new StringFormat());
             height += 40;
 
             //Print Line
@@ -1590,7 +1594,7 @@ namespace MyNET.Pos
                         if (currentItem.Count() > 0)
                         {
 
-                            tot = ((decimal)row.Cells["TotalWithVat"].Value - (((decimal)row.Cells["Quantity"].Value - currentItem.First().PrintedQuantity) * currentItem.First().DiscountPriceWithVat)).ToString();
+                            tot = ((decimal)row.Cells["DiscountPriceWithVat"].Value * ((decimal)row.Cells["Quantity"].Value - currentItem.First().PrintedQuantity)).ToString();
                             e.Graphics.DrawString(((decimal)row.Cells["Quantity"].Value - currentItem.First().PrintedQuantity).ToString(), normalFont, Brushes.Black, total_width / rec_qty, height, new StringFormat());
                             e.Graphics.DrawString(tot, normalFont, Brushes.Black, total_width / rec_total, height, new StringFormat());
                         }
@@ -1628,7 +1632,7 @@ namespace MyNET.Pos
             e.Graphics.DrawString(line, normalFont, Brushes.Black, 0, height, new StringFormat());
             height += 40;
 
-            e.Graphics.DrawString("Thank You", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
+            e.Graphics.DrawString("Faleminderit", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
 
             e.HasMorePages = false;
         }
@@ -1733,22 +1737,33 @@ namespace MyNET.Pos
             if (globals.BarcMode == 1)
             {
                 splitContainer2.Visible = true;
-                splitContainer2.BorderStyle = BorderStyle.Fixed3D;
+
+                splitContainer2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
                 txtsearchB.Visible = true;
                 txtsearchB.DropDownStyle = ComboBoxStyle.DropDown;
-                txtsearchB.Width = splitContainer2.Panel1.Width / 2;
-                txtsrchB.Width = splitContainer2.Panel2.Width / 2;
-                txtB.Width = splitContainer2.Panel1.Width / 2 - 20;
-                txtsearchB.Click += Test_Click;
+                txtsearchB.Width = 100;
+                txtB.Width = 80;
+                txtsearchB.Location = new System.Drawing.Point((this.Width - 800) / 2, 0);
+                txtB.Location = new System.Drawing.Point((this.Width - 800) / 2, 0);
+
+                //int centerX = (splitContainer2.Panel1.Width - txtsearchB.Width) / 2;
+                //int centerY = (splitContainer2.Height) / 2;
+                //txtsearchB.Location = new System.Drawing.Point(centerX, centerY);
+                //txtB.Location = new System.Drawing.Point(centerX, centerY);
+                splitContainer2.Panel2Collapsed = true;
+
+
+                //txtB.Click += txtb_Click;
+                //txtsrchB.Click += Test_Click;
                 tableLayoutPanel11.Visible = false;
                 pnlGrids.Location = new System.Drawing.Point(5, 150);
                 pnlGrids.Size = new Size(this.Width, this.Height - 380);
-
+                txtsrchB.Visible = false;
                 tableLayoutPanel2.SetColumnSpan(this.pnlGrids, 2);
 
                 tableLayoutPanel3.RowStyles[2].SizeType = SizeType.Percent;
                 tableLayoutPanel3.RowStyles[2].Height = 49;
-
+                txtB.KeyDown += txt_KeyDown;
             }
 
 
@@ -1811,7 +1826,73 @@ namespace MyNET.Pos
                 }
 
             }
+            if(sett.Theme is "light")
+            {
+                word_station_branch.BackColor = Color.FromArgb(55, 67, 82);
+                smlLogo.BackColor = Color.FromArgb(55, 67, 82);
+                word_user.BackColor = Color.FromArgb(55, 67, 82);
+                pictureBox1.BackColor = Color.FromArgb(55, 67, 82);
+                lblTime.BackColor = Color.FromArgb(55, 67, 82);
+                label3.BackColor = Color.FromArgb(55, 67, 82);
+                pnlMenu.BackColor = Color.FromArgb(55, 67, 82);
+                splitContainer1.BackColor = Color.FromArgb(55, 67, 82);
+                splitContainer1.Panel1.BackColor = Color.FromArgb(55, 67, 82);
+                tableLayoutPanel6.BackColor = Color.FromArgb(55, 67, 82); 
+                tableLayoutPanel3.BackColor = Color.WhiteSmoke; 
+                tableLayoutPanel2.BackColor = Color.WhiteSmoke; 
+                tableLayoutPanel11.BackColor = Color.WhiteSmoke; 
+                tableLayoutPanel5.BackColor = Color.WhiteSmoke; 
+                tableLayoutPanel4.BackColor = Color.WhiteSmoke; 
+                tableLayoutPanel1.BackColor = Color.WhiteSmoke; 
+                tableLayoutPanel8.BackColor = Color.WhiteSmoke; 
+                tableLayoutPanel9.BackColor = Color.WhiteSmoke; 
+                tableLayoutPanel7.BackColor = Color.WhiteSmoke; 
+                ug.BackgroundColor = Color.WhiteSmoke; 
+                pnlGrids.BackColor = Color.WhiteSmoke;
+                pnlTotal.BackColor = Color.WhiteSmoke;
+                pnlCategories.BackColor = Color.WhiteSmoke;
+                pnlSubCat.BackColor = Color.WhiteSmoke;
+                pnlButtons.BackColor = Color.WhiteSmoke;
+                pnlItems.BackColor = Color.WhiteSmoke;
+                pnlItems1.BackColor = Color.WhiteSmoke;
+                pnlButtons.BackColor = Color.WhiteSmoke;
+                tableLayoutPanel11.BackColor = Color.WhiteSmoke;
+                panel1.BackColor = Color.WhiteSmoke;
 
+               
+
+                lblFiscalCount.BackColor = Color.WhiteSmoke;
+                lblFiscalCount.ForeColor = Color.Black;
+                word_no_order.BackColor = Color.WhiteSmoke;
+                word_no_order.ForeColor = Color.Black;
+                tblInfo.BackColor = Color.WhiteSmoke;
+                cbPartners.BackColor = Color.WhiteSmoke;
+                cbPartners.ForeColor = Color.Black;
+                txtShortcuts.BackColor = Color.WhiteSmoke;
+                txtShortcuts.ForeColor = Color.Black;
+                txtShortcuts.ForeColor = Color.Black;
+                eurSymbol.BackColor = Color.WhiteSmoke;
+                eurSymbol.ForeColor = Color.Black;
+                word_total.BackColor = Color.WhiteSmoke;
+                word_total.ForeColor = Color.Black;
+                txtTotalSum.BackColor = Color.WhiteSmoke;
+                txtTotalSum.ForeColor = Color.Black;
+                eursymb.BackColor = Color.WhiteSmoke;
+                eursymb.ForeColor = Color.Black;
+                txtTotalWVatSum.BackColor = Color.WhiteSmoke;
+                txtTotalWVatSum.ForeColor = Color.Black;
+                word_discount.BackColor = Color.WhiteSmoke;
+                word_discount.ForeColor = Color.Black;
+                percSymb.BackColor = Color.WhiteSmoke;
+                percSymb.ForeColor = Color.Black;
+                word_totalwithoutVat.BackColor = Color.WhiteSmoke;
+                word_totalwithoutVat.ForeColor = Color.Black;
+                txtDiscount.BackColor = Color.WhiteSmoke;
+                txtDiscount.ForeColor = Color.Black;
+                ug.RowPrePaint += new DataGridViewRowPrePaintEventHandler(DataGridView1_RowPrePaint);
+
+
+            }
 
 
 
@@ -1848,6 +1929,17 @@ namespace MyNET.Pos
                 btnPrint_Click(null, null);
                 Manage_Tables.closeTable = false;
             }
+        }
+
+        private void DataGridView1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            DataGridViewRow row = ug.Rows[e.RowIndex];
+
+            row.DefaultCellStyle.BackColor = Color.WhiteSmoke;
+            row.DefaultCellStyle.ForeColor = Color.Black;
+            row.DefaultCellStyle.SelectionBackColor = Color.FromName("Highlight");
+            row.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
+
         }
 
         private void Test_Click(object sender, EventArgs e)
@@ -2175,6 +2267,7 @@ namespace MyNET.Pos
             {
                 ItemDetails itemDetails = new ItemDetails();
                 itemDetails.ShowDialog();
+                this.ReloadForm();
             }
             else if (e.KeyCode == Keys.F7)
             {
@@ -2271,7 +2364,7 @@ namespace MyNET.Pos
             cbPartners.Enabled = false;
             inputstate = InputControlState.ShearchItem;
             ChangeInputControlState();
-            txtsrch.Focus();
+            txtsearch.Focus();
         }
 
         private void cbCustomers_KeyDown(object sender, KeyEventArgs e)
@@ -2435,7 +2528,7 @@ namespace MyNET.Pos
             MakeButtons.ClickedHandler += button_Clicker;
 
             MakeButtons.CreateButtonsFromList(items);
-            //txtsrch.Focus();
+            //txtsearch.Focus();
         }
 
         private void LoadItems()
@@ -2463,7 +2556,7 @@ namespace MyNET.Pos
 
 
             AddButtonsBasedOnScreenResolution();
-            //txtsrch.Focus();
+            //txtsearch.Focus();
 
         }
         private int CalculateButtonSize()
@@ -2513,7 +2606,7 @@ namespace MyNET.Pos
 
             MakeButtons.ClickedHandler += button_Clicker;
             MakeButtons.CreateButtonsFromLists(favItems);
-            txtsrch.Focus();
+            txtsearch.Focus();
             //ClickAll();
             //timer2.Enabled = true;
         }
@@ -2628,16 +2721,16 @@ namespace MyNET.Pos
 
             pnlCategories.Height = CbSize.Height + CbSize.Height / 2;
 
-            //txtsrch.Focus();
+            //txtsearch.Focus();
         }
 
-        Image trash = Properties.Resources.redTrash;
+        Image trash = Globals.Settings.Theme=="dark"? Properties.Resources.redTrash: Properties.Resources.trash_removebg_preview;
         private void grid_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex < 0)
                 return;
 
-            if (e.ColumnIndex == 32)
+            if (e.ColumnIndex == 33)
             {
 
                 e.Paint(e.CellBounds, DataGridViewPaintParts.All);
@@ -4229,415 +4322,415 @@ namespace MyNET.Pos
 
         }
 
-        private void txtsrch_TextChanged(object sender, EventArgs e)
-        {
-            var settings = Services.Settings.Get();
-            var clientDiscount = Partner.Get(PartnerId).Discount;
-            bool found = false;
-            if (txtsrch.Text != "")
-            {
-                var foundItems = mAllItems.Find(p => p.Barcode == txtsrch.Text);
-
-
-                if (ug.Columns.Contains(" ") == false)
-                {
-                    DataGridViewButtonColumn col = new DataGridViewButtonColumn();
-                    col.UseColumnTextForButtonValue = true;
-                    col.Name = " ";
-                    ug.Columns.Add(col);
-                }
-
-
-                if (foundItems != null)
-                {
-                    decimal shuma = (foundItems.SalePrice * (1 - foundItems.Discount / 100)) * (1 * (decimal)foundItems.Vat / 100.0M);
-
-                    decimal shumatotale = Math.Round(shuma + foundItems.SalePrice, 2);
-                    if (settings.AllowDiscount == "0" && clientDiscount > 0)
-                    {
-                        shumatotale = shumatotale - (shumatotale * clientDiscount / 100);
-
-                    }
-
-                    var itemAction = aksionet.Find(p => p.item_id == foundItems.Id);
-                    var categoryAction = aksionet.Find(p => p.category_id == foundItems.CategoryId);
-                    if (categoryAction != null && itemAction != null && settings.AllowDiscount == "0")
-                    {
-                        var action = itemAction;
-                        if (ug.Rows.Count > 0)
-                        {
-                            foreach (DataGridViewRow row in ug.Rows)
-                            {
-                                if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                                {
-                                    if (itemAction.quantity == decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1)
-                                    {
-                                        decimal discount = (itemAction.discount) / 100;
-                                        decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                        row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                        decimal totalwithvat = ((decimal)row.Cells["TotalWithVat"].Value + ((decimal)row.Cells["TotalWithVat"].Value * discount));
-                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                        row.Cells["Discount"].Value = (discount * 100).ToString("N");
-
-                                    }
-                                    else
-                                    {
-                                        if (decimal.Parse(row.Cells["Discount"].Value.ToString()) == 0 && action.discount == 0)
-                                        {
-                                            decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                            row.Cells["Quantity"].Value = quantity.ToString("N");
-                                            decimal totalwithvat = shumatotale * quantity;
-                                            row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                        }
-                                        else
-                                        {
-                                            decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
-                                            decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                            row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                            decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
-                                            row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                        }
-                                    }
-                                    found = true;
-                                    CalculateGridColumns();
-                                }
-
-                            }
-                            if (!found)
-                            {
-                                if (itemAction.discount == 1)
-                                {
-                                    foundItems.Discount = itemAction.discount;
-                                    AddItem(foundItems);
-                                }
-                                if (itemAction.discount == foundItems.Quantity + 1 || itemAction.discount > foundItems.Quantity + 1)
-                                {
-                                    foundItems.Discount = itemAction.discount;
-                                    AddItem(foundItems);
-                                }
-                                else
-                                    AddItem(foundItems);
-
-
-                            }
-
-                        }
-                        else
-                        {
-                            if (action.quantity == 1)
-                            {
-                                foundItems.Discount = action.discount;
-
-                            }
-                            AddItem(foundItems);
-                        }
-                    }
-
-                    if (itemAction != null && settings.AllowDiscount == "0")
-                    {
-                        var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
-                        var totalPrice = tp - (tp * clientDiscount / 100);
-
-                        if (itemAction.quantity == 1)
-                        {
-                            if (ug.Rows.Count > 0)
-                            {
-                                foreach (DataGridViewRow row in ug.Rows)
-                                {
-
-                                    if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                                    {
-                                        decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
-
-
-                                        row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-                                        var vat = Convert.ToDecimal(row.Cells["Vat"].Value) / 100;
-                                        var totalP = Math.Round((decimal)row.Cells["Price"].Value * vat + (decimal)row.Cells["Price"].Value, 2);
-                                        decimal totalwithvat = (totalP - (totalP * discount)) * (decimal)row.Cells["Quantity"].Value;
-                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat - (totalwithvat * clientDiscount / 100), 2);
-
-                                        txtsrch.Text = "";
-                                        CalculateGridColumns();
-
-
-                                        found = true;
-                                    }
-
-                                }
-                                if (!found)
-                                {
-                                    foundItems.Discount = itemAction.discount;
-                                    AddItem(foundItems);
-                                    txtsrch.Text = "";
-
-                                }
-                            }
-                            else
-                            {
-                                foundItems.Discount = itemAction.discount;
-                                AddItem(foundItems);
-                                txtsrch.Text = "";
-
-                            }
-                        }
-                        else
-                        {
-
-                            if (ug.Rows.Count > 0)
-                            {
-                                foreach (DataGridViewRow row in ug.Rows)
-                                {
-                                    decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString());
-
-                                    if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                                    {
-                                        if (itemAction.quantity == (decimal)row.Cells["Quantity"].Value + 1)
-                                        {
-                                            decimal itDiscount = (itemAction.discount) / 100;
-
-                                            decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                            row.Cells["Quantity"].Value = quantity.ToString("N");
-                                            decimal totalwithvat = (shumatotale - (shumatotale * discount)) * quantity;
-                                            row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                            row.Cells["Discount"].Value = (discount * 100).ToString("N");
-
-                                            txtsrch.Text = "";
-                                            CalculateGridColumns();
-
-
-                                        }
-                                        else
-                                        {
-                                            if (discount == 0)
-                                            {
-                                                decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                decimal totalwithvat = shumatotale * quantity;
-                                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-
-                                            }
-                                            else
-                                            {
-                                                decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                decimal totalwithvat = (shumatotale * quantity) - (shumatotale * quantity) * discount;
-                                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-                                            }
-                                        }
-                                        found = true;
-                                        CalculateGridColumns();
-
-                                    }
-
-                                }
-                                if (!found)
-                                {
-                                    AddItem(foundItems);
-                                    txtsrch.Text = "";
-
-                                }
-                            }
-                            else
-                            {
-                                AddItem(foundItems);
-                                txtsrch.Text = "";
-
-                            }
-                        }
-                    }
-
-
-
-                    else if (categoryAction != null && settings.AllowDiscount == "0")
-                    {
-                        var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
-                        var totalPrice = tp - (tp * clientDiscount / 100);
-                        if (categoryAction.quantity == 1)
-                        {
-                            if (ug.Rows.Count > 0)
-                            {
-                                foreach (DataGridViewRow row in ug.Rows)
-                                {
-                                    decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString());
-
-                                    if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                                    {
-
-                                        decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                        var VatSum = (decimal)foundItems.Vat / 100;
-                                        row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                        var totalP = ((decimal)row.Cells["Price"].Value * VatSum + (decimal)row.Cells["Price"].Value) * discount;
-                                        decimal totalwithvat = totalP * quantity;
-                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                        found = true;
-                                        CalculateGridColumns();
-                                    }
-                                }
-                                if (!found)
-                                {
-                                    foundItems.Discount = categoryAction.discount;
-                                    AddItem(foundItems);
-                                    txtsrch.Text = "";
-
-                                }
-                            }
-                            else
-                            {
-                                foundItems.Discount = categoryAction.discount;
-                                AddItem(foundItems);
-                                txtsrch.Text = "";
-                                CalculateGridColumns();
-
-                            }
-                        }
-                        else
-                        {
-
-                            if (ug.Rows.Count > 0)
-                            {
-                                foreach (DataGridViewRow row in ug.Rows)
-                                {
-                                    if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                                    {
-                                        if (categoryAction.quantity == decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1)
-                                        {
-
-                                            decimal discount = (decimal.Parse(row.Cells["Discount"].Value.ToString()) + categoryAction.discount) / 100;
-
-
-                                            decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                            row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                            decimal totalwithvat = ((shumatotale * quantity) - (shumatotale * quantity * discount));
-                                            row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                            row.Cells["Discount"].Value = (discount * 100).ToString("N");
-
-
-                                        }
-                                        else
-                                        {
-                                            if (decimal.Parse(row.Cells["Discount"].Value.ToString()) == 0)
-                                            {
-
-
-                                                decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                decimal totalwithvat = shumatotale * quantity;
-                                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-
-
-                                            }
-                                            else
-                                            {
-                                                decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
-
-                                                decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
-                                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                            }
-                                        }
-                                        found = true;
-                                        CalculateGridColumns();
-                                    }
-
-
-                                }
-                                if (!found)
-                                {
-                                    AddItem(foundItems);
-                                    txtsrch.Text = "";
-
-                                }
-                            }
-                            else
-                            {
-                                AddItem(foundItems);
-                                txtsrch.Text = "";
-
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (ug.Rows.Count > 0)
-                        {
-                            foreach (DataGridViewRow row in ug.Rows)
-                            {
-                                if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                                {
-
-
-                                    if ((decimal)row.Cells["Discount"].Value != 0)
-                                    {
-                                        decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                        row.Cells["Quantity"].Value = quantity.ToString("N");
-                                        decimal totalwithvat = shumatotale * quantity;
-                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-                                        txtsrch.Text = "";
-
-
-                                    }
-                                    else
-                                    {
-                                        decimal discount = (decimal)row.Cells["Discount"].Value / 100;
-                                        decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                        row.Cells["Quantity"].Value = quantity.ToString("N");
-                                        decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
-                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-                                        txtsrch.Text = "";
-
-                                    }
-
-
-                                    var total = Convert.ToDecimal(row.Cells["TotalWithVat"].Value);
-                                    mTotalSum = total;
-                                    txtTotalSum.Text = mTotalSum.ToString();
-                                    AdjustTblTotalColumnWidths();
-                                    found = true;
-                                    CalculateGridColumns();
-
-                                    return;
-                                }
-
-                            }
-                            if (!found)
-                            {
-                                AddItem(foundItems);
-
-                                txtsrch.Text = "";
-                                CalculateGridColumns();
-
-                            }
-                        }
-                        else
-                        {
-                            //add found item.
-                            if (txtsrch.Text == "")
-                                return;
-                            var item = foundItems;
-                            AddItem(item);
-                            txtsrch.Text = "";
-                            CalculateGridColumns();
-
-
-                        }
-                    }
-                }
-            }
-        }
+        //private void txtsrch_TextChanged(object sender, EventArgs e)
+        //{
+        //    var settings = Services.Settings.Get();
+        //    var clientDiscount = Partner.Get(PartnerId).Discount;
+        //    bool found = false;
+        //    if (txtsearch.Text != "")
+        //    {
+        //        var foundItems = mAllItems.Find(p => p.Barcode == txtsearch.Text);
+
+
+        //        if (ug.Columns.Contains(" ") == false)
+        //        {
+        //            DataGridViewButtonColumn col = new DataGridViewButtonColumn();
+        //            col.UseColumnTextForButtonValue = true;
+        //            col.Name = " ";
+        //            ug.Columns.Add(col);
+        //        }
+
+
+        //        if (foundItems != null)
+        //        {
+        //            decimal shuma = (foundItems.SalePrice * (1 - foundItems.Discount / 100)) * (1 * (decimal)foundItems.Vat / 100.0M);
+
+        //            decimal shumatotale = Math.Round(shuma + foundItems.SalePrice, 2);
+        //            if (settings.AllowDiscount == "0" && clientDiscount > 0)
+        //            {
+        //                shumatotale = shumatotale - (shumatotale * clientDiscount / 100);
+
+        //            }
+
+        //            var itemAction = aksionet.Find(p => p.item_id == foundItems.Id);
+        //            var categoryAction = aksionet.Find(p => p.category_id == foundItems.CategoryId);
+        //            if (categoryAction != null && itemAction != null && settings.AllowDiscount == "0")
+        //            {
+        //                var action = itemAction;
+        //                if (ug.Rows.Count > 0)
+        //                {
+        //                    foreach (DataGridViewRow row in ug.Rows)
+        //                    {
+        //                        if (row.Cells[4].Value.ToString() == txtsearch.Text && txtsearch.Text != "")
+        //                        {
+        //                            if (itemAction.quantity == decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1)
+        //                            {
+        //                                decimal discount = (itemAction.discount) / 100;
+        //                                decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
+        //                                row.Cells["Quantity"].Value = quantity.ToString("N");
+
+        //                                decimal totalwithvat = ((decimal)row.Cells["TotalWithVat"].Value + ((decimal)row.Cells["TotalWithVat"].Value * discount));
+        //                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+        //                                row.Cells["Discount"].Value = (discount * 100).ToString("N");
+
+        //                            }
+        //                            else
+        //                            {
+        //                                if (decimal.Parse(row.Cells["Discount"].Value.ToString()) == 0 && action.discount == 0)
+        //                                {
+        //                                    decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
+        //                                    row.Cells["Quantity"].Value = quantity.ToString("N");
+        //                                    decimal totalwithvat = shumatotale * quantity;
+        //                                    row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+        //                                }
+        //                                else
+        //                                {
+        //                                    decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
+        //                                    decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
+        //                                    row.Cells["Quantity"].Value = quantity.ToString("N");
+
+        //                                    decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
+        //                                    row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+        //                                }
+        //                            }
+        //                            found = true;
+        //                            CalculateGridColumns();
+        //                        }
+
+        //                    }
+        //                    if (!found)
+        //                    {
+        //                        if (itemAction.discount == 1)
+        //                        {
+        //                            foundItems.Discount = itemAction.discount;
+        //                            AddItem(foundItems);
+        //                        }
+        //                        if (itemAction.discount == foundItems.Quantity + 1 || itemAction.discount > foundItems.Quantity + 1)
+        //                        {
+        //                            foundItems.Discount = itemAction.discount;
+        //                            AddItem(foundItems);
+        //                        }
+        //                        else
+        //                            AddItem(foundItems);
+
+
+        //                    }
+
+        //                }
+        //                else
+        //                {
+        //                    if (action.quantity == 1)
+        //                    {
+        //                        foundItems.Discount = action.discount;
+
+        //                    }
+        //                    AddItem(foundItems);
+        //                }
+        //            }
+
+        //            if (itemAction != null && settings.AllowDiscount == "0")
+        //            {
+        //                var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
+        //                var totalPrice = tp - (tp * clientDiscount / 100);
+
+        //                if (itemAction.quantity == 1)
+        //                {
+        //                    if (ug.Rows.Count > 0)
+        //                    {
+        //                        foreach (DataGridViewRow row in ug.Rows)
+        //                        {
+
+        //                            if (row.Cells[4].Value.ToString() == txtsearch.Text && txtsearch.Text != "")
+        //                            {
+        //                                decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
+
+
+        //                                row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+        //                                var vat = Convert.ToDecimal(row.Cells["Vat"].Value) / 100;
+        //                                var totalP = Math.Round((decimal)row.Cells["Price"].Value * vat + (decimal)row.Cells["Price"].Value, 2);
+        //                                decimal totalwithvat = (totalP - (totalP * discount)) * (decimal)row.Cells["Quantity"].Value;
+        //                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat - (totalwithvat * clientDiscount / 100), 2);
+
+        //                                txtsearch.Text = "";
+        //                                CalculateGridColumns();
+
+
+        //                                found = true;
+        //                            }
+
+        //                        }
+        //                        if (!found)
+        //                        {
+        //                            foundItems.Discount = itemAction.discount;
+        //                            AddItem(foundItems);
+        //                            txtsearch.Text = "";
+
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        foundItems.Discount = itemAction.discount;
+        //                        AddItem(foundItems);
+        //                        txtsearch.Text = "";
+
+        //                    }
+        //                }
+        //                else
+        //                {
+
+        //                    if (ug.Rows.Count > 0)
+        //                    {
+        //                        foreach (DataGridViewRow row in ug.Rows)
+        //                        {
+        //                            decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString());
+
+        //                            if (row.Cells[4].Value.ToString() == txtsearch.Text && txtsearch.Text != "")
+        //                            {
+        //                                if (itemAction.quantity == (decimal)row.Cells["Quantity"].Value + 1)
+        //                                {
+        //                                    decimal itDiscount = (itemAction.discount) / 100;
+
+        //                                    decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
+        //                                    row.Cells["Quantity"].Value = quantity.ToString("N");
+        //                                    decimal totalwithvat = (shumatotale - (shumatotale * discount)) * quantity;
+        //                                    row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+        //                                    row.Cells["Discount"].Value = (discount * 100).ToString("N");
+
+        //                                    txtsearch.Text = "";
+        //                                    CalculateGridColumns();
+
+
+        //                                }
+        //                                else
+        //                                {
+        //                                    if (discount == 0)
+        //                                    {
+        //                                        decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
+        //                                        row.Cells["Quantity"].Value = quantity.ToString("N");
+
+        //                                        decimal totalwithvat = shumatotale * quantity;
+        //                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+
+
+        //                                    }
+        //                                    else
+        //                                    {
+        //                                        decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
+        //                                        row.Cells["Quantity"].Value = quantity.ToString("N");
+
+        //                                        decimal totalwithvat = (shumatotale * quantity) - (shumatotale * quantity) * discount;
+        //                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+
+        //                                    }
+        //                                }
+        //                                found = true;
+        //                                CalculateGridColumns();
+
+        //                            }
+
+        //                        }
+        //                        if (!found)
+        //                        {
+        //                            AddItem(foundItems);
+        //                            txtsearch.Text = "";
+
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        AddItem(foundItems);
+        //                        txtsearch.Text = "";
+
+        //                    }
+        //                }
+        //            }
+
+
+
+        //            else if (categoryAction != null && settings.AllowDiscount == "0")
+        //            {
+        //                var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
+        //                var totalPrice = tp - (tp * clientDiscount / 100);
+        //                if (categoryAction.quantity == 1)
+        //                {
+        //                    if (ug.Rows.Count > 0)
+        //                    {
+        //                        foreach (DataGridViewRow row in ug.Rows)
+        //                        {
+        //                            decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString());
+
+        //                            if (row.Cells[4].Value.ToString() == txtsearch.Text && txtsearch.Text != "")
+        //                            {
+
+        //                                decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
+        //                                var VatSum = (decimal)foundItems.Vat / 100;
+        //                                row.Cells["Quantity"].Value = quantity.ToString("N");
+
+        //                                var totalP = ((decimal)row.Cells["Price"].Value * VatSum + (decimal)row.Cells["Price"].Value) * discount;
+        //                                decimal totalwithvat = totalP * quantity;
+        //                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+        //                                found = true;
+        //                                CalculateGridColumns();
+        //                            }
+        //                        }
+        //                        if (!found)
+        //                        {
+        //                            foundItems.Discount = categoryAction.discount;
+        //                            AddItem(foundItems);
+        //                            txtsearch.Text = "";
+
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        foundItems.Discount = categoryAction.discount;
+        //                        AddItem(foundItems);
+        //                        txtsearch.Text = "";
+        //                        CalculateGridColumns();
+
+        //                    }
+        //                }
+        //                else
+        //                {
+
+        //                    if (ug.Rows.Count > 0)
+        //                    {
+        //                        foreach (DataGridViewRow row in ug.Rows)
+        //                        {
+        //                            if (row.Cells[4].Value.ToString() == txtsearch.Text && txtsearch.Text != "")
+        //                            {
+        //                                if (categoryAction.quantity == decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1)
+        //                                {
+
+        //                                    decimal discount = (decimal.Parse(row.Cells["Discount"].Value.ToString()) + categoryAction.discount) / 100;
+
+
+        //                                    decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
+        //                                    row.Cells["Quantity"].Value = quantity.ToString("N");
+
+        //                                    decimal totalwithvat = ((shumatotale * quantity) - (shumatotale * quantity * discount));
+        //                                    row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+        //                                    row.Cells["Discount"].Value = (discount * 100).ToString("N");
+
+
+        //                                }
+        //                                else
+        //                                {
+        //                                    if (decimal.Parse(row.Cells["Discount"].Value.ToString()) == 0)
+        //                                    {
+
+
+        //                                        decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
+        //                                        row.Cells["Quantity"].Value = quantity.ToString("N");
+
+        //                                        decimal totalwithvat = shumatotale * quantity;
+        //                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+
+
+
+        //                                    }
+        //                                    else
+        //                                    {
+        //                                        decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
+
+        //                                        decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
+        //                                        row.Cells["Quantity"].Value = quantity.ToString("N");
+
+        //                                        decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
+        //                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+        //                                    }
+        //                                }
+        //                                found = true;
+        //                                CalculateGridColumns();
+        //                            }
+
+
+        //                        }
+        //                        if (!found)
+        //                        {
+        //                            AddItem(foundItems);
+        //                            txtsearch.Text = "";
+
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        AddItem(foundItems);
+        //                        txtsearch.Text = "";
+
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (ug.Rows.Count > 0)
+        //                {
+        //                    foreach (DataGridViewRow row in ug.Rows)
+        //                    {
+        //                        if (row.Cells[4].Value.ToString() == txtsearch.Text && txtsearch.Text != "")
+        //                        {
+
+
+        //                            if ((decimal)row.Cells["Discount"].Value != 0)
+        //                            {
+        //                                decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
+        //                                row.Cells["Quantity"].Value = quantity.ToString("N");
+        //                                decimal totalwithvat = shumatotale * quantity;
+        //                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+
+        //                                txtsearch.Text = "";
+
+
+        //                            }
+        //                            else
+        //                            {
+        //                                decimal discount = (decimal)row.Cells["Discount"].Value / 100;
+        //                                decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
+        //                                row.Cells["Quantity"].Value = quantity.ToString("N");
+        //                                decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
+        //                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+
+        //                                txtsearch.Text = "";
+
+        //                            }
+
+
+        //                            var total = Convert.ToDecimal(row.Cells["TotalWithVat"].Value);
+        //                            mTotalSum = total;
+        //                            txtTotalSum.Text = mTotalSum.ToString();
+        //                            AdjustTblTotalColumnWidths();
+        //                            found = true;
+        //                            CalculateGridColumns();
+
+        //                            return;
+        //                        }
+
+        //                    }
+        //                    if (!found)
+        //                    {
+        //                        AddItem(foundItems);
+
+        //                        txtsearch.Text = "";
+        //                        CalculateGridColumns();
+
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    //add found item.
+        //                    if (txtsearch.Text == "")
+        //                        return;
+        //                    var item = foundItems;
+        //                    AddItem(item);
+        //                    txtsearch.Text = "";
+        //                    CalculateGridColumns();
+
+
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         #endregion
 
@@ -4756,6 +4849,7 @@ namespace MyNET.Pos
                                          PrintedFiscal = group.First().PrintedFiscal,
                                          PrintedFiscalQuantity = group.First().PrintedFiscalQuantity,
                                          DiscountAmount = group.First().DiscountAmount,
+                                         toClose = group.First().toClose
                                      })
                                      .ToList();
 
@@ -4789,6 +4883,7 @@ namespace MyNET.Pos
             ug.Columns[29].Visible = false;
             ug.Columns[30].Visible = false;
             ug.Columns[31].Visible = false;
+            ug.Columns[32].Visible = false;
 
 
             //ug.Columns[14].FillWeight = 50;
@@ -4842,6 +4937,16 @@ namespace MyNET.Pos
                 ug.Columns[5].Visible = true;
 
             }
+            if (sett.DescriptionCol == 1)
+            {
+                ug.Columns[11].Visible = false;
+
+            }
+            else
+            {
+                ug.Columns[11].Visible = true;
+
+            }
             if (sett.AllowDiscount == "0")
             {
                 ug.Columns[12].ReadOnly = true;
@@ -4870,14 +4975,14 @@ namespace MyNET.Pos
             mSaleId = 0;
 
             //txtInoiceID.Text = "";
-            txtsrch.Text = "";
+            txtsearch.Text = "";
             //numTotalPayed.Value = 0.0M;
             //numRetValue.Value = 0.0M;
 
-            txtsrch.Focus();
-            txtsrch.SelectAll();
+            txtsearch.Focus();
+            txtsearch.SelectAll();
             // txtDate.Value = DateTime.Now;
-            txtsrch.Focus();
+            txtsearch.Focus();
 
             inputstate = InputControlState.ShearchItem;
             CalculateGridColumns();
@@ -4993,17 +5098,26 @@ namespace MyNET.Pos
 
             foreach (DataGridViewRow row in ug.Rows)
             {
-                if (Convert.ToInt32(row.Cells["Quantity"].Value) > Convert.ToInt32(row.Cells["PrintedFiscalQuantity"].Value))
+                //if (Convert.ToInt32(row.Cells["Quantity"].Value) > Convert.ToInt32(row.Cells["PrintedFiscalQuantity"].Value))
+                //{
+                //    DataRow dRow = dt.NewRow();
+
+                //    foreach (DataGridViewCell cell in row.Cells)
+                //    {
+                //        dRow[cell.ColumnIndex] = cell.Value;
+                //    }
+
+                //    dt.Rows.Add(dRow);
+                //}
+
+                DataRow dRow = dt.NewRow();
+
+                foreach (DataGridViewCell cell in row.Cells)
                 {
-                    DataRow dRow = dt.NewRow();
-
-                    foreach (DataGridViewCell cell in row.Cells)
-                    {
-                        dRow[cell.ColumnIndex] = cell.Value;
-                    }
-
-                    dt.Rows.Add(dRow);
+                    dRow[cell.ColumnIndex] = cell.Value;
                 }
+
+                dt.Rows.Add(dRow);
             }
 
             Services.Sale sale = Services.Sale.Get(mSaleId);
@@ -5068,6 +5182,7 @@ namespace MyNET.Pos
                             if (dt.Rows.Count > 0)
                             {
                                 FiscalPrinterHelper.GekosPrint(global.FiscalCount, num.ToString(), dt, mTotalSum, num, withBank, clientPayed);
+                                Services.Models.TablesSaleDetails.UpdateStatus(1, tableId);
 
                             }
                         }
@@ -5076,6 +5191,8 @@ namespace MyNET.Pos
                             if (dt.Rows.Count > 0)
                             {
                                 FiscalPrinterHelper.GekosPrintOldV(global.FiscalCount, num.ToString(), dt, mTotalSum, num, withBank, clientPayed);
+                                Services.Models.TablesSaleDetails.UpdateStatus(1, tableId);
+
                             }
                         }
                         //LoadJson.DataTabletoJsonDatecs(dt);
@@ -5093,9 +5210,16 @@ namespace MyNET.Pos
                         //PrintThermal();
                     }
                 }
+                bool hasValue = ug.Rows
+    .Cast<DataGridViewRow>()
+    .Any(row => row.Cells["toClose"].Value != null && row.Cells["toClose"].Value.ToString() == "1");
+
+                if (hasValue)
+                {
+                    Services.Models.TablesSaleDetails.UpdateStatus(1, tableId);
+
+                }
             }
-
-
 
             var globals = Services.Settings.Get();
 
@@ -5183,13 +5307,13 @@ namespace MyNET.Pos
         protected void Search()
         {
             //filter mItems
-            if (txtsrch.Text == "")
+            if (txtsearch.Text == "")
                 mItems = mAllItems.ToList();
             //else
             //{
 
             //search barcode
-            var foundItems = mAllItems.Where(p => p.Barcode == txtsrch.Text).ToList();
+            var foundItems = mAllItems.Where(p => p.Barcode == txtsearch.Text).ToList();
             if (ug.Columns.Contains(" ") == false)
             {
                 DataGridViewButtonColumn col = new DataGridViewButtonColumn();
@@ -5203,7 +5327,7 @@ namespace MyNET.Pos
                 {
                     foreach (DataGridViewRow row in ug.Rows)
                     {
-                        if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
+                        if (row.Cells[4].Value.ToString() == txtsearch.Text && txtsearch.Text != "")
                         {
 
 
@@ -5225,7 +5349,7 @@ namespace MyNET.Pos
                             txtTotalSum.Text = mTotalSum.ToString();
                             txtTotalWVatSum.Text = mTotalSumWVat.ToString();
                             AdjustTblTotalColumnWidths();
-                            txtsrch.Text = "";
+                            txtsearch.Text = "";
                             return;
 
                         }
@@ -5236,7 +5360,7 @@ namespace MyNET.Pos
                 else
                 {
                     //add found item.
-                    if (txtsrch.Text == "")
+                    if (txtsearch.Text == "")
                         return;
                     var item = foundItems.FirstOrDefault();
                     AddItem(item);
@@ -5247,7 +5371,7 @@ namespace MyNET.Pos
             else
             {
                 //search for itemname
-                foundItems = mAllItems.Where(p => (p.ItemName.ToLower().Contains(txtsrch.Text.ToLower()))).ToList();
+                foundItems = mAllItems.Where(p => (p.ItemName.ToLower().Contains(txtsearch.Text.ToLower()))).ToList();
                 if (foundItems != null && foundItems.Count > 0)
                 {
                     mItems = foundItems;
@@ -5268,31 +5392,31 @@ namespace MyNET.Pos
             if (inputstate == InputControlState.ShearchItem)
             {
                 lblBarcode.Text = "Barkodi";
-                txtsrch.SelectAll();
+                txtsearch.SelectAll();
                 lblBarcode.ForeColor = Color.Black;
                 lblBarcode.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             }
             else if (inputstate == InputControlState.ChangeQuantity)
             {
                 lblBarcode.Text = "Sasia";
-                txtsrch.Text = "1";
-                txtsrch.SelectAll();
+                txtsearch.Text = "1";
+                txtsearch.SelectAll();
                 lblBarcode.ForeColor = Color.DarkBlue;
                 lblBarcode.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             }
             else if (inputstate == InputControlState.Discount)
             {
                 lblBarcode.Text = "Zbritja";
-                txtsrch.Text = "1";
-                txtsrch.SelectAll();
+                txtsearch.Text = "1";
+                txtsearch.SelectAll();
                 lblBarcode.ForeColor = Color.SteelBlue;
                 lblBarcode.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             }
             else if (inputstate == InputControlState.ChangePrice)
             {
                 lblBarcode.Text = "Çmimi";
-                txtsrch.Text = "0";
-                txtsrch.SelectAll();
+                txtsearch.Text = "0";
+                txtsearch.SelectAll();
                 lblBarcode.ForeColor = Color.Red;
                 lblBarcode.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             }
@@ -5642,7 +5766,7 @@ namespace MyNET.Pos
                     DiscountAmount = row.Cells["DiscountAmount"].Value.ToString(),
                     PosId = Globals.DeviceId,
                     Printed = 0,
-                    TableId = ""
+                    TableId = tableId
                 });
                 wrh.Add(new Warehouse
                 {
@@ -5807,7 +5931,7 @@ namespace MyNET.Pos
                 {
                     if (ug.Columns.Contains(" ") == true)
                     {
-                        ug.Columns.RemoveAt(27);
+                        ug.Columns.RemoveAt(33);
 
                     }
 
@@ -5823,7 +5947,7 @@ namespace MyNET.Pos
                     {
                         if (ug.Columns.Contains(" ") == true)
                         {
-                            ug.Columns.RemoveAt(27);
+                            ug.Columns.RemoveAt(33);
 
                         }
 
@@ -5834,7 +5958,7 @@ namespace MyNET.Pos
                                          where row.Cells["Id"].Value != null
                                          select Convert.ToInt32(row.Cells["Id"].Value)).ToList();
 
-                // Use ForEach to delete each record by id
+
                 idsToDelete.ForEach(id => Services.Models.TablesSaleDetails.DeleteTableSaleWithId(id.ToString()));
                 New();
 
@@ -6160,8 +6284,8 @@ namespace MyNET.Pos
                                 //ktu duhet me e gjeneralizu per qdo kompani me e pas ni artikull me vler 0.01eur 
                                 if (settings.BarcMode == 0)
                                 {
-                                    txtsrch.Text = "11";
-                                    txtsrch.Focus(); SendKeys.Send("{ENTER}");
+                                    txtsearch.Text = "11";
+                                    txtsearch.Focus(); SendKeys.Send("{ENTER}");
                                 }
                                 else
                                 {
@@ -6218,7 +6342,7 @@ namespace MyNET.Pos
 
         private void PosRestaurant_CursorChanged(object sender, EventArgs e)
         {
-            //txtsrch.Focus();
+            //txtsearch.Focus();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -6233,7 +6357,7 @@ namespace MyNET.Pos
             string tableID = this.tableId;
             if (ug.Columns.Contains(" ") == true)
             {
-                ug.Columns.RemoveAt(27);
+                ug.Columns.RemoveAt(33);
             }
             this.tableId = tableID;
 
@@ -6261,7 +6385,7 @@ namespace MyNET.Pos
             //    Options.flag = false;
             //}
 
-            Test_Click(null, null);
+            //Test_Click(null, null);
             count++;
         }
 
@@ -6305,7 +6429,7 @@ namespace MyNET.Pos
 
                         if (ug.Columns.Contains(" ") == true)
                         {
-                            ug.Columns.RemoveAt(27);
+                            ug.Columns.RemoveAt(33);
                         }
 
                         countNumFiscal++;
@@ -6613,7 +6737,7 @@ namespace MyNET.Pos
                             {
                                 if (ug.Columns.Contains(" ") == true)
                                 {
-                                    ug.Columns.RemoveAt(27);
+                                    ug.Columns.RemoveAt(33);
                                 }
 
                                 countNumFiscal++;
@@ -6645,7 +6769,7 @@ namespace MyNET.Pos
 
                             if (ug.Columns.Contains(" ") == true)
                             {
-                                ug.Columns.RemoveAt(27);
+                                ug.Columns.RemoveAt(33);
                             }
 
                             countNumFiscal++;
@@ -6793,36 +6917,36 @@ namespace MyNET.Pos
 
         private void txt_TextChanged(object sender, EventArgs e)
         {
-            txtsearch.Cursor = Cursors.Arrow;
+            //txtsearch.Cursor = Cursors.Arrow;
 
-            if (txt.Text != "Emri,Çmimi,Shifra" && txt.Text != "")
-            {
-                if (ug.Columns.Contains(" ") == false)
-                {
-                    DataGridViewButtonColumn col = new DataGridViewButtonColumn();
-                    col.UseColumnTextForButtonValue = true;
-                    col.Name = " ";
-                    ug.Columns.Add(col);
+            //if (txt.Text != "Emri,Çmimi,Shifra" && txt.Text != "")
+            //{
+            //    if (ug.Columns.Contains(" ") == false)
+            //    {
+            //        DataGridViewButtonColumn col = new DataGridViewButtonColumn();
+            //        col.UseColumnTextForButtonValue = true;
+            //        col.Name = " ";
+            //        ug.Columns.Add(col);
 
-                }
-                try
-                {
-                    var item = Services.Item.GetItemWithName(txt.Text.ToLower()).ToList();
+            //    }
+            //    try
+            //    {
+            //        var item = Services.Item.GetItemWithName(txt.Text.ToLower()).ToList();
 
-                    txtsearch.DataSource = item.Count > 0 ? item : null;
-                    txtsearch.DisplayMember = "ItemName";
-                    txtsearch.ValueMember = "Id";
-                    AutosizeDropdown(txtsearch);
-                    txtsearch.DroppedDown = true;
-                }
-                catch (Exception ex)
-                {
+            //        txtsearch.DataSource = item.Count > 0 ? item : null;
+            //        txtsearch.DisplayMember = "ItemName";
+            //        txtsearch.ValueMember = "Id";
+            //        AutosizeDropdown(txtsearch);
+            //        txtsearch.DroppedDown = true;
+            //    }
+            //    catch (Exception ex)
+            //    {
 
-                    MessageBox.Show("Nuk ka artikull me kete barkod!");
-                }
+            //        MessageBox.Show("Nuk ka artikull me kete barkod!");
+            //    }
 
-                //BindComboboxAsync(txt.Text);
-            }
+            //    //BindComboboxAsync(txt.Text);
+            //}
         }
         private void AutosizeDropdown(System.Windows.Forms.ComboBox comboBox)
         {
@@ -6915,12 +7039,12 @@ namespace MyNET.Pos
 
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
                                                 row.Cells["Discount"].Value = itemAction.discount;
-                                                txtsrch.Text = "";
+                                                txtsearch.Text = "";
                                             }
                                             else
                                             {
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                txtsrch.Text = "";
+                                                txtsearch.Text = "";
 
                                             }
                                         }
@@ -6940,12 +7064,12 @@ namespace MyNET.Pos
 
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
                                                             row.Cells["Discount"].Value = itemAction.discount;
-                                                            txtsrch.Text = "";
+                                                            txtsearch.Text = "";
                                                         }
                                                         else
                                                         {
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                            txtsrch.Text = "";
+                                                            txtsearch.Text = "";
 
                                                         }
                                                     }
@@ -6967,7 +7091,7 @@ namespace MyNET.Pos
                                 {
                                     name.Discount = itemAction.discount;
                                     AddItem(name);
-                                    txtsrch.Text = "";
+                                    txtsearch.Text = "";
                                     CalculateGridColumns();
 
 
@@ -6977,7 +7101,7 @@ namespace MyNET.Pos
                             {
                                 name.Discount = itemAction.discount;
                                 AddItem(name);
-                                txtsrch.Text = "";
+                                txtsearch.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -7000,7 +7124,7 @@ namespace MyNET.Pos
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
 
                                                 row.Cells["Discount"].Value = itemAction.discount;
-                                                txtsrch.Text = "";
+                                                txtsearch.Text = "";
 
 
                                             }
@@ -7009,7 +7133,7 @@ namespace MyNET.Pos
                                                 row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                txtsrch.Text = "";
+                                                txtsearch.Text = "";
 
                                             }
                                         }
@@ -7030,7 +7154,7 @@ namespace MyNET.Pos
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
 
                                                             row.Cells["Discount"].Value = itemAction.discount;
-                                                            txtsrch.Text = "";
+                                                            txtsearch.Text = "";
 
 
                                                         }
@@ -7039,7 +7163,7 @@ namespace MyNET.Pos
                                                             row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                            txtsrch.Text = "";
+                                                            txtsearch.Text = "";
 
                                                         }
                                                     }
@@ -7059,7 +7183,7 @@ namespace MyNET.Pos
                                 if (!found)
                                 {
                                     AddItem(name);
-                                    txtsrch.Text = "";
+                                    txtsearch.Text = "";
                                     CalculateGridColumns();
 
                                 }
@@ -7067,7 +7191,7 @@ namespace MyNET.Pos
                             else
                             {
                                 AddItem(name);
-                                txtsrch.Text = "";
+                                txtsearch.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -7096,13 +7220,13 @@ namespace MyNET.Pos
 
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
                                                 row.Cells["Discount"].Value = categoryAction.discount;
-                                                txtsrch.Text = "";
+                                                txtsearch.Text = "";
 
                                             }
                                             else
                                             {
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                txtsrch.Text = "";
+                                                txtsearch.Text = "";
 
                                             }
                                         }
@@ -7122,13 +7246,13 @@ namespace MyNET.Pos
 
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
                                                             row.Cells["Discount"].Value = categoryAction.discount;
-                                                            txtsrch.Text = "";
+                                                            txtsearch.Text = "";
 
                                                         }
                                                         else
                                                         {
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                            txtsrch.Text = "";
+                                                            txtsearch.Text = "";
 
                                                         }
                                                     }
@@ -7150,7 +7274,7 @@ namespace MyNET.Pos
                                 {
                                     name.Discount = categoryAction.discount;
                                     AddItem(name);
-                                    txtsrch.Text = "";
+                                    txtsearch.Text = "";
                                     CalculateGridColumns();
 
                                 }
@@ -7159,7 +7283,7 @@ namespace MyNET.Pos
                             {
                                 name.Discount = categoryAction.discount;
                                 AddItem(name);
-                                txtsrch.Text = "";
+                                txtsearch.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -7182,7 +7306,7 @@ namespace MyNET.Pos
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
 
                                                 row.Cells["Discount"].Value = categoryAction.discount;
-                                                txtsrch.Text = "";
+                                                txtsearch.Text = "";
 
                                             }
                                             else
@@ -7190,7 +7314,7 @@ namespace MyNET.Pos
                                                 row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                txtsrch.Text = "";
+                                                txtsearch.Text = "";
 
 
                                             }
@@ -7212,7 +7336,7 @@ namespace MyNET.Pos
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
 
                                                             row.Cells["Discount"].Value = categoryAction.discount;
-                                                            txtsrch.Text = "";
+                                                            txtsearch.Text = "";
 
                                                         }
                                                         else
@@ -7220,7 +7344,7 @@ namespace MyNET.Pos
                                                             row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                            txtsrch.Text = "";
+                                                            txtsearch.Text = "";
 
 
                                                         }
@@ -7242,7 +7366,7 @@ namespace MyNET.Pos
                                 if (!found)
                                 {
                                     AddItem(name);
-                                    txtsrch.Text = "";
+                                    txtsearch.Text = "";
                                     CalculateGridColumns();
 
                                 }
@@ -7250,7 +7374,7 @@ namespace MyNET.Pos
                             else
                             {
                                 AddItem(name);
-                                txtsrch.Text = "";
+                                txtsearch.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -7273,14 +7397,14 @@ namespace MyNET.Pos
                                         if ((decimal)row.Cells["Discount"].Value != 0)
                                         {
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * (decimal)row.Cells["Discount"].Value / 100)), 2);
-                                            txtsrch.Text = "";
+                                            txtsearch.Text = "";
 
 
                                         }
                                         else
                                         {
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                            txtsrch.Text = "";
+                                            txtsearch.Text = "";
                                         }
 
                                         var total = Convert.ToDecimal(row.Cells["TotalWithVat"].Value);
@@ -7306,14 +7430,14 @@ namespace MyNET.Pos
                                                     if ((decimal)row.Cells["Discount"].Value != 0)
                                                     {
                                                         row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * (decimal)row.Cells["Discount"].Value / 100)), 2);
-                                                        txtsrch.Text = "";
+                                                        txtsearch.Text = "";
 
 
                                                     }
                                                     else
                                                     {
                                                         row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                        txtsrch.Text = "";
+                                                        txtsearch.Text = "";
                                                     }
 
                                                     var total = Convert.ToDecimal(row.Cells["TotalWithVat"].Value);
@@ -7341,7 +7465,7 @@ namespace MyNET.Pos
                             if (!found)
                             {
                                 AddItem(name);
-                                txtsrch.Text = "";
+                                txtsearch.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -7351,7 +7475,7 @@ namespace MyNET.Pos
                             //add found item
                             var item = name;
                             AddItem(item);
-                            txtsrch.Text = "";
+                            txtsearch.Text = "";
                             CalculateGridColumns();
 
 
@@ -7380,12 +7504,12 @@ namespace MyNET.Pos
 
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
                                             row.Cells["Discount"].Value = itemAction.discount;
-                                            txtsrch.Text = "";
+                                            txtsearch.Text = "";
                                         }
                                         else
                                         {
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                            txtsrch.Text = "";
+                                            txtsearch.Text = "";
 
                                         }
                                         found = true;
@@ -7399,7 +7523,7 @@ namespace MyNET.Pos
                                 {
                                     name.Discount = itemAction.discount;
                                     AddItem(name);
-                                    txtsrch.Text = "";
+                                    txtsearch.Text = "";
                                     CalculateGridColumns();
 
 
@@ -7409,7 +7533,7 @@ namespace MyNET.Pos
                             {
                                 name.Discount = itemAction.discount;
                                 AddItem(name);
-                                txtsrch.Text = "";
+                                txtsearch.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -7430,7 +7554,7 @@ namespace MyNET.Pos
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
 
                                             row.Cells["Discount"].Value = itemAction.discount;
-                                            txtsrch.Text = "";
+                                            txtsearch.Text = "";
 
 
                                         }
@@ -7439,7 +7563,7 @@ namespace MyNET.Pos
                                             row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                            txtsrch.Text = "";
+                                            txtsearch.Text = "";
 
                                         }
                                         found = true;
@@ -7451,7 +7575,7 @@ namespace MyNET.Pos
                                 if (!found)
                                 {
                                     AddItem(name);
-                                    txtsrch.Text = "";
+                                    txtsearch.Text = "";
                                     CalculateGridColumns();
 
                                 }
@@ -7459,7 +7583,7 @@ namespace MyNET.Pos
                             else
                             {
                                 AddItem(name);
-                                txtsrch.Text = "";
+                                txtsearch.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -7486,13 +7610,13 @@ namespace MyNET.Pos
 
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
                                             row.Cells["Discount"].Value = categoryAction.discount;
-                                            txtsrch.Text = "";
+                                            txtsearch.Text = "";
 
                                         }
                                         else
                                         {
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                            txtsrch.Text = "";
+                                            txtsearch.Text = "";
 
                                         }
                                         CalculateGridColumns();
@@ -7505,7 +7629,7 @@ namespace MyNET.Pos
                                 {
                                     name.Discount = categoryAction.discount;
                                     AddItem(name);
-                                    txtsrch.Text = "";
+                                    txtsearch.Text = "";
                                     CalculateGridColumns();
 
                                 }
@@ -7514,7 +7638,7 @@ namespace MyNET.Pos
                             {
                                 name.Discount = categoryAction.discount;
                                 AddItem(name);
-                                txtsrch.Text = "";
+                                txtsearch.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -7535,7 +7659,7 @@ namespace MyNET.Pos
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
 
                                             row.Cells["Discount"].Value = categoryAction.discount;
-                                            txtsrch.Text = "";
+                                            txtsearch.Text = "";
 
                                         }
                                         else
@@ -7543,7 +7667,7 @@ namespace MyNET.Pos
                                             row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                            txtsrch.Text = "";
+                                            txtsearch.Text = "";
 
 
                                         }
@@ -7557,7 +7681,7 @@ namespace MyNET.Pos
                                 if (!found)
                                 {
                                     AddItem(name);
-                                    txtsrch.Text = "";
+                                    txtsearch.Text = "";
                                     CalculateGridColumns();
 
                                 }
@@ -7565,7 +7689,7 @@ namespace MyNET.Pos
                             else
                             {
                                 AddItem(name);
-                                txtsrch.Text = "";
+                                txtsearch.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -7586,14 +7710,14 @@ namespace MyNET.Pos
                                     if ((decimal)row.Cells["Discount"].Value != 0)
                                     {
                                         row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * (decimal)row.Cells["Discount"].Value / 100)), 2);
-                                        txtsrch.Text = "";
+                                        txtsearch.Text = "";
 
 
                                     }
                                     else
                                     {
                                         row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                        txtsrch.Text = "";
+                                        txtsearch.Text = "";
                                     }
 
 
@@ -7612,7 +7736,7 @@ namespace MyNET.Pos
                             if (!found)
                             {
                                 AddItem(name);
-                                txtsrch.Text = "";
+                                txtsearch.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -7622,7 +7746,7 @@ namespace MyNET.Pos
                             //add found item
                             var item = name;
                             AddItem(item);
-                            txtsrch.Text = "";
+                            txtsearch.Text = "";
                             CalculateGridColumns();
 
 
@@ -7713,14 +7837,21 @@ namespace MyNET.Pos
                 details.DiscountAmount = (decimal)item.Cells["DiscountAmount"].Value;
                 details.ClientDiscount = Partner.Get(PartnerId).Discount;
                 details.Sale_Id = 0;
+                details.toClose = 0;
                 //details.PrintedFiscalQuantity = (int)details.Quantity;
 
                 var result = details.Insert();
 
                 if (result == 0)
                 {
-
                     details.UpdateTableItem(details.Quantity, details.Total, details.TotalWithVat, details.ItemName, details.tableId);
+                    item.Cells["Id"].Value = (int)item.Cells["Id"].Value;
+
+                }
+                else
+                {
+                    item.Cells["Id"].Value = details.Id;
+
                 }
 
 
@@ -7765,57 +7896,6 @@ namespace MyNET.Pos
             }
         }
 
-        private void txtB_TextChanged(object sender, EventArgs e)
-        {
-            txtsearchB.DroppedDown = false;
-
-            txtsearchB.Cursor = Cursors.Arrow;
-            List<ItemsDiscount> item = null;
-            try
-            {
-                if (txtB.Text != "Emri,Çmimi,Shifra" && txtB.Text != "")
-                {
-                    if (ug.Columns.Contains(" ") == false)
-                    {
-                        DataGridViewButtonColumn col = new DataGridViewButtonColumn();
-                        col.UseColumnTextForButtonValue = true;
-                        col.Name = " ";
-                        ug.Columns.Add(col);
-
-                    }
-                    if (Globals.Settings.BarcMode == 0)
-                    {
-                        item = mAllItems.Where(p => p.ItemName.ToLower().Contains(txtB.Text.ToLower()) || p.ProductNo.Contains(txtB.Text)).ToList();
-
-                    }
-                    else
-                    {
-                        item = Services.Item.GetItemWithName(txtB.Text.ToLower());
-                    }
-
-                    txtsearchB.DataSource = item;
-                    txtsearchB.DisplayMember = "ItemName";
-                    txtsearchB.ValueMember = "Id";
-                    AutosizeDropdown(txtsearchB);
-                    if (item.Count > 0)
-                    {
-                        txtsearchB.DroppedDown = true;
-
-                    }
-                    else
-                    {
-                        txtsearchB.DroppedDown = false;
-
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show("Nuk ka artikuj me kete emer!");
-            }
-        }
 
         private void txtB_Leave(object sender, EventArgs e)
         {
@@ -7845,14 +7925,14 @@ namespace MyNET.Pos
                 }
                 else
                 {
-                    var currentIt = Services.Item.GetById((int)txtsearchB.SelectedValue);
+                    var currentIt = Item.GetById((int)txtsearchB.SelectedValue);
                     name = currentIt.First();
                 }
                 bool found = false;
                 int searchValue = name.Id;
 
 
-                var itemAction = aksionet.Find(p => p.item_id == name.Id);
+                var itemAction = aksionet.Find(p => p.item_id == name.Id && DateTime.Now <= Convert.ToDateTime(p.DateTo));
                 var categoryAction = aksionet.Find(p => p.category_id == name.CategoryId);
                 if (name.Service == 0)
                 {
@@ -7880,12 +7960,12 @@ namespace MyNET.Pos
 
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
                                                 row.Cells["Discount"].Value = itemAction.discount;
-                                                txtsrchB.Text = "";
+                                                txtsearchB.Text = ""; txtB.Text = "";
                                             }
                                             else
                                             {
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                txtsrchB.Text = "";
+                                                txtsearchB.Text = ""; txtB.Text = "";
 
                                             }
                                         }
@@ -7905,12 +7985,12 @@ namespace MyNET.Pos
 
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
                                                             row.Cells["Discount"].Value = itemAction.discount;
-                                                            txtsrchB.Text = "";
+                                                            txtsearchB.Text = ""; txtB.Text = "";
                                                         }
                                                         else
                                                         {
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                            txtsrchB.Text = "";
+                                                            txtsearchB.Text = ""; txtB.Text = "";
 
                                                         }
                                                     }
@@ -7932,7 +8012,7 @@ namespace MyNET.Pos
                                 {
                                     name.Discount = itemAction.discount;
                                     AddItem(name);
-                                    txtsrchB.Text = "";
+                                    txtsearchB.Text = ""; txtB.Text = "";
                                     CalculateGridColumns();
 
 
@@ -7942,7 +8022,7 @@ namespace MyNET.Pos
                             {
                                 name.Discount = itemAction.discount;
                                 AddItem(name);
-                                txtsrchB.Text = "";
+                                txtsearchB.Text = ""; txtB.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -7965,7 +8045,7 @@ namespace MyNET.Pos
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
 
                                                 row.Cells["Discount"].Value = itemAction.discount;
-                                                txtsrchB.Text = "";
+                                                txtsearchB.Text = ""; txtB.Text = "";
 
 
                                             }
@@ -7974,7 +8054,7 @@ namespace MyNET.Pos
                                                 row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                txtsrchB.Text = "";
+                                                txtsearchB.Text = ""; txtB.Text = "";
 
                                             }
                                         }
@@ -7995,7 +8075,7 @@ namespace MyNET.Pos
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
 
                                                             row.Cells["Discount"].Value = itemAction.discount;
-                                                            txtsrchB.Text = "";
+                                                            txtsearchB.Text = ""; txtB.Text = "";
 
 
                                                         }
@@ -8004,7 +8084,7 @@ namespace MyNET.Pos
                                                             row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                            txtsrchB.Text = "";
+                                                            txtsearchB.Text = ""; txtB.Text = "";
 
                                                         }
                                                     }
@@ -8024,7 +8104,7 @@ namespace MyNET.Pos
                                 if (!found)
                                 {
                                     AddItem(name);
-                                    txtsrchB.Text = "";
+                                    txtsearchB.Text = ""; txtB.Text = "";
                                     CalculateGridColumns();
 
                                 }
@@ -8032,7 +8112,7 @@ namespace MyNET.Pos
                             else
                             {
                                 AddItem(name);
-                                txtsrchB.Text = "";
+                                txtsearchB.Text = ""; txtB.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -8061,13 +8141,13 @@ namespace MyNET.Pos
 
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
                                                 row.Cells["Discount"].Value = categoryAction.discount;
-                                                txtsrchB.Text = "";
+                                                txtsearchB.Text = ""; txtB.Text = "";
 
                                             }
                                             else
                                             {
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                txtsrchB.Text = "";
+                                                txtsearchB.Text = ""; txtB.Text = "";
 
                                             }
                                         }
@@ -8087,13 +8167,13 @@ namespace MyNET.Pos
 
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
                                                             row.Cells["Discount"].Value = categoryAction.discount;
-                                                            txtsrchB.Text = "";
+                                                            txtsearchB.Text = ""; txtB.Text = "";
 
                                                         }
                                                         else
                                                         {
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                            txtsrchB.Text = "";
+                                                            txtsearchB.Text = ""; txtB.Text = "";
 
                                                         }
                                                     }
@@ -8114,7 +8194,7 @@ namespace MyNET.Pos
                                 {
                                     name.Discount = categoryAction.discount;
                                     AddItem(name);
-                                    txtsrchB.Text = "";
+                                    txtsearchB.Text = ""; txtB.Text = "";
                                     CalculateGridColumns();
 
                                 }
@@ -8123,7 +8203,7 @@ namespace MyNET.Pos
                             {
                                 name.Discount = categoryAction.discount;
                                 AddItem(name);
-                                txtsrchB.Text = "";
+                                txtsearchB.Text = ""; txtB.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -8146,7 +8226,7 @@ namespace MyNET.Pos
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
 
                                                 row.Cells["Discount"].Value = categoryAction.discount;
-                                                txtsrchB.Text = "";
+                                                txtsearchB.Text = ""; txtB.Text = "";
 
                                             }
                                             else
@@ -8154,7 +8234,7 @@ namespace MyNET.Pos
                                                 row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
                                                 row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                txtsrchB.Text = "";
+                                                txtsearchB.Text = ""; txtB.Text = "";
 
 
                                             }
@@ -8176,7 +8256,7 @@ namespace MyNET.Pos
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
 
                                                             row.Cells["Discount"].Value = categoryAction.discount;
-                                                            txtsrchB.Text = "";
+                                                            txtsearchB.Text = ""; txtB.Text = "";
 
                                                         }
                                                         else
@@ -8184,7 +8264,7 @@ namespace MyNET.Pos
                                                             row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
                                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                            txtsrchB.Text = "";
+                                                            txtsearchB.Text = ""; txtB.Text = "";
 
 
                                                         }
@@ -8206,7 +8286,7 @@ namespace MyNET.Pos
                                 if (!found)
                                 {
                                     AddItem(name);
-                                    txtsrchB.Text = "";
+                                    txtsearchB.Text = ""; txtB.Text = "";
                                     CalculateGridColumns();
 
                                 }
@@ -8214,7 +8294,7 @@ namespace MyNET.Pos
                             else
                             {
                                 AddItem(name);
-                                txtsrchB.Text = "";
+                                txtsearchB.Text = ""; txtB.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -8238,14 +8318,14 @@ namespace MyNET.Pos
                                         if ((decimal)row.Cells["Discount"].Value != 0)
                                         {
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * (decimal)row.Cells["Discount"].Value / 100)), 2);
-                                            txtsrchB.Text = "";
+                                            txtsearchB.Text = ""; txtB.Text = "";
 
 
                                         }
                                         else
                                         {
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                            txtsrchB.Text = "";
+                                            txtsearchB.Text = ""; txtB.Text = "";
                                         }
 
 
@@ -8269,14 +8349,14 @@ namespace MyNET.Pos
                                                     if ((decimal)row.Cells["Discount"].Value != 0)
                                                     {
                                                         row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * (decimal)row.Cells["Discount"].Value / 100)), 2);
-                                                        txtsrchB.Text = "";
+                                                        txtsearchB.Text = ""; txtB.Text = "";
 
 
                                                     }
                                                     else
                                                     {
                                                         row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                        txtsrchB.Text = "";
+                                                        txtsearchB.Text = ""; txtB.Text = "";
                                                     }
 
 
@@ -8301,7 +8381,7 @@ namespace MyNET.Pos
                             if (!found)
                             {
                                 AddItem(name);
-                                txtsrchB.Text = "";
+                                txtsearchB.Text = ""; txtB.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -8311,7 +8391,7 @@ namespace MyNET.Pos
                             //add found item
                             var item = name;
                             AddItem(item);
-                            txtsrchB.Text = "";
+                            txtsearchB.Text = ""; txtB.Text = "";
                             CalculateGridColumns();
 
 
@@ -8342,12 +8422,12 @@ namespace MyNET.Pos
 
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
                                             row.Cells["Discount"].Value = itemAction.discount;
-                                            txtsrchB.Text = "";
+                                            txtsearchB.Text = ""; txtB.Text = "";
                                         }
                                         else
                                         {
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                            txtsrchB.Text = "";
+                                            txtsearchB.Text = ""; txtB.Text = "";
 
                                         }
                                         found = true;
@@ -8361,7 +8441,7 @@ namespace MyNET.Pos
                                 {
                                     name.Discount = itemAction.discount;
                                     AddItem(name);
-                                    txtsrchB.Text = "";
+                                    txtsearchB.Text = ""; txtB.Text = "";
                                     CalculateGridColumns();
 
 
@@ -8371,7 +8451,7 @@ namespace MyNET.Pos
                             {
                                 name.Discount = itemAction.discount;
                                 AddItem(name);
-                                txtsrchB.Text = "";
+                                txtsearchB.Text = ""; txtB.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -8392,7 +8472,7 @@ namespace MyNET.Pos
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
 
                                             row.Cells["Discount"].Value = itemAction.discount;
-                                            txtsrchB.Text = "";
+                                            txtsearchB.Text = ""; txtB.Text = "";
 
 
                                         }
@@ -8401,7 +8481,7 @@ namespace MyNET.Pos
                                             row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                            txtsrchB.Text = "";
+                                            txtsearchB.Text = ""; txtB.Text = "";
 
                                         }
                                         found = true;
@@ -8413,7 +8493,7 @@ namespace MyNET.Pos
                                 if (!found)
                                 {
                                     AddItem(name);
-                                    txtsrchB.Text = "";
+                                    txtsearchB.Text = ""; txtB.Text = "";
                                     CalculateGridColumns();
 
                                 }
@@ -8421,7 +8501,7 @@ namespace MyNET.Pos
                             else
                             {
                                 AddItem(name);
-                                txtsrchB.Text = "";
+                                txtsearchB.Text = ""; txtB.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -8448,13 +8528,13 @@ namespace MyNET.Pos
 
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
                                             row.Cells["Discount"].Value = categoryAction.discount;
-                                            txtsrchB.Text = "";
+                                            txtsearchB.Text = ""; txtB.Text = "";
 
                                         }
                                         else
                                         {
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                            txtsrchB.Text = "";
+                                            txtsearchB.Text = ""; txtB.Text = "";
 
                                         }
                                         CalculateGridColumns();
@@ -8467,7 +8547,7 @@ namespace MyNET.Pos
                                 {
                                     name.Discount = categoryAction.discount;
                                     AddItem(name);
-                                    txtsrchB.Text = "";
+                                    txtsearchB.Text = ""; txtB.Text = "";
                                     CalculateGridColumns();
 
                                 }
@@ -8476,7 +8556,7 @@ namespace MyNET.Pos
                             {
                                 name.Discount = categoryAction.discount;
                                 AddItem(name);
-                                txtsrchB.Text = "";
+                                txtsearchB.Text = ""; txtB.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -8497,7 +8577,7 @@ namespace MyNET.Pos
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
 
                                             row.Cells["Discount"].Value = categoryAction.discount;
-                                            txtsrchB.Text = "";
+                                            txtsearchB.Text = ""; txtB.Text = "";
 
                                         }
                                         else
@@ -8505,7 +8585,7 @@ namespace MyNET.Pos
                                             row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
                                             row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                            txtsrchB.Text = "";
+                                            txtsearchB.Text = ""; txtB.Text = "";
 
 
                                         }
@@ -8519,7 +8599,7 @@ namespace MyNET.Pos
                                 if (!found)
                                 {
                                     AddItem(name);
-                                    txtsrchB.Text = "";
+                                    txtsearchB.Text = ""; txtB.Text = "";
                                     CalculateGridColumns();
 
                                 }
@@ -8527,7 +8607,7 @@ namespace MyNET.Pos
                             else
                             {
                                 AddItem(name);
-                                txtsrchB.Text = "";
+                                txtsearchB.Text = ""; txtB.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -8549,14 +8629,14 @@ namespace MyNET.Pos
                                     if ((decimal)row.Cells["Discount"].Value != 0)
                                     {
                                         row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * (decimal)row.Cells["Discount"].Value / 100)), 2);
-                                        txtsrchB.Text = "";
+                                        txtsearchB.Text = ""; txtB.Text = "";
 
 
                                     }
                                     else
                                     {
                                         row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                        txtsrchB.Text = "";
+                                        txtsearchB.Text = ""; txtB.Text = "";
                                     }
 
 
@@ -8573,7 +8653,7 @@ namespace MyNET.Pos
                             if (!found)
                             {
                                 AddItem(name);
-                                txtsrchB.Text = "";
+                                txtsearchB.Text = ""; txtB.Text = "";
                                 CalculateGridColumns();
 
                             }
@@ -8583,13 +8663,16 @@ namespace MyNET.Pos
                             //add found item
                             var item = name;
                             AddItem(item);
-                            txtsrchB.Text = "";
+                            txtsearchB.Text = ""; txtB.Text = "";
                             CalculateGridColumns();
 
 
                         }
                     }
                 }
+                txtsearchB.DataSource = null;
+                txtB.Focus();
+                CalculateGridColumns();
             }
             catch (Exception)
             {
@@ -8599,744 +8682,7 @@ namespace MyNET.Pos
 
 
         }
-        private void txtsrchB_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            var settings = Services.Settings.Get();
 
-            var clientDiscount = Partner.Get(PartnerId).Discount;
-            bool found = false;
-
-            if (txtsrchB.Text != "")
-            {
-                var keyPressedEventArgs = e as KeyPressEventArgs;
-                if (keyPressedEventArgs != null && keyPressedEventArgs.KeyChar == (char)Keys.Enter)
-                {
-                    ItemsDiscount foundItems = null;
-                    if (settings.BarcMode == 0)
-                    {
-                        foundItems = mAllItems.Find(p => p.Barcode == txtsrchB.Text);
-
-                    }
-                    else
-                    {
-                        var currentI = Services.Item.GetItemWithBarcode(txtsrchB.Text);
-                        foundItems = currentI.Count > 0 ? currentI.First() : null;
-
-                    }
-
-
-                    if (ug.Columns.Contains(" ") == false)
-                    {
-                        DataGridViewButtonColumn col = new DataGridViewButtonColumn();
-                        col.UseColumnTextForButtonValue = true;
-                        col.Name = " ";
-                        ug.Columns.Add(col);
-                    }
-
-
-
-                    if (foundItems != null)
-                    {
-                        if (foundItems.Service == 0)
-                        {
-
-
-                            var itemAction = aksionet.Find(p => p.item_id == foundItems.Id);
-                            var categoryAction = aksionet.Find(p => p.category_id == foundItems.CategoryId);
-                            var availableStock = Globals.Settings.StockWMinus == "0" ? Warehouse.GetbyId(foundItems.Id).InStock : -1;
-
-                            if (itemAction != null && settings.AllowDiscount == "0")
-                            {
-                                var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
-                                var totalPrice = tp - (tp * clientDiscount / 100);
-
-                                if (itemAction.quantity == 1)
-                                {
-                                    if (ug.Rows.Count > 0)
-                                    {
-                                        foreach (DataGridViewRow row in ug.Rows)
-                                        {
-                                            if (row.Cells[4].Value.ToString() == txtsrchB.Text && txtsrchB.Text != "")
-                                            {
-                                                if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 && availableStock != -1)
-                                                {
-                                                    if (itemAction.quantity <= (decimal)row.Cells["Quantity"].Value)
-                                                    {
-                                                        row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                        row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
-                                                        row.Cells["Discount"].Value = itemAction.discount;
-                                                        txtsrchB.Text = "";
-                                                        CalculateGridColumns();
-                                                    }
-                                                    else
-                                                    {
-                                                        row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                        txtsrchB.Text = "";
-                                                        CalculateGridColumns();
-
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
-                                                    {
-                                                        if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-                                                        {
-                                                            EnterPin enter = new EnterPin();
-                                                            enter.ShowDialog();
-                                                            if (enter.flag == true)
-                                                            {
-                                                                if (itemAction.quantity <= (decimal)row.Cells["Quantity"].Value)
-                                                                {
-                                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
-                                                                    row.Cells["Discount"].Value = itemAction.discount;
-                                                                    txtsrchB.Text = "";
-                                                                    CalculateGridColumns();
-                                                                }
-                                                                else
-                                                                {
-                                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                                    txtsrchB.Text = "";
-                                                                    CalculateGridColumns();
-
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
-                                                    }
-                                                }
-                                                found = true;
-                                            }
-
-
-                                        }
-                                        if (!found)
-                                        {
-                                            foundItems.Discount = itemAction.discount;
-                                            AddItem(foundItems);
-                                            txtsrchB.Text = "";
-                                            CalculateGridColumns();
-
-                                        }
-                                    }
-                                    else
-                                    {
-                                        foundItems.Discount = itemAction.discount;
-                                        AddItem(foundItems);
-                                        txtsrchB.Text = "";
-                                        CalculateGridColumns();
-
-                                    }
-                                }
-                                else
-                                {
-
-                                    if (ug.Rows.Count > 0)
-                                    {
-                                        foreach (DataGridViewRow row in ug.Rows)
-                                        {
-                                            if (row.Cells[4].Value.ToString() == txtsrchB.Text && txtsrchB.Text != "")
-                                            {
-                                                if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 && availableStock != -1)
-                                                {
-                                                    if (itemAction.quantity <= (decimal)row.Cells["Quantity"].Value + 1)
-                                                    {
-                                                        row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                        row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
-
-                                                        row.Cells["Discount"].Value = itemAction.discount;
-                                                        txtsrchB.Text = "";
-                                                        CalculateGridColumns();
-
-
-                                                    }
-                                                    else
-                                                    {
-                                                        row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                        row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                        txtsrchB.Text = "";
-                                                        CalculateGridColumns();
-
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
-                                                    {
-                                                        if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-                                                        {
-                                                            EnterPin enter = new EnterPin();
-                                                            enter.ShowDialog();
-                                                            if (enter.flag == true)
-                                                            {
-                                                                if (itemAction.quantity <= (decimal)row.Cells["Quantity"].Value + 1)
-                                                                {
-                                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
-
-                                                                    row.Cells["Discount"].Value = itemAction.discount;
-                                                                    txtsrchB.Text = "";
-                                                                    CalculateGridColumns();
-
-
-                                                                }
-                                                                else
-                                                                {
-                                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                                    txtsrchB.Text = "";
-                                                                    CalculateGridColumns();
-
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
-                                                    }
-                                                }
-                                                found = true;
-
-                                            }
-
-                                        }
-                                        if (!found)
-                                        {
-                                            AddItem(foundItems);
-                                            txtsrchB.Text = "";
-                                            CalculateGridColumns();
-
-                                        }
-                                    }
-                                    else
-                                    {
-                                        AddItem(foundItems);
-                                        txtsrchB.Text = "";
-                                        CalculateGridColumns();
-
-                                    }
-                                }
-                            }
-
-
-
-                            else if (categoryAction != null && settings.AllowDiscount == "0")
-                            {
-                                var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
-                                var totalPrice = tp - (tp * clientDiscount / 100);
-                                if (categoryAction.quantity == 1)
-                                {
-                                    if (ug.Rows.Count > 0)
-                                    {
-                                        foreach (DataGridViewRow row in ug.Rows)
-                                        {
-                                            if (row.Cells[4].Value.ToString() == txtsrchB.Text && txtsrchB.Text != "")
-                                            {
-                                                if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 && availableStock != -1)
-                                                {
-                                                    if (categoryAction.quantity <= (decimal)row.Cells["Quantity"].Value)
-                                                    {
-                                                        row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                        row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
-                                                        row.Cells["Discount"].Value = categoryAction.discount;
-                                                        txtsrchB.Text = "";
-                                                        CalculateGridColumns();
-
-                                                    }
-                                                    else
-                                                    {
-                                                        row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                        txtsrchB.Text = "";
-                                                        CalculateGridColumns();
-
-                                                    }
-
-                                                }
-                                                else
-                                                {
-                                                    if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
-                                                    {
-                                                        if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-                                                        {
-                                                            EnterPin enter = new EnterPin();
-                                                            enter.ShowDialog();
-                                                            if (enter.flag == true)
-                                                            {
-                                                                if (categoryAction.quantity <= (decimal)row.Cells["Quantity"].Value)
-                                                                {
-                                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
-                                                                    row.Cells["Discount"].Value = categoryAction.discount;
-                                                                    txtsrchB.Text = "";
-                                                                    CalculateGridColumns();
-
-                                                                }
-                                                                else
-                                                                {
-                                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                                    txtsrchB.Text = "";
-                                                                    CalculateGridColumns();
-
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
-                                                    }
-                                                }
-                                                found = true;
-
-                                            }
-                                        }
-                                        if (!found)
-                                        {
-                                            foundItems.Discount = categoryAction.discount;
-                                            AddItem(foundItems);
-                                            txtsrchB.Text = "";
-                                            CalculateGridColumns();
-
-                                        }
-                                    }
-                                    else
-                                    {
-                                        foundItems.Discount = categoryAction.discount;
-                                        AddItem(foundItems);
-                                        txtsrchB.Text = "";
-                                        CalculateGridColumns();
-
-                                    }
-                                }
-                                else
-                                {
-
-                                    if (ug.Rows.Count > 0)
-                                    {
-                                        foreach (DataGridViewRow row in ug.Rows)
-                                        {
-                                            if (row.Cells[4].Value.ToString() == txtsrchB.Text && txtsrchB.Text != "")
-                                            {
-                                                if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 && availableStock != -1)
-                                                {
-                                                    if (categoryAction.quantity <= (decimal)row.Cells["Quantity"].Value + 1)
-                                                    {
-                                                        row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                        row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
-
-                                                        row.Cells["Discount"].Value = categoryAction.discount;
-                                                        txtsrchB.Text = "";
-                                                        CalculateGridColumns();
-
-                                                    }
-                                                    else
-                                                    {
-                                                        row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                        row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                        txtsrchB.Text = "";
-                                                        CalculateGridColumns();
-
-
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
-                                                    {
-                                                        if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-                                                        {
-                                                            EnterPin enter = new EnterPin();
-                                                            enter.ShowDialog();
-                                                            if (enter.flag == true)
-                                                            {
-                                                                if (categoryAction.quantity <= (decimal)row.Cells["Quantity"].Value + 1)
-                                                                {
-                                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
-
-                                                                    row.Cells["Discount"].Value = categoryAction.discount;
-                                                                    txtsrchB.Text = "";
-                                                                    CalculateGridColumns();
-
-                                                                }
-                                                                else
-                                                                {
-                                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                                    txtsrchB.Text = "";
-                                                                    CalculateGridColumns();
-
-
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
-                                                    }
-                                                }
-                                                found = true;
-                                            }
-
-
-                                        }
-                                        if (!found)
-                                        {
-                                            AddItem(foundItems);
-                                            txtsrchB.Text = "";
-                                            CalculateGridColumns();
-
-                                        }
-                                    }
-                                    else
-                                    {
-                                        AddItem(foundItems);
-                                        txtsrchB.Text = "";
-                                        CalculateGridColumns();
-
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (ug.Rows.Count > 0)
-                                {
-                                    foreach (DataGridViewRow row in ug.Rows)
-                                    {
-                                        if (row.Cells[4].Value.ToString() == txtsrchB.Text && txtsrchB.Text != "")
-                                        {
-                                            if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 && availableStock != -1)
-                                            {
-                                                row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-                                                var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
-                                                var totalPrice = tp - (tp * clientDiscount / 100);
-
-                                                if ((decimal)row.Cells["Discount"].Value != 0)
-                                                {
-                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * (decimal)row.Cells["Discount"].Value / 100)), 2);
-                                                    txtsrchB.Text = "";
-                                                    CalculateGridColumns();
-
-
-                                                }
-                                                else
-                                                {
-                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                    txtsrchB.Text = "";
-                                                    CalculateGridColumns();
-
-                                                }
-                                            }
-                                            else
-                                            {
-                                                if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
-                                                {
-                                                    if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-                                                    {
-                                                        EnterPin enter = new EnterPin();
-                                                        enter.ShowDialog();
-                                                        if (enter.flag == true)
-                                                        {
-                                                            row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-                                                            var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
-                                                            var totalPrice = tp - (tp * clientDiscount / 100);
-
-                                                            if ((decimal)row.Cells["Discount"].Value != 0)
-                                                            {
-                                                                row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * (decimal)row.Cells["Discount"].Value / 100)), 2);
-                                                                txtsrchB.Text = "";
-                                                                CalculateGridColumns();
-
-
-                                                            }
-                                                            else
-                                                            {
-                                                                row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                                txtsrchB.Text = "";
-                                                                CalculateGridColumns();
-
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
-                                                }
-                                            }
-
-                                            //var total = Convert.ToDecimal(row.Cells["TotalWithVat"].Value);
-                                            //mTotalSum = total;
-                                            //txtTotalSum.Text = mTotalSum.ToString();
-                                            AdjustTblTotalColumnWidths();
-                                            found = true;
-                                            return;
-                                        }
-
-                                    }
-                                    if (!found)
-                                    {
-                                        AddItem(foundItems);
-
-                                        txtsrchB.Text = "";
-                                        CalculateGridColumns();
-
-                                    }
-                                }
-                                else
-                                {
-                                    //add found item.
-                                    if (txtsrchB.Text == "")
-                                        return;
-                                    var item = foundItems;
-                                    AddItem(item);
-                                    txtsrchB.Text = "";
-                                    CalculateGridColumns();
-
-
-                                }
-                            }
-                        }
-                        else
-                        {
-                            var itemAction = aksionet.Find(p => p.item_id == foundItems.Id);
-                            var categoryAction = aksionet.Find(p => p.category_id == foundItems.CategoryId);
-
-                            if (itemAction != null && settings.AllowDiscount == "0")
-                            {
-                                var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
-                                var totalPrice = tp - (tp * clientDiscount / 100);
-
-                                if (itemAction.quantity == 1)
-                                {
-                                    if (ug.Rows.Count > 0)
-                                    {
-                                        foreach (DataGridViewRow row in ug.Rows)
-                                        {
-                                            if (row.Cells[4].Value.ToString() == txtsrchB.Text && txtsrchB.Text != "")
-                                            {
-                                                if (itemAction.quantity <= (decimal)row.Cells["Quantity"].Value)
-                                                {
-                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
-                                                    row.Cells["Discount"].Value = itemAction.discount;
-                                                    txtsrchB.Text = "";
-                                                    CalculateGridColumns();
-                                                }
-                                                else
-                                                {
-                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                    txtsrchB.Text = "";
-                                                    CalculateGridColumns();
-
-                                                }
-                                                found = true;
-                                            }
-
-
-                                        }
-                                        if (!found)
-                                        {
-                                            foundItems.Discount = itemAction.discount;
-                                            AddItem(foundItems);
-                                            txtsrchB.Text = "";
-                                            CalculateGridColumns();
-
-                                        }
-                                    }
-                                    else
-                                    {
-                                        foundItems.Discount = itemAction.discount;
-                                        AddItem(foundItems);
-                                        txtsrchB.Text = "";
-                                        CalculateGridColumns();
-
-                                    }
-                                }
-                                else
-                                {
-
-                                    if (ug.Rows.Count > 0)
-                                    {
-                                        foreach (DataGridViewRow row in ug.Rows)
-                                        {
-                                            if (row.Cells[4].Value.ToString() == txtsrchB.Text && txtsrchB.Text != "")
-                                            {
-                                                if (itemAction.quantity <= (decimal)row.Cells["Quantity"].Value + 1)
-                                                {
-                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
-
-                                                    row.Cells["Discount"].Value = itemAction.discount;
-                                                    txtsrchB.Text = "";
-                                                    CalculateGridColumns();
-
-
-                                                }
-                                                else
-                                                {
-                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                    txtsrchB.Text = "";
-                                                    CalculateGridColumns();
-
-                                                }
-                                                found = true;
-
-                                            }
-
-                                        }
-                                        if (!found)
-                                        {
-                                            AddItem(foundItems);
-                                            txtsrchB.Text = "";
-                                            CalculateGridColumns();
-
-                                        }
-                                    }
-                                    else
-                                    {
-                                        AddItem(foundItems);
-                                        txtsrchB.Text = "";
-                                        CalculateGridColumns();
-
-                                    }
-                                }
-                            }
-
-
-
-                            else if (categoryAction != null && settings.AllowDiscount == "0")
-                            {
-                                var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
-                                var totalPrice = tp - (tp * clientDiscount / 100);
-                                if (categoryAction.quantity == 1)
-                                {
-                                    if (ug.Rows.Count > 0)
-                                    {
-                                        foreach (DataGridViewRow row in ug.Rows)
-                                        {
-                                            if (row.Cells[4].Value.ToString() == txtsrchB.Text && txtsrchB.Text != "")
-                                            {
-                                                if (categoryAction.quantity <= (decimal)row.Cells["Quantity"].Value)
-                                                {
-                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
-                                                    row.Cells["Discount"].Value = categoryAction.discount;
-                                                    txtsrchB.Text = "";
-                                                    CalculateGridColumns();
-
-                                                }
-                                                else
-                                                {
-                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                    txtsrchB.Text = "";
-                                                    CalculateGridColumns();
-
-                                                }
-
-                                            }
-                                            found = true;
-                                        }
-                                        if (!found)
-                                        {
-                                            foundItems.Discount = categoryAction.discount;
-                                            AddItem(foundItems);
-                                            txtsrchB.Text = "";
-                                            CalculateGridColumns();
-
-                                        }
-                                    }
-                                    else
-                                    {
-                                        foundItems.Discount = categoryAction.discount;
-                                        AddItem(foundItems);
-                                        txtsrchB.Text = "";
-                                        CalculateGridColumns();
-
-                                    }
-                                }
-                                else
-                                {
-
-                                    if (ug.Rows.Count > 0)
-                                    {
-                                        foreach (DataGridViewRow row in ug.Rows)
-                                        {
-                                            if (row.Cells[4].Value.ToString() == txtsrchB.Text && txtsrchB.Text != "")
-                                            {
-                                                if (categoryAction.quantity <= (decimal)row.Cells["Quantity"].Value + 1)
-                                                {
-                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
-
-                                                    row.Cells["Discount"].Value = categoryAction.discount;
-                                                    txtsrchB.Text = "";
-                                                    CalculateGridColumns();
-
-                                                }
-                                                else
-                                                {
-                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-
-                                                    row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
-                                                    txtsrchB.Text = "";
-                                                    CalculateGridColumns();
-
-
-                                                }
-                                                found = true;
-                                            }
-
-
-                                        }
-                                        if (!found)
-                                        {
-                                            AddItem(foundItems);
-                                            txtsrchB.Text = "";
-                                            CalculateGridColumns();
-
-                                        }
-                                    }
-                                    else
-                                    {
-                                        AddItem(foundItems);
-                                        txtsrchB.Text = "";
-                                        CalculateGridColumns();
-
-                                    }
-                                }
-
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
         private void txtsrchB_TextChanged(object sender, EventArgs e)
         {
 
@@ -9368,11 +8714,11 @@ namespace MyNET.Pos
             //{
             //    if (ug.CurrentCell == null && txt.Focused == false && txtB.Focused == false)
             //    {
-            //        if (!txtsrch.Focused) // check if the textbox doesn't have focus
+            //        if (!txtsearch.Focused) // check if the textbox doesn't have focus
             //        {
-            //            txtsrch.Focus(); // give focus to the textbox
-            //            txtsrch.Text = e.KeyChar.ToString(); // set the text of the textbox to the input character
-            //            txtsrch.Select(txtsrch.Text.Length, 0); // move the cursor to the end of the textbox
+            //            txtsearch.Focus(); // give focus to the textbox
+            //            txtsearch.Text = e.KeyChar.ToString(); // set the text of the textbox to the input character
+            //            txtsearch.Select(txtsearch.Text.Length, 0); // move the cursor to the end of the textbox
             //            e.Handled = true; // mark the event as handled to prevent the character from being added to the form
             //        }
             //        else // if the textbox has focus, let the event pass through to the textbox
@@ -9477,6 +8823,7 @@ namespace MyNET.Pos
                 }
                 else
                 {
+                    
                     if (printer.FiscalType == "Tremol")
                     {
                         if (dt.Rows.Count > 0)
@@ -9496,6 +8843,13 @@ namespace MyNET.Pos
                             if (dt.Rows.Count > 0)
                             {
                                 FiscalPrinterHelper.GekosPrint(global.FiscalCount, num.ToString(), dt, mTotalSum, num, withBank, clientPayed);
+                                foreach (DataRow item in dt.Rows)
+                                {
+                                    decimal quantity = Convert.ToDecimal(item["Quantity"].ToString());
+                                    string id = item["Id"].ToString();
+                                    Services.Models.TablesSaleDetails.UpdateTableFiscalQuantityPrinted(quantity, id);
+
+                                }
 
                             }
                         }
@@ -9504,6 +8858,13 @@ namespace MyNET.Pos
                             if (dt.Rows.Count > 0)
                             {
                                 FiscalPrinterHelper.GekosPrintOldV(global.FiscalCount, num.ToString(), dt, mTotalSum, num, withBank, clientPayed);
+                                foreach (DataRow item in dt.Rows)
+                                {
+                                    decimal quantity = Convert.ToDecimal(item["Quantity"].ToString());
+                                    string id = item["Id"].ToString();
+
+                                }
+
                             }
                         }
                         //LoadJson.DataTabletoJsonDatecs(dt);
@@ -9524,6 +8885,7 @@ namespace MyNET.Pos
 
             }
 
+            Services.Tables.UpdateTablePos(1, tableId);
 
             foreach (DataGridViewRow item in ug.Rows)
             {
@@ -9532,1087 +8894,790 @@ namespace MyNET.Pos
             this.Close();
             Globals.NextStep = "Restaurant";
         }
-
-        private void txtsrch_KeyPress(object sender, KeyPressEventArgs e)
+        private void txt_KeyDown(object sender, KeyEventArgs e)
         {
-            var settings = Services.Settings.Get();
-            var clientDiscount = Partner.Get(PartnerId).Discount;
-            bool found = false;
-            if (txtsrch.Text != "")
+            e.Handled = true;
+
+            if (e.KeyCode == Keys.Enter)
             {
-                var keyPressedEventArgs = e as KeyPressEventArgs;
-                if (keyPressedEventArgs != null && keyPressedEventArgs.KeyChar == (char)Keys.Enter)
+                txtsearchB.DroppedDown = false;
+
+                txtsearchB.Cursor = Cursors.Arrow;
+                List<ItemsDiscount> item = null;
+                ItemsDiscount foundItems = null;
+                var clientDiscount = Partner.Get(PartnerId).Discount;
+                try
                 {
-                    var foundItems = mAllItems.Find(p => p.Barcode == txtsrch.Text);
-
-                    if (ug.Columns.Contains(" ") == false)
+                    if (txtB.Text != "Emri,Çmimi,Shifra" && txtB.Text != "")
                     {
-                        DataGridViewButtonColumn col = new DataGridViewButtonColumn();
-                        col.UseColumnTextForButtonValue = true;
-                        col.Name = " ";
-                        ug.Columns.Add(col);
-                    }
-
-                    if (foundItems != null)
-                    {
-                        if (foundItems.Service == 0)
+                        if (ug.Columns.Contains(" ") == false)
                         {
+                            DataGridViewButtonColumn col = new DataGridViewButtonColumn();
+                            col.UseColumnTextForButtonValue = true;
+                            col.Name = " ";
+                            ug.Columns.Add(col);
 
+                        }
+                        if (Globals.Settings.BarcMode == 0)
+                        {
+                            item = mAllItems.Where(p => p.ItemName.ToLower().Contains(txtB.Text.ToLower()) || p.ProductNo.Contains(txtB.Text)).ToList();
 
-                            decimal shuma = (foundItems.SalePrice * (1 - foundItems.Discount / 100)) * (1 * (decimal)foundItems.Vat / 100.0M);
-
-                            decimal shumatotale = Math.Round(shuma + foundItems.SalePrice, 2);
-                            if (settings.AllowDiscount == "0" && clientDiscount > 0)
+                        }
+                        else
+                        {
+                            var it = Item.GetItemWithBarcode(txtB.Text.ToLower());
+                            if (it.Count > 0)
                             {
-                                shumatotale = shumatotale - (shumatotale * clientDiscount / 100);
-
+                                foundItems = it.First();
                             }
-                            var availableStock = Globals.Settings.StockWMinus == "0" ? Warehouse.GetbyId(foundItems.Id).InStock : -1;
-
-                            var itemAction = aksionet.Find(p => p.item_id == foundItems.Id);
-                            var categoryAction = aksionet.Find(p => p.category_id == foundItems.CategoryId);
-                            if (categoryAction != null && itemAction != null && settings.AllowDiscount == "0")
+                            if (foundItems != null)
                             {
-                                var action = itemAction;
-                                if (ug.Rows.Count > 0)
+                                bool found = false;
+                                if (foundItems.Service == 0)
                                 {
-                                    foreach (DataGridViewRow row in ug.Rows)
-                                    {
-                                        if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                                        {
-                                            if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 || settings.StockWMinus != "0")
-                                            {
-                                                if (itemAction.quantity == decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1)
-                                                {
-                                                    decimal discount = (itemAction.discount) / 100;
-                                                    decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                    row.Cells["Quantity"].Value = quantity.ToString("N");
 
-                                                    decimal totalwithvat = ((decimal)row.Cells["TotalWithVat"].Value + ((decimal)row.Cells["TotalWithVat"].Value * discount));
-                                                    row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                                    row.Cells["Discount"].Value = (discount * 100).ToString("N");
+
+                                    var itemAction = aksionet.Find(p => p.item_id == foundItems.Id && DateTime.Now <= Convert.ToDateTime(p.DateTo));
+                                    var categoryAction = aksionet.Find(p => p.category_id == foundItems.CategoryId && DateTime.Now <= Convert.ToDateTime(p.DateTo));
+                                    var availableStock = Globals.Settings.StockWMinus == "0" ? Warehouse.GetbyId(foundItems.Id).InStock : -1;
+
+                                    if (itemAction != null && Globals.Settings.AllowDiscount == "0")
+                                    {
+                                        var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
+                                        var totalPrice = tp - (tp * clientDiscount / 100);
+
+                                        if (itemAction.quantity == 1)
+                                        {
+                                            if (ug.Rows.Count > 0)
+                                            {
+                                                foreach (DataGridViewRow row in ug.Rows)
+                                                {
+                                                    if (row.Cells[4].Value.ToString() == txtB.Text && txtB.Text != "")
+                                                    {
+                                                        if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 && availableStock != -1)
+                                                        {
+                                                            if (itemAction.quantity <= (decimal)row.Cells["Quantity"].Value)
+                                                            {
+                                                                row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                                row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
+                                                                row.Cells["Discount"].Value = itemAction.discount;
+                                                                txtB.Text = "";
+                                                                CalculateGridColumns();
+                                                            }
+                                                            else
+                                                            {
+                                                                row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                                txtB.Text = "";
+                                                                CalculateGridColumns();
+
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                            {
+                                                                if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+                                                                {
+                                                                    EnterPin enter = new EnterPin();
+                                                                    enter.ShowDialog();
+                                                                    if (enter.flag == true)
+                                                                    {
+                                                                        if (itemAction.quantity <= (decimal)row.Cells["Quantity"].Value)
+                                                                        {
+                                                                            row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
+                                                                            row.Cells["Discount"].Value = itemAction.discount;
+                                                                            txtB.Text = "";
+                                                                            CalculateGridColumns();
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                                            txtB.Text = "";
+                                                                            CalculateGridColumns();
+
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
+                                                            }
+                                                        }
+                                                        found = true;
+                                                    }
+
 
                                                 }
-                                                else
+                                                if (!found)
                                                 {
-                                                    if (decimal.Parse(row.Cells["Discount"].Value.ToString()) == 0 && action.discount == 0)
-                                                    {
-                                                        decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                        row.Cells["Quantity"].Value = quantity.ToString("N");
-                                                        decimal totalwithvat = shumatotale * quantity;
-                                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                                    }
-                                                    else
-                                                    {
-                                                        decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
-                                                        decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                        row.Cells["Quantity"].Value = quantity.ToString("N");
+                                                    foundItems.Discount = itemAction.discount;
+                                                    AddItem(foundItems);
+                                                    txtB.Text = "";
+                                                    CalculateGridColumns();
 
-                                                        decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
-                                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                                    }
                                                 }
                                             }
                                             else
                                             {
-                                                if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
-                                                {
-                                                    if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-                                                    {
-                                                        EnterPin enter = new EnterPin();
-                                                        enter.ShowDialog();
-                                                        if (enter.flag == true)
-                                                        {
-                                                            if (itemAction.quantity == decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1)
-                                                            {
-                                                                decimal discount = (itemAction.discount) / 100;
-                                                                decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                                row.Cells["Quantity"].Value = quantity.ToString("N");
+                                                foundItems.Discount = itemAction.discount;
+                                                AddItem(foundItems);
+                                                txtB.Text = "";
+                                                CalculateGridColumns();
 
-                                                                decimal totalwithvat = ((decimal)row.Cells["TotalWithVat"].Value + ((decimal)row.Cells["TotalWithVat"].Value * discount));
-                                                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                                                row.Cells["Discount"].Value = (discount * 100).ToString("N");
+                                            }
+                                        }
+                                        else
+                                        {
+
+                                            if (ug.Rows.Count > 0)
+                                            {
+                                                foreach (DataGridViewRow row in ug.Rows)
+                                                {
+                                                    if (row.Cells[4].Value.ToString() == txtB.Text && txtB.Text != "")
+                                                    {
+                                                        if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 && availableStock != -1)
+                                                        {
+                                                            if (itemAction.quantity <= (decimal)row.Cells["Quantity"].Value + 1)
+                                                            {
+                                                                row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                                row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
+
+                                                                row.Cells["Discount"].Value = itemAction.discount;
+                                                                txtB.Text = "";
+                                                                CalculateGridColumns();
+
 
                                                             }
                                                             else
                                                             {
-                                                                if (decimal.Parse(row.Cells["Discount"].Value.ToString()) == 0 && action.discount == 0)
-                                                                {
-                                                                    decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                                    row.Cells["Quantity"].Value = quantity.ToString("N");
-                                                                    decimal totalwithvat = shumatotale * quantity;
-                                                                    row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                                                }
-                                                                else
-                                                                {
-                                                                    decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
-                                                                    decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                                    row.Cells["Quantity"].Value = quantity.ToString("N");
+                                                                row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
-                                                                    decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
-                                                                    row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                                                }
+                                                                row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                                txtB.Text = "";
+                                                                CalculateGridColumns();
+
                                                             }
                                                         }
+                                                        else
+                                                        {
+                                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                            {
+                                                                if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+                                                                {
+                                                                    EnterPin enter = new EnterPin();
+                                                                    enter.ShowDialog();
+                                                                    if (enter.flag == true)
+                                                                    {
+                                                                        if (itemAction.quantity <= (decimal)row.Cells["Quantity"].Value + 1)
+                                                                        {
+                                                                            row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
+
+                                                                            row.Cells["Discount"].Value = itemAction.discount;
+                                                                            txtB.Text = "";
+                                                                            CalculateGridColumns();
+
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                                            txtB.Text = "";
+                                                                            CalculateGridColumns();
+
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
+                                                            }
+                                                        }
+                                                        found = true;
+
                                                     }
+
                                                 }
-                                                else
+                                                if (!found)
                                                 {
-                                                    MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
+                                                    AddItem(foundItems);
+                                                    txtB.Text = "";
+                                                    CalculateGridColumns();
+
                                                 }
                                             }
-                                            found = true;
-                                            CalculateGridColumns();
-                                        }
+                                            else
+                                            {
+                                                AddItem(foundItems);
+                                                txtB.Text = "";
+                                                CalculateGridColumns();
 
-                                    }
-                                    if (!found)
-                                    {
-                                        if (itemAction.discount == 1)
-                                        {
-                                            foundItems.Discount = itemAction.discount;
-                                            AddItem(foundItems);
+                                            }
                                         }
-                                        if (itemAction.discount == foundItems.Quantity + 1 || itemAction.discount > foundItems.Quantity + 1)
+                                    }
+
+
+
+                                    else if (categoryAction != null && Globals.Settings.AllowDiscount == "0")
+                                    {
+                                        var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
+                                        var totalPrice = tp - (tp * clientDiscount / 100);
+                                        if (categoryAction.quantity == 1)
                                         {
-                                            foundItems.Discount = itemAction.discount;
-                                            AddItem(foundItems);
+                                            if (ug.Rows.Count > 0)
+                                            {
+                                                foreach (DataGridViewRow row in ug.Rows)
+                                                {
+                                                    if (row.Cells[4].Value.ToString() == txtB.Text && txtB.Text != "")
+                                                    {
+                                                        if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 && availableStock != -1)
+                                                        {
+                                                            if (categoryAction.quantity <= (decimal)row.Cells["Quantity"].Value)
+                                                            {
+                                                                row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                                row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
+                                                                row.Cells["Discount"].Value = categoryAction.discount;
+                                                                txtB.Text = "";
+                                                                CalculateGridColumns();
+
+                                                            }
+                                                            else
+                                                            {
+                                                                row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                                txtB.Text = "";
+                                                                CalculateGridColumns();
+
+                                                            }
+
+                                                        }
+                                                        else
+                                                        {
+                                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                            {
+                                                                if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+                                                                {
+                                                                    EnterPin enter = new EnterPin();
+                                                                    enter.ShowDialog();
+                                                                    if (enter.flag == true)
+                                                                    {
+                                                                        if (categoryAction.quantity <= (decimal)row.Cells["Quantity"].Value)
+                                                                        {
+                                                                            row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
+                                                                            row.Cells["Discount"].Value = categoryAction.discount;
+                                                                            txtB.Text = "";
+                                                                            CalculateGridColumns();
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                                            txtB.Text = "";
+                                                                            CalculateGridColumns();
+
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
+                                                            }
+                                                        }
+                                                        found = true;
+
+                                                    }
+                                                }
+                                                if (!found)
+                                                {
+                                                    foundItems.Discount = categoryAction.discount;
+                                                    AddItem(foundItems);
+                                                    txtB.Text = "";
+                                                    CalculateGridColumns();
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                foundItems.Discount = categoryAction.discount;
+                                                AddItem(foundItems);
+                                                txtB.Text = "";
+                                                CalculateGridColumns();
+
+                                            }
                                         }
                                         else
-                                            AddItem(foundItems);
-
-
-                                    }
-
-                                }
-                                else
-                                {
-                                    if (action.quantity == 1)
-                                    {
-                                        foundItems.Discount = action.discount;
-
-                                    }
-                                    AddItem(foundItems);
-                                }
-                            }
-
-                            if (itemAction != null && settings.AllowDiscount == "0")
-                            {
-                                var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
-                                var totalPrice = tp - (tp * clientDiscount / 100);
-
-                                if (itemAction.quantity == 1)
-                                {
-                                    if (ug.Rows.Count > 0)
-                                    {
-                                        foreach (DataGridViewRow row in ug.Rows)
                                         {
 
-                                            if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
+                                            if (ug.Rows.Count > 0)
                                             {
-                                                if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 || settings.StockWMinus != "0")
+                                                foreach (DataGridViewRow row in ug.Rows)
                                                 {
-                                                    decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
-
-
-                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-                                                    var vat = Convert.ToDecimal(row.Cells["Vat"].Value) / 100;
-                                                    var totalP = Math.Round((decimal)row.Cells["Price"].Value * vat + (decimal)row.Cells["Price"].Value, 2);
-                                                    decimal totalwithvat = (totalP - (totalP * discount)) * (decimal)row.Cells["Quantity"].Value;
-                                                    row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat - (totalwithvat * clientDiscount / 100), 2);
-                                                }
-                                                else
-                                                {
-                                                    if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                    if (row.Cells[4].Value.ToString() == txtB.Text && txtB.Text != "")
                                                     {
-                                                        if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+                                                        if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 && availableStock != -1)
                                                         {
-                                                            EnterPin enter = new EnterPin();
-                                                            enter.ShowDialog();
-                                                            if (enter.flag == true)
+                                                            if (categoryAction.quantity <= (decimal)row.Cells["Quantity"].Value + 1)
                                                             {
-                                                                decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
-
-
                                                                 row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-                                                                var vat = Convert.ToDecimal(row.Cells["Vat"].Value) / 100;
-                                                                var totalP = Math.Round((decimal)row.Cells["Price"].Value * vat + (decimal)row.Cells["Price"].Value, 2);
-                                                                decimal totalwithvat = (totalP - (totalP * discount)) * (decimal)row.Cells["Quantity"].Value;
-                                                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat - (totalwithvat * clientDiscount / 100), 2);
+
+                                                                row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
+
+                                                                row.Cells["Discount"].Value = categoryAction.discount;
+                                                                txtB.Text = "";
+                                                                CalculateGridColumns();
+
+                                                            }
+                                                            else
+                                                            {
+                                                                row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                                row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                                txtB.Text = "";
+                                                                CalculateGridColumns();
+
+
                                                             }
                                                         }
+                                                        else
+                                                        {
+                                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                            {
+                                                                if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+                                                                {
+                                                                    EnterPin enter = new EnterPin();
+                                                                    enter.ShowDialog();
+                                                                    if (enter.flag == true)
+                                                                    {
+                                                                        if (categoryAction.quantity <= (decimal)row.Cells["Quantity"].Value + 1)
+                                                                        {
+                                                                            row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
+
+                                                                            row.Cells["Discount"].Value = categoryAction.discount;
+                                                                            txtB.Text = "";
+                                                                            CalculateGridColumns();
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                                            txtB.Text = "";
+                                                                            CalculateGridColumns();
+
+
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
+                                                            }
+                                                        }
+                                                        found = true;
                                                     }
-                                                    else
-                                                    {
-                                                        MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
-                                                    }
+
+
                                                 }
-                                                txtsrch.Text = "";
+                                                if (!found)
+                                                {
+                                                    AddItem(foundItems);
+                                                    txtB.Text = "";
+                                                    CalculateGridColumns();
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                AddItem(foundItems);
+                                                txtB.Text = "";
                                                 CalculateGridColumns();
 
-
-                                                found = true;
                                             }
-
-                                        }
-                                        if (!found)
-                                        {
-                                            foundItems.Discount = itemAction.discount;
-                                            AddItem(foundItems);
-                                            txtsrch.Text = "";
-
                                         }
                                     }
                                     else
                                     {
-                                        foundItems.Discount = itemAction.discount;
-                                        AddItem(foundItems);
-                                        txtsrch.Text = "";
-
-                                    }
-                                }
-                                else
-                                {
-
-                                    if (ug.Rows.Count > 0)
-                                    {
-                                        foreach (DataGridViewRow row in ug.Rows)
+                                        if (ug.Rows.Count > 0)
                                         {
-                                            decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString());
-
-                                            if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
+                                            foreach (DataGridViewRow row in ug.Rows)
                                             {
-                                                if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 || settings.StockWMinus != "0")
+                                                if (row.Cells[4].Value.ToString() == txtB.Text && txtB.Text != "")
                                                 {
-                                                    if (itemAction.quantity == (decimal)row.Cells["Quantity"].Value + 1)
+                                                    if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 && availableStock != -1)
                                                     {
-                                                        decimal itDiscount = (itemAction.discount) / 100;
+                                                        row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+                                                        var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
+                                                        var totalPrice = tp - (tp * clientDiscount / 100);
 
-                                                        decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                        row.Cells["Quantity"].Value = quantity.ToString("N");
-                                                        decimal totalwithvat = (shumatotale - (shumatotale * discount)) * quantity;
-                                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                                        row.Cells["Discount"].Value = (discount * 100).ToString("N");
-
-                                                        txtsrch.Text = "";
-                                                        CalculateGridColumns();
-
-
-                                                    }
-                                                    else
-                                                    {
-                                                        if (discount == 0)
+                                                        if ((decimal)row.Cells["Discount"].Value != 0)
                                                         {
-                                                            decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                            row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                            decimal totalwithvat = shumatotale * quantity;
-                                                            row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * (decimal)row.Cells["Discount"].Value / 100)), 2);
+                                                            txtB.Text = "";
+                                                            CalculateGridColumns();
 
 
                                                         }
                                                         else
                                                         {
-                                                            decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                            row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                            decimal totalwithvat = (shumatotale * quantity) - (shumatotale * quantity) * discount;
-                                                            row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                            txtB.Text = "";
+                                                            CalculateGridColumns();
 
                                                         }
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                    else
                                                     {
-                                                        if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+                                                        if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
                                                         {
-                                                            EnterPin enter = new EnterPin();
-                                                            enter.ShowDialog();
-                                                            if (enter.flag == true)
+                                                            if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                             {
-                                                                if (itemAction.quantity == (decimal)row.Cells["Quantity"].Value + 1)
+                                                                EnterPin enter = new EnterPin();
+                                                                enter.ShowDialog();
+                                                                if (enter.flag == true)
                                                                 {
-                                                                    decimal itDiscount = (itemAction.discount) / 100;
+                                                                    row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+                                                                    var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
+                                                                    var totalPrice = tp - (tp * clientDiscount / 100);
 
-                                                                    decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                                    row.Cells["Quantity"].Value = quantity.ToString("N");
-                                                                    decimal totalwithvat = (shumatotale - (shumatotale * discount)) * quantity;
-                                                                    row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                                                    row.Cells["Discount"].Value = (discount * 100).ToString("N");
-
-                                                                    txtsrch.Text = "";
-                                                                    CalculateGridColumns();
-
-
-                                                                }
-                                                                else
-                                                                {
-                                                                    if (discount == 0)
+                                                                    if ((decimal)row.Cells["Discount"].Value != 0)
                                                                     {
-                                                                        decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                                        row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                                        decimal totalwithvat = shumatotale * quantity;
-                                                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+                                                                        row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * (decimal)row.Cells["Discount"].Value / 100)), 2);
+                                                                        txtB.Text = "";
+                                                                        CalculateGridColumns();
 
 
                                                                     }
                                                                     else
                                                                     {
-                                                                        decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                                                                        row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                                        decimal totalwithvat = (shumatotale * quantity) - (shumatotale * quantity) * discount;
-                                                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+                                                                        row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                                        txtB.Text = "";
+                                                                        CalculateGridColumns();
 
                                                                     }
                                                                 }
                                                             }
                                                         }
-                                                    }
-                                                    else
-                                                    {
-                                                        MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
-                                                    }
-                                                }
-                                                found = true;
-                                                CalculateGridColumns();
-
-                                            }
-
-                                        }
-                                        if (!found)
-                                        {
-                                            AddItem(foundItems);
-                                            txtsrch.Text = "";
-
-                                        }
-                                    }
-                                    else
-                                    {
-                                        AddItem(foundItems);
-                                        txtsrch.Text = "";
-
-                                    }
-                                }
-                            }
-
-
-
-                            else if (categoryAction != null && settings.AllowDiscount == "0")
-                            {
-                                var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
-                                var totalPrice = tp - (tp * clientDiscount / 100);
-                                if (categoryAction.quantity == 1)
-                                {
-                                    if (ug.Rows.Count > 0)
-                                    {
-                                        foreach (DataGridViewRow row in ug.Rows)
-                                        {
-                                            decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString());
-
-                                            if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                                            {
-                                                if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 || settings.StockWMinus != "0")
-                                                {
-                                                    decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                    var VatSum = (decimal)foundItems.Vat / 100;
-                                                    row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                    var totalP = ((decimal)row.Cells["Price"].Value * VatSum + (decimal)row.Cells["Price"].Value) * discount;
-                                                    decimal totalwithvat = totalP * quantity;
-                                                    row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                                }
-                                                else
-                                                {
-                                                    if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
-                                                    {
-                                                        if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+                                                        else
                                                         {
-                                                            EnterPin enter = new EnterPin();
-                                                            enter.ShowDialog();
-                                                            if (enter.flag == true)
-                                                            {
-                                                                decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                                var VatSum = (decimal)foundItems.Vat / 100;
-                                                                row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                                var totalP = ((decimal)row.Cells["Price"].Value * VatSum + (decimal)row.Cells["Price"].Value) * discount;
-                                                                decimal totalwithvat = totalP * quantity;
-                                                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                                            }
+                                                            MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
                                                         }
                                                     }
-                                                    else
-                                                    {
-                                                        MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
-                                                    }
+
+                                                    //var total = Convert.ToDecimal(row.Cells["TotalWithVat"].Value);
+                                                    //mTotalSum = total;
+                                                    //txtTotalSum.Text = mTotalSum.ToString();
+                                                    AdjustTblTotalColumnWidths();
+                                                    found = true;
+                                                    return;
                                                 }
-                                                found = true;
+
+                                            }
+                                            if (!found)
+                                            {
+                                                AddItem(foundItems);
+
+                                                txtB.Text = "";
                                                 CalculateGridColumns();
+
                                             }
                                         }
-                                        if (!found)
+                                        else
                                         {
-                                            foundItems.Discount = categoryAction.discount;
-                                            AddItem(foundItems);
-                                            txtsrch.Text = "";
+                                            //add found item.
+                                            if (txtB.Text == "")
+                                                return;
+                                            var items = foundItems;
+                                            AddItem(items);
+                                            txtB.Text = "";
+                                            CalculateGridColumns();
+
 
                                         }
-                                    }
-                                    else
-                                    {
-                                        foundItems.Discount = categoryAction.discount;
-                                        AddItem(foundItems);
-                                        txtsrch.Text = "";
-                                        CalculateGridColumns();
-
                                     }
                                 }
                                 else
                                 {
+                                    var itemAction = aksionet.Find(p => p.item_id == foundItems.Id && DateTime.Now <= Convert.ToDateTime(p.DateTo));
+                                    var categoryAction = aksionet.Find(p => p.category_id == foundItems.CategoryId && DateTime.Now <= Convert.ToDateTime(p.DateTo));
 
-                                    if (ug.Rows.Count > 0)
+                                    if (itemAction != null && Globals.Settings.AllowDiscount == "0")
                                     {
-                                        foreach (DataGridViewRow row in ug.Rows)
+                                        var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
+                                        var totalPrice = tp - (tp * clientDiscount / 100);
+
+                                        if (itemAction.quantity == 1)
                                         {
-                                            if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
+                                            if (ug.Rows.Count > 0)
                                             {
-                                                if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 || settings.StockWMinus != "0")
+                                                foreach (DataGridViewRow row in ug.Rows)
                                                 {
-                                                    if (categoryAction.quantity == decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1)
+                                                    if (row.Cells[4].Value.ToString() == txtB.Text && txtB.Text != "")
                                                     {
-
-                                                        decimal discount = (decimal.Parse(row.Cells["Discount"].Value.ToString()) + categoryAction.discount) / 100;
-
-
-                                                        decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                        row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                        decimal totalwithvat = ((shumatotale * quantity) - (shumatotale * quantity * discount));
-                                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                                        row.Cells["Discount"].Value = (discount * 100).ToString("N");
-
-
-                                                    }
-                                                    else
-                                                    {
-                                                        if (decimal.Parse(row.Cells["Discount"].Value.ToString()) == 0)
+                                                        if (itemAction.quantity <= (decimal)row.Cells["Quantity"].Value)
                                                         {
+                                                            row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
+                                                            row.Cells["Discount"].Value = itemAction.discount;
+                                                            txtB.Text = "";
+                                                            CalculateGridColumns();
+                                                        }
+                                                        else
+                                                        {
+                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                            txtB.Text = "";
+                                                            CalculateGridColumns();
+
+                                                        }
+                                                        found = true;
+                                                    }
 
 
-                                                            decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                            row.Cells["Quantity"].Value = quantity.ToString("N");
+                                                }
+                                                if (!found)
+                                                {
+                                                    foundItems.Discount = itemAction.discount;
+                                                    AddItem(foundItems);
+                                                    txtB.Text = "";
+                                                    CalculateGridColumns();
 
-                                                            decimal totalwithvat = shumatotale * quantity;
-                                                            row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                foundItems.Discount = itemAction.discount;
+                                                AddItem(foundItems);
+                                                txtB.Text = "";
+                                                CalculateGridColumns();
 
+                                            }
+                                        }
+                                        else
+                                        {
+
+                                            if (ug.Rows.Count > 0)
+                                            {
+                                                foreach (DataGridViewRow row in ug.Rows)
+                                                {
+                                                    if (row.Cells[4].Value.ToString() == txtB.Text && txtB.Text != "")
+                                                    {
+                                                        if (itemAction.quantity <= (decimal)row.Cells["Quantity"].Value + 1)
+                                                        {
+                                                            row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * itemAction.discount / 100)), 2);
+
+                                                            row.Cells["Discount"].Value = itemAction.discount;
+                                                            txtB.Text = "";
+                                                            CalculateGridColumns();
 
 
                                                         }
                                                         else
                                                         {
-                                                            decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
+                                                            row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
 
-                                                            decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                            row.Cells["Quantity"].Value = quantity.ToString("N");
+                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                            txtB.Text = "";
+                                                            CalculateGridColumns();
 
-                                                            decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
-                                                            row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
                                                         }
+                                                        found = true;
+
                                                     }
+
                                                 }
-                                                else
+                                                if (!found)
                                                 {
-                                                    if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
-                                                    {
-                                                        if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-                                                        {
-                                                            EnterPin enter = new EnterPin();
-                                                            enter.ShowDialog();
-                                                            if (enter.flag == true)
-                                                            {
-                                                                if (categoryAction.quantity == decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1)
-                                                                {
+                                                    AddItem(foundItems);
+                                                    txtB.Text = "";
+                                                    CalculateGridColumns();
 
-                                                                    decimal discount = (decimal.Parse(row.Cells["Discount"].Value.ToString()) + categoryAction.discount) / 100;
-
-
-                                                                    decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                                    row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                                    decimal totalwithvat = ((shumatotale * quantity) - (shumatotale * quantity * discount));
-                                                                    row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                                                    row.Cells["Discount"].Value = (discount * 100).ToString("N");
-
-
-                                                                }
-                                                                else
-                                                                {
-                                                                    if (decimal.Parse(row.Cells["Discount"].Value.ToString()) == 0)
-                                                                    {
-
-
-                                                                        decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                                        row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                                        decimal totalwithvat = shumatotale * quantity;
-                                                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-
-
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
-
-                                                                        decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                                        row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                                                                        decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
-                                                                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
-                                                    }
                                                 }
-                                                found = true;
-                                                CalculateGridColumns();
                                             }
+                                            else
+                                            {
+                                                AddItem(foundItems);
+                                                txtB.Text = "";
+                                                CalculateGridColumns();
 
-
-                                        }
-                                        if (!found)
-                                        {
-                                            AddItem(foundItems);
-                                            txtsrch.Text = "";
-
+                                            }
                                         }
                                     }
-                                    else
+
+
+
+                                    else if (categoryAction != null && Globals.Settings.AllowDiscount == "0")
                                     {
-                                        AddItem(foundItems);
-                                        txtsrch.Text = "";
+                                        var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
+                                        var totalPrice = tp - (tp * clientDiscount / 100);
+                                        if (categoryAction.quantity == 1)
+                                        {
+                                            if (ug.Rows.Count > 0)
+                                            {
+                                                foreach (DataGridViewRow row in ug.Rows)
+                                                {
+                                                    if (row.Cells[4].Value.ToString() == txtB.Text && txtB.Text != "")
+                                                    {
+                                                        if (categoryAction.quantity <= (decimal)row.Cells["Quantity"].Value)
+                                                        {
+                                                            row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
+                                                            row.Cells["Discount"].Value = categoryAction.discount;
+                                                            txtB.Text = "";
+                                                            CalculateGridColumns();
+
+                                                        }
+                                                        else
+                                                        {
+                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                            txtB.Text = "";
+                                                            CalculateGridColumns();
+
+                                                        }
+
+                                                    }
+                                                    found = true;
+                                                }
+                                                if (!found)
+                                                {
+                                                    foundItems.Discount = categoryAction.discount;
+                                                    AddItem(foundItems);
+                                                    txtB.Text = "";
+                                                    CalculateGridColumns();
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                foundItems.Discount = categoryAction.discount;
+                                                AddItem(foundItems);
+                                                txtB.Text = "";
+                                                CalculateGridColumns();
+
+                                            }
+                                        }
+                                        else
+                                        {
+
+                                            if (ug.Rows.Count > 0)
+                                            {
+                                                foreach (DataGridViewRow row in ug.Rows)
+                                                {
+                                                    if (row.Cells[4].Value.ToString() == txtB.Text && txtB.Text != "")
+                                                    {
+                                                        if (categoryAction.quantity <= (decimal)row.Cells["Quantity"].Value + 1)
+                                                        {
+                                                            row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * (totalPrice - (totalPrice * categoryAction.discount / 100)), 2);
+
+                                                            row.Cells["Discount"].Value = categoryAction.discount;
+                                                            txtB.Text = "";
+                                                            CalculateGridColumns();
+
+                                                        }
+                                                        else
+                                                        {
+                                                            row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
+
+                                                            row.Cells["TotalWithVat"].Value = Math.Round((decimal)row.Cells["Quantity"].Value * totalPrice, 2);
+                                                            txtB.Text = "";
+                                                            CalculateGridColumns();
+
+
+                                                        }
+                                                        found = true;
+                                                    }
+
+
+                                                }
+                                                if (!found)
+                                                {
+                                                    AddItem(foundItems);
+                                                    txtB.Text = "";
+                                                    CalculateGridColumns();
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                AddItem(foundItems);
+                                                txtB.Text = "";
+                                                CalculateGridColumns();
+
+                                            }
+                                        }
 
                                     }
                                 }
                             }
                             else
                             {
-                                if (ug.Rows.Count > 0)
+                                item = Item.GetItemWithName(txtB.Text.ToLower());
+                                txtsearchB.DataSource = item;
+                                txtsearchB.DrawItem += comboBox1_DrawItem;
+
+                                // Set the DrawMode to OwnerDrawFixed to enable custom drawing
+                                txtsearchB.DrawMode = DrawMode.OwnerDrawFixed;
+                                txtsearchB.ValueMember = "Id";
+                                //AutosizeDropdown(txtsearchB);
+                                if (item.Count > 0)
                                 {
-                                    foreach (DataGridViewRow row in ug.Rows)
-                                    {
-                                        if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                                        {
-
-                                            if (availableStock >= decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1 || settings.StockWMinus != "0")
-                                            {
-                                                if ((decimal)row.Cells["Discount"].Value != 0)
-                                                {
-                                                    decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                    row.Cells["Quantity"].Value = quantity.ToString("N");
-                                                    decimal totalwithvat = shumatotale * quantity;
-                                                    row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-                                                    txtsrch.Text = "";
-
-
-                                                }
-                                                else
-                                                {
-                                                    decimal discount = (decimal)row.Cells["Discount"].Value / 100;
-                                                    decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                    row.Cells["Quantity"].Value = quantity.ToString("N");
-                                                    decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
-                                                    row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-                                                    txtsrch.Text = "";
-
-                                                }
-
-
-                                                var total = Convert.ToDecimal(row.Cells["TotalWithVat"].Value);
-                                                mTotalSum = total;
-                                                txtTotalSum.Text = mTotalSum.ToString();
-                                                AdjustTblTotalColumnWidths();
-                                            }
-                                            else
-                                            {
-                                                if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
-                                                {
-                                                    if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-                                                    {
-                                                        EnterPin enter = new EnterPin();
-                                                        enter.ShowDialog();
-                                                        if (enter.flag == true)
-                                                        {
-                                                            if ((decimal)row.Cells["Discount"].Value != 0)
-                                                            {
-                                                                decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                                row.Cells["Quantity"].Value = quantity.ToString("N");
-                                                                decimal totalwithvat = shumatotale * quantity;
-                                                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-                                                                txtsrch.Text = "";
-
-
-                                                            }
-                                                            else
-                                                            {
-                                                                decimal discount = (decimal)row.Cells["Discount"].Value / 100;
-                                                                decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                                                                row.Cells["Quantity"].Value = quantity.ToString("N");
-                                                                decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
-                                                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-                                                                txtsrch.Text = "";
-
-                                                            }
-
-
-                                                            var total = Convert.ToDecimal(row.Cells["TotalWithVat"].Value);
-                                                            mTotalSum = total;
-                                                            txtTotalSum.Text = mTotalSum.ToString();
-                                                            AdjustTblTotalColumnWidths();
-                                                        }
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}!");
-                                                }
-                                            }
-                                            found = true;
-                                            CalculateGridColumns();
-
-                                            return;
-                                        }
-
-                                    }
-                                    if (!found)
-                                    {
-                                        AddItem(foundItems);
-
-                                        txtsrch.Text = "";
-                                        CalculateGridColumns();
-
-                                    }
+                                    txtsearchB.DroppedDown = true;
+                                    txtsearchB.Focus();
                                 }
                                 else
                                 {
-                                    //add found item.
-                                    if (txtsrch.Text == "")
-                                        return;
-                                    var item = foundItems;
-                                    AddItem(item);
-                                    txtsrch.Text = "";
-                                    CalculateGridColumns();
-
+                                    txtsearchB.DroppedDown = false;
 
                                 }
                             }
                         }
+
+
                     }
-                    //else
-                    //{
-                    //    decimal shuma = (foundItems.SalePrice * (1 - foundItems.Discount / 100)) * (1 * (decimal)foundItems.Vat / 100.0M);
 
-                    //    decimal shumatotale = Math.Round(shuma + foundItems.SalePrice, 2);
-                    //    if (settings.AllowDiscount == "0" && clientDiscount > 0)
-                    //    {
-                    //        shumatotale = shumatotale - (shumatotale * clientDiscount / 100);
-
-                    //    }
-
-                    //    var itemAction = aksionet.Find(p => p.item_id == foundItems.Id);
-                    //    var categoryAction = aksionet.Find(p => p.category_id == foundItems.CategoryId);
-                    //    if (categoryAction != null && itemAction != null && settings.AllowDiscount == "0")
-                    //    {
-                    //        var action = itemAction;
-                    //        if (ug.Rows.Count > 0)
-                    //        {
-                    //            foreach (DataGridViewRow row in ug.Rows)
-                    //            {
-                    //                if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                    //                {
-                    //                    if (itemAction.quantity == decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1)
-                    //                    {
-                    //                        decimal discount = (itemAction.discount) / 100;
-                    //                        decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                    //                        row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                    //                        decimal totalwithvat = ((decimal)row.Cells["TotalWithVat"].Value + ((decimal)row.Cells["TotalWithVat"].Value * discount));
-                    //                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                    //                        row.Cells["Discount"].Value = (discount * 100).ToString("N");
-
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        if (decimal.Parse(row.Cells["Discount"].Value.ToString()) == 0 && action.discount == 0)
-                    //                        {
-                    //                            decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                    //                            row.Cells["Quantity"].Value = quantity.ToString("N");
-                    //                            decimal totalwithvat = shumatotale * quantity;
-                    //                            row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                    //                        }
-                    //                        else
-                    //                        {
-                    //                            decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
-                    //                            decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                    //                            row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                    //                            decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
-                    //                            row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                    //                        }
-                    //                    }
-                    //                    found = true;
-                    //                    CalculateGridColumns();
-                    //                }
-
-                    //            }
-                    //            if (!found)
-                    //            {
-                    //                if (itemAction.discount == 1)
-                    //                {
-                    //                    foundItems.Discount = itemAction.discount;
-                    //                    AddItem(foundItems);
-                    //                }
-                    //                if (itemAction.discount == foundItems.Quantity + 1 || itemAction.discount > foundItems.Quantity + 1)
-                    //                {
-                    //                    foundItems.Discount = itemAction.discount;
-                    //                    AddItem(foundItems);
-                    //                }
-                    //                else
-                    //                    AddItem(foundItems);
-
-
-                    //            }
-
-                    //        }
-                    //        else
-                    //        {
-                    //            if (action.quantity == 1)
-                    //            {
-                    //                foundItems.Discount = action.discount;
-
-                    //            }
-                    //            AddItem(foundItems);
-                    //        }
-                    //    }
-
-                    //    if (itemAction != null && settings.AllowDiscount == "0")
-                    //    {
-                    //        var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
-                    //        var totalPrice = tp - (tp * clientDiscount / 100);
-
-                    //        if (itemAction.quantity == 1)
-                    //        {
-                    //            if (ug.Rows.Count > 0)
-                    //            {
-                    //                foreach (DataGridViewRow row in ug.Rows)
-                    //                {
-
-                    //                    if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                    //                    {
-                    //                        decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
-
-
-                    //                        row.Cells["Quantity"].Value = (decimal)row.Cells["Quantity"].Value + 1;
-                    //                        var vat = Convert.ToDecimal(row.Cells["Vat"].Value) / 100;
-                    //                        var totalP = Math.Round((decimal)row.Cells["Price"].Value * vat + (decimal)row.Cells["Price"].Value, 2);
-                    //                        decimal totalwithvat = (totalP - (totalP * discount)) * (decimal)row.Cells["Quantity"].Value;
-                    //                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat - (totalwithvat * clientDiscount / 100), 2);
-
-                    //                        txtsrch.Text = "";
-                    //                        CalculateGridColumns();
-
-
-                    //                        found = true;
-                    //                    }
-
-                    //                }
-                    //                if (!found)
-                    //                {
-                    //                    foundItems.Discount = itemAction.discount;
-                    //                    AddItem(foundItems);
-                    //                    txtsrch.Text = "";
-
-                    //                }
-                    //            }
-                    //            else
-                    //            {
-                    //                foundItems.Discount = itemAction.discount;
-                    //                AddItem(foundItems);
-                    //                txtsrch.Text = "";
-
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-
-                    //            if (ug.Rows.Count > 0)
-                    //            {
-                    //                foreach (DataGridViewRow row in ug.Rows)
-                    //                {
-                    //                    decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString());
-
-                    //                    if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                    //                    {
-                    //                        if (itemAction.quantity == (decimal)row.Cells["Quantity"].Value + 1)
-                    //                        {
-                    //                            decimal itDiscount = (itemAction.discount) / 100;
-
-                    //                            decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                    //                            row.Cells["Quantity"].Value = quantity.ToString("N");
-                    //                            decimal totalwithvat = (shumatotale - (shumatotale * discount)) * quantity;
-                    //                            row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                    //                            row.Cells["Discount"].Value = (discount * 100).ToString("N");
-
-                    //                            txtsrch.Text = "";
-                    //                            CalculateGridColumns();
-
-
-                    //                        }
-                    //                        else
-                    //                        {
-                    //                            if (discount == 0)
-                    //                            {
-                    //                                decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                    //                                row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                    //                                decimal totalwithvat = shumatotale * quantity;
-                    //                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-
-                    //                            }
-                    //                            else
-                    //                            {
-                    //                                decimal quantity = (decimal)row.Cells["Quantity"].Value + 1;
-                    //                                row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                    //                                decimal totalwithvat = (shumatotale * quantity) - (shumatotale * quantity) * discount;
-                    //                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-                    //                            }
-                    //                        }
-                    //                        found = true;
-                    //                        CalculateGridColumns();
-
-                    //                    }
-
-                    //                }
-                    //                if (!found)
-                    //                {
-                    //                    AddItem(foundItems);
-                    //                    txtsrch.Text = "";
-
-                    //                }
-                    //            }
-                    //            else
-                    //            {
-                    //                AddItem(foundItems);
-                    //                txtsrch.Text = "";
-
-                    //            }
-                    //        }
-                    //    }
-
-
-
-                    //    else if (categoryAction != null && settings.AllowDiscount == "0")
-                    //    {
-                    //        var tp = Math.Round(foundItems.SalePrice + (foundItems.SalePrice * foundItems.Vat / 100), 2);
-                    //        var totalPrice = tp - (tp * clientDiscount / 100);
-                    //        if (categoryAction.quantity == 1)
-                    //        {
-                    //            if (ug.Rows.Count > 0)
-                    //            {
-                    //                foreach (DataGridViewRow row in ug.Rows)
-                    //                {
-                    //                    decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString());
-
-                    //                    if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                    //                    {
-
-                    //                        decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                    //                        var VatSum = (decimal)foundItems.Vat / 100;
-                    //                        row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                    //                        var totalP = ((decimal)row.Cells["Price"].Value * VatSum + (decimal)row.Cells["Price"].Value) * discount;
-                    //                        decimal totalwithvat = totalP * quantity;
-                    //                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                    //                        found = true;
-                    //                        CalculateGridColumns();
-                    //                    }
-                    //                }
-                    //                if (!found)
-                    //                {
-                    //                    foundItems.Discount = categoryAction.discount;
-                    //                    AddItem(foundItems);
-                    //                    txtsrch.Text = "";
-
-                    //                }
-                    //            }
-                    //            else
-                    //            {
-                    //                foundItems.Discount = categoryAction.discount;
-                    //                AddItem(foundItems);
-                    //                txtsrch.Text = "";
-                    //                CalculateGridColumns();
-
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-
-                    //            if (ug.Rows.Count > 0)
-                    //            {
-                    //                foreach (DataGridViewRow row in ug.Rows)
-                    //                {
-                    //                    if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                    //                    {
-                    //                        if (categoryAction.quantity == decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1)
-                    //                        {
-
-                    //                            decimal discount = (decimal.Parse(row.Cells["Discount"].Value.ToString()) + categoryAction.discount) / 100;
-
-
-                    //                            decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                    //                            row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                    //                            decimal totalwithvat = ((shumatotale * quantity) - (shumatotale * quantity * discount));
-                    //                            row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                    //                            row.Cells["Discount"].Value = (discount * 100).ToString("N");
-
-
-                    //                        }
-                    //                        else
-                    //                        {
-                    //                            if (decimal.Parse(row.Cells["Discount"].Value.ToString()) == 0)
-                    //                            {
-
-
-                    //                                decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                    //                                row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                    //                                decimal totalwithvat = shumatotale * quantity;
-                    //                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-
-
-                    //                            }
-                    //                            else
-                    //                            {
-                    //                                decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString()) / 100;
-
-                    //                                decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                    //                                row.Cells["Quantity"].Value = quantity.ToString("N");
-
-                    //                                decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
-                    //                                row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-                    //                            }
-                    //                        }
-                    //                        found = true;
-                    //                        CalculateGridColumns();
-                    //                    }
-
-
-                    //                }
-                    //                if (!found)
-                    //                {
-                    //                    AddItem(foundItems);
-                    //                    txtsrch.Text = "";
-
-                    //                }
-                    //            }
-                    //            else
-                    //            {
-                    //                AddItem(foundItems);
-                    //                txtsrch.Text = "";
-
-                    //            }
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        if (ug.Rows.Count > 0)
-                    //        {
-                    //            foreach (DataGridViewRow row in ug.Rows)
-                    //            {
-                    //                if (row.Cells[4].Value.ToString() == txtsrch.Text && txtsrch.Text != "")
-                    //                {
-
-
-                    //                    if ((decimal)row.Cells["Discount"].Value != 0)
-                    //                    {
-                    //                        decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                    //                        row.Cells["Quantity"].Value = quantity.ToString("N");
-                    //                        decimal totalwithvat = shumatotale * quantity;
-                    //                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-                    //                        txtsrch.Text = "";
-
-
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        decimal discount = (decimal)row.Cells["Discount"].Value / 100;
-                    //                        decimal quantity = decimal.Parse(row.Cells["Quantity"].Value.ToString()) + 1;
-                    //                        row.Cells["Quantity"].Value = quantity.ToString("N");
-                    //                        decimal totalwithvat = (decimal)row.Cells["TotalWithVat"].Value + (shumatotale - (shumatotale * discount));
-                    //                        row.Cells["TotalWithVat"].Value = Math.Round(totalwithvat, 2);
-
-                    //                        txtsrch.Text = "";
-
-                    //                    }
-
-
-                    //                    var total = Convert.ToDecimal(row.Cells["TotalWithVat"].Value);
-                    //                    mTotalSum = total;
-                    //                    txtTotalSum.Text = mTotalSum.ToString();
-                    //                    AdjustTblTotalColumnWidths();
-                    //                    found = true;
-                    //                    CalculateGridColumns();
-
-                    //                    return;
-                    //                }
-
-                    //            }
-                    //            if (!found)
-                    //            {
-                    //                AddItem(foundItems);
-
-                    //                txtsrch.Text = "";
-                    //                CalculateGridColumns();
-
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            //add found item.
-                    //            if (txtsrch.Text == "")
-                    //                return;
-                    //            var item = foundItems;
-                    //            AddItem(item);
-                    //            txtsrch.Text = "";
-                    //            CalculateGridColumns();
-
-
-                    //        }
-                    //    }
-                    //}
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show("Nuk ka artikuj me kete emer!");
+                }
+            }
+            if (e.KeyCode == Keys.Up)
+            {
+                if (txtsearchB.SelectedIndex > 0)
+                {
+                    txtsearchB.SelectedIndex--;
+                }
+            }
+            if (e.KeyCode == Keys.Down)
+            {
+                if (txtsearchB.SelectedIndex < txtsearchB.Items.Count - 1)
+                {
+                    txtsearchB.SelectedIndex++;
                 }
             }
         }
-
+      
 
     }
 }
