@@ -36,20 +36,20 @@ namespace MyNET.Pos.Modules
 
                 //}
 
-                var item = Services.Item.GetItemWithNameOrBarcode(textBox1.Text);
+                var item = Services.Item.GetItemWithNameOrBarcodeV1(textBox1.Text);
 
                 foreach (var i in item)
                 {
                     var stock = Services.Warehouse.GetbyId(i.Id); 
                     var quantityStck = stock != null ? stock.InStock : 0;
                     var qmimi = Math.Round(i.RetailPrice+(i.RetailPrice* (decimal)(i.Vat*0.01)),2);
-                    var status = i.Active;
+                    var status = i.Status==1?true:false; 
                     dgItemsDetails.Rows.Add(i.ItemName, i.Barcode, quantityStck, qmimi,status);
                 }
             }
             else
             {
-                var item = Services.Item.GetItemWithNameOrBarcode(textBox1.Text);
+                var item = Services.Item.GetItemWithNameOrBarcodeV1(textBox1.Text);
                 //if (item.Any())
                 //{
                 //    var stock = Services.Warehouse.GetbyId(item.First().Id);
@@ -64,7 +64,7 @@ namespace MyNET.Pos.Modules
                     var stock = Services.Warehouse.GetbyId(i.Id);
                     var quantityStck = stock != null ? stock.InStock : 0;
                     var qmimi = Math.Round(i.RetailPrice+(i.RetailPrice* (decimal)(i.Vat*0.01)),2);
-                    var status = i.Active;
+                    var status = i.Status;
                     dgItemsDetails.Rows.Add(i.ItemName, i.Barcode, quantityStck, qmimi,status);
                 }
             }
@@ -89,7 +89,7 @@ namespace MyNET.Pos.Modules
                 foreach (var i in item)
                 {
                     var quantityStck = Services.Warehouse.GetbyId(i.Id);
-                    var status = i.Active;
+                    var status = i.Status;
                     dgItemsDetails.Rows.Add(i.ItemName, i.Barcode, quantityStck.InStock, status);
                 }
             }
@@ -109,7 +109,7 @@ namespace MyNET.Pos.Modules
                 {
                     var stock = Services.Warehouse.GetbyId(i.Id);
                     var quantityStck = stock != null ? stock.InStock : 0;
-                    dgItemsDetails.Rows.Add(i.ItemName, i.Barcode, quantityStck,i.Active);
+                    dgItemsDetails.Rows.Add(i.ItemName, i.Barcode, quantityStck,i.Status);
                 }
             }
            

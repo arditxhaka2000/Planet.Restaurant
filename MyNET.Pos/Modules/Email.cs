@@ -25,7 +25,7 @@ namespace MyNET.Pos.Modules
             if (checkBox1.Checked)
             {
                 Sale.updateSendEmail(saleId, "1");
-                Partner.updateEmail(PosRestaurant.PartnerId, textBox1.Text);                         
+                Partner.updateEmail(RestaurantPos.PartnerId, textBox1.Text);                         
             }
             else
             {
@@ -49,7 +49,7 @@ namespace MyNET.Pos.Modules
 
         private void Email_Load(object sender, EventArgs e)
         {
-            textBox1.Text = Partner.Get(PosRestaurant.PartnerId).Email;
+            textBox1.Text = Partner.Get(RestaurantPos.PartnerId).Email;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

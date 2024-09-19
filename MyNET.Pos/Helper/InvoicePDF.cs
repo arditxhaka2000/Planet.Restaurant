@@ -60,9 +60,9 @@ namespace MyNET.Pos.Helper
             }
             base.OnEndPage(writer, document);
             iTextSharp.text.Font baseFontDate = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 7, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
-            iTextSharp.text.Font baseFontImportant = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA,12, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLACK);
-            iTextSharp.text.Font baseFontNormal = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA,9, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
-            iTextSharp.text.Font baseFontBig = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 20f, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
+            iTextSharp.text.Font baseFontImportant = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLACK);
+            iTextSharp.text.Font baseFontNormal = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 9, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
+            iTextSharp.text.Font baseFontBig = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 18f, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
             PdfPTable pdfTab = new PdfPTable(3);
             string assemblyPath = System.Windows.Forms.Application.StartupPath + $"\\ImagesPath{Globals.Settings.Id}\\Logo.jpg";
 
@@ -98,7 +98,7 @@ namespace MyNET.Pos.Helper
 
             pdfTab.AddCell(headerSplit);
             //Create PdfTable object
-            var partner = Services.Partner.Get(PosRestaurant.PartnerId);
+            var partner = Services.Partner.Get(RestaurantPos.PartnerId);
 
             //We will have to create separate cells to include image logo and 2 separate strings
             //Row 1
@@ -138,8 +138,8 @@ namespace MyNET.Pos.Helper
             //PdfPCell pdfCell7 = new PdfPCell(new Phrase("Personi pergjegjes: " + Globals.User.Name, baseFontNormal));
             //PdfPCell pdfCell8 = new PdfPCell(new Phrase(Globals.Station.Name, baseFontNormal));
             PdfPCell pdfCell9 = new PdfPCell();
-            PdfPCell pdfCell10 = new PdfPCell(new Phrase("Shitësi: "+ Globals.Settings.CompanyName, baseFontNormal));
-            PdfPCell pdfCell11 = new PdfPCell(new Phrase($"Nr.Unik: { Globals.Settings.BusinessNumber}", baseFontNormal));
+            PdfPCell pdfCell10 = new PdfPCell(new Phrase("Shitësi: " + Globals.Settings.CompanyName, baseFontNormal));
+            PdfPCell pdfCell11 = new PdfPCell(new Phrase($"Nr.Unik: {Globals.Settings.BusinessNumber}", baseFontNormal));
             PdfPCell pdfCell12 = new PdfPCell(new Phrase($"Nr. Fiskal: {Globals.Settings.FiscalNumber}", baseFontNormal));
             PdfPCell pdfCell18 = new PdfPCell(new Phrase($"Nr. TVSH-se: {Globals.Settings.VatNumber}", baseFontNormal));
             PdfPCell pdfCell13 = new PdfPCell(new Phrase($"Adresa: {Globals.Settings.Address}", baseFontNormal));
@@ -225,7 +225,7 @@ namespace MyNET.Pos.Helper
             pdfTab.AddCell(cellBlankRow);
             pdfTab.AddCell(pdfCell4Split);
             pdfTab.AddCell("");
-            pdfTab.AddCell(pdfCell5Split); 
+            pdfTab.AddCell(pdfCell5Split);
             pdfTab.AddCell(pdfCell13);
             pdfTab.AddCell("");
             pdfTab.AddCell(pdfCell17);
@@ -273,7 +273,7 @@ namespace MyNET.Pos.Helper
             //    }
             //    //Add paging to footer
             {
-                    cb.BeginText();
+                cb.BeginText();
                 cb.SetFontAndSize(bf, 9);
                 cb.SetTextMatrix(document.PageSize.GetRight(2), document.PageSize.GetBottom(30));
                 //cb.ShowText(text);

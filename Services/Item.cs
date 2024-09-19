@@ -133,13 +133,19 @@ namespace Services
             string selectParams = "searchstr=" + encodedSearchStr;
             return RestHepler< Services.Models.ItemsDiscount>.Select50itemsOnly("getItemWithNameOrBarcode", selectParams);
         }
+        public static List<Services.Models.ItemsDiscount> GetItemWithNameOrBarcodeV1(string searchstr)
+        {
+            string encodedSearchStr = System.Web.HttpUtility.UrlEncode("%" + searchstr + "%");
+            string selectParams = "searchstr=" + encodedSearchStr;
+            return RestHepler< Services.Models.ItemsDiscount>.Select50itemsOnly("getItemWithNameOrBarcodev1", selectParams);
+        }
         public static List<Models.ItemsDiscount> GetAllItem()
         {   
             return RestHepler<Models.ItemsDiscount>.Select("getAll","");
         } 
         public static void UpdateActiveItem(int active, string id)
         {
-            string jsonParams = JsonConvert.SerializeObject(new { Active = active, Id = id });
+            string jsonParams = JsonConvert.SerializeObject(new { Status = active, Id = id });
             Services.RestHepler<Item>.Query("changeStatusItem", jsonParams);
         } 
         public static List<Models.ItemsDiscount> GetAllItemSS()

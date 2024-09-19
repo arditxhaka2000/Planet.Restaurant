@@ -49,7 +49,7 @@ namespace MyNET.Pos.Modules
         private void Invoice_Load(object sender, EventArgs e)
         {
             var sett = Services.Settings.Get();
-            var partner = Services.Partner.Get(PosRestaurant.PartnerId);
+            var partner = Services.Partner.Get(RestaurantPos.PartnerId);
 
             lblInvoiceNr.Text = Globals.Station.Id + "-" + Globals.Station.LastInvoiceNumber.ToString();
             lblDate.Text = DateTime.Now.ToString();
@@ -117,13 +117,13 @@ namespace MyNET.Pos.Modules
             dt.Columns.Add(c8);
             dt.Columns.Add(c9);
             dt.Columns.Add(c10);
-            for (int i = 0; i < PosRestaurant.data.Rows.Count; i++)
+            for (int i = 0; i < RestaurantPos.data.Rows.Count; i++)
             {
-                var basePrice = Convert.ToDecimal(PosRestaurant.data.Rows[i][8]);
-                var Vat = Convert.ToInt32(PosRestaurant.data.Rows[i][16]) > 0 ? Convert.ToInt32(PosRestaurant.data.Rows[i][16]) : Services.Item.GetItemWithName(PosRestaurant.data.Rows[i][3].ToString()).First().Vat;
-                var basePriceWithDiscount = basePrice - (basePrice * (Convert.ToDecimal(PosRestaurant.data.Rows[i][12]) / 100));
-                var Quantity = Convert.ToDecimal(PosRestaurant.data.Rows[i][6]);
-                var Discount = Convert.ToDecimal(PosRestaurant.data.Rows[i][12]);
+                var basePrice = Convert.ToDecimal(RestaurantPos.data.Rows[i][8]);
+                var Vat = Convert.ToInt32(RestaurantPos.data.Rows[i][16]) > 0 ? Convert.ToInt32(RestaurantPos.data.Rows[i][16]) : Services.Item.GetItemWithName(RestaurantPos.data.Rows[i][3].ToString()).First().Vat;
+                var basePriceWithDiscount = basePrice - (basePrice * (Convert.ToDecimal(RestaurantPos.data.Rows[i][12]) / 100));
+                var Quantity = Convert.ToDecimal(RestaurantPos.data.Rows[i][6]);
+                var Discount = Convert.ToDecimal(RestaurantPos.data.Rows[i][12]);
 
                 var TotalPrice = Math.Round(((basePrice + (basePrice * Vat / 100)) * Quantity) - (((basePrice + (basePrice * Vat / 100)) * Quantity) * Discount / 100), 2);
                 var priceWithoutQuantity = Math.Round((basePriceWithDiscount + (basePriceWithDiscount * Vat / 100)), 2);
@@ -135,13 +135,13 @@ namespace MyNET.Pos.Modules
                 TotalVat += VatTotal;
                 TotalP += TotalPrice;
 
-                if (Convert.ToInt32(PosRestaurant.data.Rows[i][16]) == 18)
+                if (Convert.ToInt32(RestaurantPos.data.Rows[i][16]) == 18)
                 {
                     basePrice18 += totalWithoutVat;
                     totalVat18 += VatTotal;
                     totalWVat18 += TotalPrice;
                 }
-                if (Convert.ToInt32(PosRestaurant.data.Rows[i][16]) == 8)
+                if (Convert.ToInt32(RestaurantPos.data.Rows[i][16]) == 8)
                 {
                     basePrice8 += totalWithoutVat;
                     totalVat8 += VatTotal;
@@ -149,7 +149,7 @@ namespace MyNET.Pos.Modules
 
 
                 }
-                if (Convert.ToInt32(PosRestaurant.data.Rows[i][16]) == 0)
+                if (Convert.ToInt32(RestaurantPos.data.Rows[i][16]) == 0)
                 {
                     basePrice0 += totalWithoutVat;
                     totalVat0 += VatTotal;
@@ -159,7 +159,7 @@ namespace MyNET.Pos.Modules
                 }
 
 
-                dt.Rows.Add(PosRestaurant.data.Rows[i][2], PosRestaurant.data.Rows[i][4], PosRestaurant.data.Rows[i][3], PosRestaurant.data.Rows[i][5], PosRestaurant.data.Rows[i][6], basePrice, PosRestaurant.data.Rows[i][12], priceWithoutQuantity, totalWithoutVat, VatTotal, TotalPrice);
+                dt.Rows.Add(RestaurantPos.data.Rows[i][2], RestaurantPos.data.Rows[i][4], RestaurantPos.data.Rows[i][3], RestaurantPos.data.Rows[i][5], RestaurantPos.data.Rows[i][6], basePrice, RestaurantPos.data.Rows[i][12], priceWithoutQuantity, totalWithoutVat, VatTotal, TotalPrice);
             }
 
             dataGridView1.DataSource = dt;
@@ -254,7 +254,7 @@ namespace MyNET.Pos.Modules
 
         private void btnPrintInvoice_Click(object sender, EventArgs e)
         {
-            var partner = Services.Partner.Get(PosRestaurant.PartnerId);
+            var partner = Services.Partner.Get(RestaurantPos.PartnerId);
 
             if (dataGridView1.Rows.Count > 0)
             {
@@ -606,7 +606,7 @@ namespace MyNET.Pos.Modules
 
         private void btnConvertBillToInv_Click(object sender, EventArgs e)
         {
-            Services.Sale.updateConvert(saleId, PosRestaurant.PartnerId, 1);
+            Services.Sale.updateConvert(saleId, RestaurantPos.PartnerId, 1);
             this.Close();
         }
 

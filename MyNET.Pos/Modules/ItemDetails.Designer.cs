@@ -113,7 +113,7 @@
             // 
             // colDisable
             // 
-            this.colDisable.HeaderText = "Artikull Aktiv";
+            this.colDisable.HeaderText = "Artikull Pasiv";
             this.colDisable.Name = "colDisable";
             // 
             // ItemDetails

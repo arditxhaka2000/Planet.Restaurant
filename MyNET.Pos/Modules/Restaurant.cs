@@ -817,6 +817,10 @@ namespace MyNET.Pos.Modules
                                 Dil_Click(sender, null);
                                 break;
 
+                            case "Shiko Artikujt":
+                                ItemDetails_Click(sender, null);
+                                break;
+
                             default:
                                 // Handle other cases if needed
                                 break;
@@ -951,6 +955,12 @@ namespace MyNET.Pos.Modules
             ReportRestaurant report = new ReportRestaurant();
             report.Owner = this;
             report.ShowDialog();
+        } 
+        private void ItemDetails_Click(object sender, EventArgs value)
+        {
+            ItemDetails details = new ItemDetails();
+            details.Owner = this;
+            details.ShowDialog();
         }
         public void ReOpenForm()
         {
