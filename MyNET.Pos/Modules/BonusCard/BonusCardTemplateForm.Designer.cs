@@ -152,10 +152,11 @@
             // 
             // dg_bonusCardTemplate
             // 
+            this.dg_bonusCardTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dg_bonusCardTemplate.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dg_bonusCardTemplate.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dg_bonusCardTemplate.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dg_bonusCardTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dg_bonusCardTemplate.Location = new System.Drawing.Point(3, 3);
             this.dg_bonusCardTemplate.Name = "dg_bonusCardTemplate";
             this.dg_bonusCardTemplate.Size = new System.Drawing.Size(471, 378);
@@ -167,7 +168,7 @@
             this.tableLayoutPanel4.ColumnCount = 3;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 63.82353F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 36.17647F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 84F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
             this.tableLayoutPanel4.Controls.Add(this.button4, 2, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 387);
@@ -181,9 +182,9 @@
             // 
             this.button4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(389, 3);
+            this.button4.Location = new System.Drawing.Point(388, 3);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(79, 56);
+            this.button4.Size = new System.Drawing.Size(80, 56);
             this.button4.TabIndex = 1;
             this.button4.Text = "Shto Shabllon";
             this.button4.UseVisualStyleBackColor = true;

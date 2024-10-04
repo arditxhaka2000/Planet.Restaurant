@@ -91,7 +91,7 @@
             this.Controls.Add(this.btnCancel);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "PosIsRunning";
-            this.Text = "ServerIsRunning";
+            this.Text = "POS is running";
             this.ResumeLayout(false);
             this.PerformLayout();
 

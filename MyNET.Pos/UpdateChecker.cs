@@ -14,8 +14,8 @@ namespace MyNET.Pos
     {
         public static bool CheckForUpdates()
         {
-            string url = "http://planetaccounting.org/pos/pos_download";
-            string updateZipFileName = "Flink_oldversion.zip";
+            string url = "https://localhost:7234/";
+            string updateZipFileName = "Planet.POS.exe";
 
             WebClient client = new WebClient();
             string pageContent = client.DownloadString(url);
@@ -36,12 +36,12 @@ namespace MyNET.Pos
         public static void ExtractZip()
         {
 
-            string url = "http://planetaccounting.org/pos";
+            string url = "https://localhost:7234/";
             string downloadDirectory = null;
 
             using (WebClient client = new WebClient())
             {
-                string html = client.DownloadString(url + "//pos_download");
+                string html = client.DownloadString(url);
 
                 HtmlAgilityPack.HtmlDocument document = new HtmlAgilityPack.HtmlDocument();
                 document.LoadHtml(html);
@@ -50,11 +50,11 @@ namespace MyNET.Pos
                 {
                     string href = link.GetAttributeValue("href", string.Empty);
 
-                    if (href.EndsWith("Flink_oldversion.zip"))
+                    if (href.EndsWith("Planet.POS.exe"))
                     {
                         downloadDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                         string fileName = href.Split('/').Last();
-                        string fileUrl = url + "/" + fileName;
+                        string fileUrl = url + "/zip/" + fileName;
                         string downloadPath = downloadDirectory + "\\" + fileName;
 
                         client.DownloadFile(fileUrl, downloadPath);

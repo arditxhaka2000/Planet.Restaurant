@@ -148,10 +148,13 @@ namespace MyNET.Pos.Modules
                 if (isChecked)
                 {
                     Services.Item.UpdateActiveItem(1, item.Id.ToString());
+
+                    MessageBox.Show("Artikulli eshte bere pasiv me sukses!");
                 }
                 else
                 {
                     Services.Item.UpdateActiveItem(0, item.Id.ToString());
+                    MessageBox.Show("Artikulli eshte bere aktiv me sukses!");
 
                 }
             }

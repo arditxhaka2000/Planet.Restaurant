@@ -800,7 +800,7 @@ namespace MyNET.Pos.Modules
                                 Edito_Click(sender, null);
                                 break;
 
-                            case "Raportet":
+                            case "Opsionet":
                                 Raportet_Click(sender, null);
                                 break;
 
@@ -881,7 +881,7 @@ namespace MyNET.Pos.Modules
             catch (Exception)
             {
 
-                throw;
+                throw; 
             }
 
         }
