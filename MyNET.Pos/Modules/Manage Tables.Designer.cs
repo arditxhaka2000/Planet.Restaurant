@@ -54,6 +54,7 @@
             this.dg_openTables.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dg_openTables.Location = new System.Drawing.Point(0, 0);
             this.dg_openTables.Name = "dg_openTables";
+            this.dg_openTables.ReadOnly = true;
             this.dg_openTables.Size = new System.Drawing.Size(800, 450);
             this.dg_openTables.TabIndex = 0;
             this.dg_openTables.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_openTables_CellContentClick);
@@ -69,26 +70,31 @@
             // 
             this.colName.HeaderText = "Emri i Tavolines";
             this.colName.Name = "colName";
+            this.colName.ReadOnly = true;
             // 
             // colTotal
             // 
             this.colTotal.HeaderText = "Shuma";
             this.colTotal.Name = "colTotal";
+            this.colTotal.ReadOnly = true;
             // 
             // colTimer
             // 
             this.colTimer.HeaderText = "Koha";
             this.colTimer.Name = "colTimer";
+            this.colTimer.ReadOnly = true;
             // 
             // colCloseTable
             // 
             this.colCloseTable.HeaderText = "Mbyll Tavolinen";
             this.colCloseTable.Name = "colCloseTable";
+            this.colCloseTable.ReadOnly = true;
             // 
             // colOpenTable
             // 
             this.colOpenTable.HeaderText = "Hape Tavolinen";
             this.colOpenTable.Name = "colOpenTable";
+            this.colOpenTable.ReadOnly = true;
             // 
             // Manage_Tables
             // 

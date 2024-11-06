@@ -120,6 +120,10 @@ namespace MyNET.Pos.Modules
         private void ItemDetails_Load(object sender, EventArgs e)
         {
             
+                dgItemsDetails.Columns[0].ReadOnly = true;
+                dgItemsDetails.Columns[1].ReadOnly = true;
+                dgItemsDetails.Columns[2].ReadOnly = true;
+                dgItemsDetails.Columns[3].ReadOnly = true;
         }
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)

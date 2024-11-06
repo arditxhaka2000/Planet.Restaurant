@@ -608,7 +608,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.85714F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 111F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 135F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 136F));
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblCompany, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnLoginMtd, 2, 0);
@@ -621,7 +621,6 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1040, 34);
             this.tableLayoutPanel2.TabIndex = 2;
-            this.tableLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
             // label1
             // 
@@ -647,11 +646,12 @@
             // btnLoginMtd
             // 
             this.btnLoginMtd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLoginMtd.Location = new System.Drawing.Point(715, 3);
+            this.btnLoginMtd.Location = new System.Drawing.Point(714, 3);
             this.btnLoginMtd.Name = "btnLoginMtd";
             this.btnLoginMtd.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnLoginMtd.Size = new System.Drawing.Size(75, 28);
             this.btnLoginMtd.TabIndex = 14;
+            this.btnLoginMtd.TabStop = false;
             this.btnLoginMtd.Text = "Me Kartelë";
             this.btnLoginMtd.UseVisualStyleBackColor = true;
             this.btnLoginMtd.Click += new System.EventHandler(this.btnLoginMtd_Click);
@@ -663,6 +663,7 @@
             this.word_change_station.Name = "word_change_station";
             this.word_change_station.Size = new System.Drawing.Size(103, 28);
             this.word_change_station.TabIndex = 13;
+            this.word_change_station.TabStop = false;
             this.word_change_station.Text = "Nderro piken";
             this.word_change_station.UseVisualStyleBackColor = true;
             this.word_change_station.Click += new System.EventHandler(this.btnChangeStation_Click);
@@ -670,10 +671,11 @@
             // btnRestaurantEnable
             // 
             this.btnRestaurantEnable.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnRestaurantEnable.Location = new System.Drawing.Point(826, 3);
+            this.btnRestaurantEnable.Location = new System.Drawing.Point(825, 3);
             this.btnRestaurantEnable.Name = "btnRestaurantEnable";
             this.btnRestaurantEnable.Size = new System.Drawing.Size(75, 28);
             this.btnRestaurantEnable.TabIndex = 15;
+            this.btnRestaurantEnable.TabStop = false;
             this.btnRestaurantEnable.Text = "Restaurant";
             this.btnRestaurantEnable.UseVisualStyleBackColor = true;
             this.btnRestaurantEnable.Visible = false;
@@ -707,7 +709,7 @@
             this.Text = "LoginForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoginForm_FormClosing);
             this.Load += new System.EventHandler(this.LoginForm_Load);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LoginForm_KeyPress);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoginForm_KeyDown);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();

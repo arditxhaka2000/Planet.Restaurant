@@ -32,12 +32,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.dgItemsDetails = new System.Windows.Forms.DataGridView();
-            this.btnSearch = new System.Windows.Forms.Button();
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colBarcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PriceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDisable = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.btnSearch = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgItemsDetails)).BeginInit();
             this.SuspendLayout();
             // 
@@ -81,16 +81,6 @@
             this.dgItemsDetails.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgItemsDetails_CellValueChanged);
             this.dgItemsDetails.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgItemsDetails_CurrentCellDirtyStateChanged);
             // 
-            // btnSearch
-            // 
-            this.btnSearch.Location = new System.Drawing.Point(486, 37);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(92, 24);
-            this.btnSearch.TabIndex = 3;
-            this.btnSearch.Text = "Kerko";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
             // colName
             // 
             this.colName.HeaderText = "Emri";
@@ -115,6 +105,16 @@
             // 
             this.colDisable.HeaderText = "Artikull Pasiv";
             this.colDisable.Name = "colDisable";
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(486, 37);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(92, 24);
+            this.btnSearch.TabIndex = 3;
+            this.btnSearch.Text = "Kerko";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // ItemDetails
             // 

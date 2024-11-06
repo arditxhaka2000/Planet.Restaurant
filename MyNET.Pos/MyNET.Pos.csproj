@@ -17,6 +17,21 @@
     </TargetFrameworkProfile>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,9 +53,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>planet_accounting_m_Lj2_icon.ico</ApplicationIcon>
+    <ApplicationIcon>planet_accounting_logo_.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -366,12 +383,6 @@
     <Compile Include="Modules\AddTables.Designer.cs">
       <DependentUpon>AddTables.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\BonusCard\Add_BonusCard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Modules\BonusCard\Add_BonusCard.Designer.cs">
-      <DependentUpon>Add_BonusCard.cs</DependentUpon>
-    </Compile>
     <Compile Include="Modules\AdminCloseCashbox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -385,24 +396,22 @@
       <DependentUpon>UpdateDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\autoupdate\UpdateModule.cs" />
+    <Compile Include="Modules\BonusCard\Add_BonusCard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\BonusCard\Add_BonusCard.Designer.cs" />
     <Compile Include="Modules\BonusCard\BonusCardForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\BonusCard\BonusCardForm.Designer.cs">
-      <DependentUpon>BonusCardForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Modules\BonusCard\BonusCardForm.Designer.cs" />
     <Compile Include="Modules\BonusCard\BonusCardList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\BonusCard\BonusCardList.Designer.cs">
-      <DependentUpon>BonusCardList.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Modules\BonusCard\BonusCardList.Designer.cs" />
     <Compile Include="Modules\BonusCard\BonusCardTemplateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\BonusCard\BonusCardTemplateForm.Designer.cs">
-      <DependentUpon>BonusCardTemplateForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Modules\BonusCard\BonusCardTemplateForm.Designer.cs" />
     <Compile Include="Modules\Buttons\CreateButtons.cs" />
     <Compile Include="Modules\CloseCashboxRestaurant.cs">
       <SubType>Form</SubType>
@@ -602,6 +611,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Resources\1496 %281%29.gif" />
+    <Content Include="planet_accounting_logo_.ico" />
     <Content Include="Resources\Table.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -675,24 +685,16 @@
       <DependentUpon>AddTables.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\BonusCard\Add_BonusCard.resx">
-      <DependentUpon>Add_BonusCard.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Modules\AdminCloseCashbox.resx">
       <DependentUpon>AdminCloseCashbox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\autoupdate\UpdateDialog.resx">
       <DependentUpon>UpdateDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\BonusCard\BonusCardForm.resx">
-      <DependentUpon>BonusCardForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Modules\BonusCard\BonusCardList.resx">
-      <DependentUpon>BonusCardList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Modules\BonusCard\BonusCardTemplateForm.resx">
-      <DependentUpon>BonusCardTemplateForm.cs</DependentUpon>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\BonusCard\Add_BonusCard.resx" />
+    <EmbeddedResource Include="Modules\BonusCard\BonusCardForm.resx" />
+    <EmbeddedResource Include="Modules\BonusCard\BonusCardList.resx" />
+    <EmbeddedResource Include="Modules\BonusCard\BonusCardTemplateForm.resx" />
     <EmbeddedResource Include="Modules\CloseCashboxRestaurant.resx">
       <DependentUpon>CloseCashboxRestaurant.cs</DependentUpon>
     </EmbeddedResource>
@@ -921,11 +923,22 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modules\Partners\" />
-    <Folder Include="Modules\TestRestaurant\" />
     <Folder Include="Register\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

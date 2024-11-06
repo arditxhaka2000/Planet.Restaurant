@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class BonusCardTemplate: IBaseObj
+    public class BonusCardTemplate : IBaseObj
     {
         public int Id { get; set; }
         public string Type { get; set; }
@@ -14,6 +14,7 @@ namespace Services
         public decimal PointsToEur { get; set; }
         public decimal PointsValue { get; set; }
         public decimal Discount { get; set; }
+        public decimal DiscountP { get; set; }
 
         public int Insert()
         {
@@ -25,7 +26,7 @@ namespace Services
             string searchParams = "&Type=" + type + "&Points=" + points;
             var row = Services.RestHepler<int>.SelectCount("checkBonusCardTemplateP", searchParams);
             return row;
-        } 
+        }
         public int checkBonusCardTemplateD(decimal discount, string type)
         {
             string searchParams = "&Type=" + type + "&Discount=" + discount;

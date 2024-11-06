@@ -2262,7 +2262,7 @@ namespace MyNET.Pos.Modules
                                     pdfTable.TotalWidth = 770f;
                                     pdfTable.WriteSelectedRows(pageRows, pageRows + 15, 40, 500, cb);
                                     pageRows += 15;
-
+       
                                     if (pageRows > dataGridView5.Rows.Count)
                                     {
                                         BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);

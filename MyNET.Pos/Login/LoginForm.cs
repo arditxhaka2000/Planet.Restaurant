@@ -70,8 +70,9 @@ namespace MyNET.Pos
             var globals = Services.Settings.Get();
             Globals.LoadSettings();
 
+
             lblCompany.Text = globals.CompanyName;
-             btnLoginMtd.Text = globals.EmpLoginMethod == "0" ? "Me kartelë" : "Me Buton";
+            btnLoginMtd.Text = globals.EmpLoginMethod == "0" ? "Me kartelë" : "Me Buton";
 
             if (globals.EmpLoginMethod == "1")
             {
@@ -82,11 +83,10 @@ namespace MyNET.Pos
                 this.BackgroundImage = Properties.Resources.planet_accounting_logo_;
                 this.BackgroundImageLayout = ImageLayout.Center;
 
-                txtCodeScan.Visible = true; 
+                //txtCodeScan.Visible = true; 
                 txtCodeScan.Size = new Size(350, 50);
                 txtCodeScan.Location = new Point(this.Width / 2 - 200, this.ClientSize.Width / 2 - 125);
                 txtCodeScan.Anchor = AnchorStyles.Bottom;
-                txtCodeScan.TabIndex = 0;  
                 txtCodeScan.Focus();
             }
 
@@ -97,6 +97,9 @@ namespace MyNET.Pos
             DeleteAnyCurrentUser();
 
         }
+
+
+
         public void DeleteAnyCurrentUser()
         {
             if (Services.StationService.GetUserStationsByDeviceId(Globals.DeviceId))
@@ -131,12 +134,12 @@ namespace MyNET.Pos
             else if (txt4.Text == "")
             {
                 txt4.Text = mNum;
-                
+
                 if (CheckUser())
                 {
                     //nese pini eshte ne rregull logohu 
                     AfterLoginCheck();
-                    
+
                     AdjustButtonImageSize();
 
                 }
@@ -220,7 +223,7 @@ namespace MyNET.Pos
                 {
                     while (ifLocked == false)
                     {
-                        ifLocked = Services.StationService.LockUserStation(Globals.User.Id, Globals.DeviceId,PosType);
+                        ifLocked = Services.StationService.LockUserStation(Globals.User.Id, Globals.DeviceId, PosType);
                     }
                     //if (UserStation.Get(Globals.User.Id).PosType == 0)
                     //{
@@ -238,7 +241,7 @@ namespace MyNET.Pos
                     this.Close();
                 }
 
-               
+
 
             }
             else
@@ -271,7 +274,7 @@ namespace MyNET.Pos
             }
 
             //Nese useri eshte authentiku mbylle kete dritare
-            
+
 
             return true;
         }
@@ -309,11 +312,12 @@ namespace MyNET.Pos
             {
                 Globals.User = user;
 
-                Services.Printer.InsertId(Globals.DeviceId,Globals.Station.Id);
+                Services.Printer.InsertId(Globals.DeviceId, Globals.Station.Id);
 
                 return true;
             }
         }
+
 
 
         private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -390,10 +394,7 @@ namespace MyNET.Pos
             }
         }
 
-        private void txtCodeScan_TextChanged(object sender, EventArgs e)
-        {
 
-        }
         private void AdjustButtonImageSize()
         {
             var items = new List<ItemsDiscount>();
@@ -462,7 +463,7 @@ namespace MyNET.Pos
                     if (!File.Exists(imagePath))
                     {
                         string s = sett.Logo;
-                    
+
 
                         try
                         {
@@ -489,7 +490,7 @@ namespace MyNET.Pos
                     }
                 }
             }
-            
+
 
         }
         private static byte[] DownloadRemoteImageFile(string uri)
@@ -512,32 +513,44 @@ namespace MyNET.Pos
             return Convert.ToInt32(originalWidth * scale);
         }
 
-        private void LoginForm_KeyPress(object sender, KeyPressEventArgs e)
-        {
-
-            if (!txtCodeScan.Focused) // check if the textbox doesn't have focus
-            {
-                txtCodeScan.Visible = true; // make the textbox visible
-                txtCodeScan.Focus(); // give focus to the textbox
-                txtCodeScan.Text = e.KeyChar.ToString(); // set the text of the textbox to the input character
-                txtCodeScan.Select(txtCodeScan.Text.Length, 0); // move the cursor to the end of the textbox
-                e.Handled = true; // mark the event as handled to prevent the character from being added to the form
-            }
-            else // if the textbox has focus, let the event pass through to the textbox
-            {
-                e.Handled = false;
-            }
-
-        }
-
-        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void btnRestaurantEnable_Click(object sender, EventArgs e)
         {
             PosType = 1;
+        }
+
+        private string barcodeText = "";
+
+        private void LoginForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                txtCodeScan.Text = barcodeText;
+
+                barcodeText = "";
+            }
+
+            else
+            {
+                if ((e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9) || (e.KeyCode >= Keys.A && e.KeyCode <= Keys.Z))
+                {
+                    
+                    barcodeText += (char)e.KeyCode;
+
+                }
+                else
+                {
+                    barcodeText += (char)(e.KeyCode - Keys.NumPad0 + '0');
+
+                }
+            }
+        }
+
+        private void txtCodeScan_TextChanged(object sender, EventArgs e)
+        {
+            if (CheckUser())
+            {
+                AfterLoginCheck();
+            }
         }
     }
 }

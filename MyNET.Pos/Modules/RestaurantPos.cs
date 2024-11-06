@@ -1890,7 +1890,7 @@ namespace MyNET.Pos
                 txtDiscount.BackColor = Color.WhiteSmoke;
                 txtDiscount.ForeColor = Color.Black;
                 ug.RowPrePaint += new DataGridViewRowPrePaintEventHandler(DataGridView1_RowPrePaint);
-
+                txt.BackColor = Color.WhiteSmoke;
 
             }
 
@@ -2122,8 +2122,8 @@ namespace MyNET.Pos
                 percSymb.Font = new Font("Lato", 22, FontStyle.Regular);
                 eursymb.Font = new Font("Lato", 22, FontStyle.Regular);
                 eurSymbol.Font = new Font("Lato", 36, FontStyle.Bold);
-                word_cancel_order.Font = new Font("Lato", 9, FontStyle.Regular);
-                word_print_the_coupon.Font = new Font("Lato", 9, FontStyle.Regular);
+                word_cancel_order.Font = new Font("Lato", 12, FontStyle.Regular);
+                word_print_the_coupon.Font = new Font("Lato", 12, FontStyle.Regular);
                 //btn_DirectPay.Font = new Font("Lato", 22, FontStyle.Regular);
                 txtShortcuts.Font = new Font("Lato", 8, FontStyle.Regular);
                 CbSize = new Size(100, 50); subCbSize = new Size(90, 40);

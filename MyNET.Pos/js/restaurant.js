@@ -69,7 +69,7 @@ function sendPOS(id) {
     tableId = id;
     if (optionValue === 'Bashko') {
 
-        var parentDiv = document.getElementById("d" + id);
+        var parentDiv = document.getElementById(id);
 
         if (parentDiv) {
 
@@ -113,11 +113,12 @@ function sendPOS(id) {
         }
     }
     else if (optionValue === 'Transfero') {
-        var parentDiv = document.getElementById("d" + id);
+        var parentDiv = document.getElementById(id);
 
         if (parentDiv) {
 
             var checkIcon = parentDiv.querySelector('.check-icon');
+            console.log('ch', checkIcon);
             console.log('1', bashkocount);
             if (checkIcon && bashkocount < 2) {
                 if (checkIcon.style.display === 'block') {
@@ -163,6 +164,7 @@ function sendPOS(id) {
 
 }
 function sendBashko() {
+    console.log('sadasd',selectableDivs);
     return selectableDivs;
 }
 function sendSpaceId(value) {

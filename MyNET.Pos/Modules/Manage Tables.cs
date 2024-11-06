@@ -30,7 +30,29 @@ namespace MyNET.Pos.Modules
             foreach (var table in tables)
             {
                 var date = DateTime.Now - Convert.ToDateTime(table.Date);
-                var dateT = (date).Minutes >1?date.Minutes + " minuta": date.Minutes + " minut";
+                var dateT = "";
+                if (date.Days > 0)
+                {
+                    if (date.Hours > 0)
+                    {
+                        dateT = date.Days + " ditë " + date.Hours + " orë " + date.Minutes + " minuta";
+
+                    }
+                    else
+                    {
+                        dateT = date.Days + " ditë " + date.Minutes + " minuta";
+
+                    }
+                }
+                else if (date.Hours>0)
+                {
+                    dateT = date.Hours + " orë " + date.Minutes + " minuta"; 
+                }
+                else
+                {
+                    dateT = date.Minutes == 1 ? date.Minutes + " minut" : date.Minutes + " minuta";
+                }
+
                 dg_openTables.Rows.Add(table.Id,table.Name, table.inPosTotal, dateT);
 
             }

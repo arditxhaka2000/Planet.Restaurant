@@ -14,7 +14,7 @@ namespace MyNET.Pos
     {
         public static bool CheckForUpdates()
         {
-            string url = "https://localhost:7234/";
+            string url = "http://devplanetaccounting.com/pos/pos_download";
             string updateZipFileName = "Planet.POS.exe";
 
             WebClient client = new WebClient();

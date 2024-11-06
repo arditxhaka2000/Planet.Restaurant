@@ -755,7 +755,7 @@ namespace MyNET.Pos.Modules
 
             }
             PassTheme(pictureBox1.Tag.ToString());
-            Settings.UpdateThemePreference(pictureBox1.Tag.ToString(), Globals.Settings.Id);
+             Settings.UpdateThemePreference(pictureBox1.Tag.ToString(), Globals.Settings.Id);
             Globals.LoadSettings();
 
         }
