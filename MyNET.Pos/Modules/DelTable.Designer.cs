@@ -37,12 +37,12 @@
             this.cmbSpaces = new System.Windows.Forms.ComboBox();
             this.chckTable = new System.Windows.Forms.CheckBox();
             this.cmbTable = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Save
@@ -53,7 +53,7 @@
             this.Save.BackColor = System.Drawing.Color.SteelBlue;
             this.Save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Save.ForeColor = System.Drawing.Color.White;
-            this.Save.Location = new System.Drawing.Point(180, 308);
+            this.Save.Location = new System.Drawing.Point(180, 336);
             this.Save.MaximumSize = new System.Drawing.Size(100, 33);
             this.Save.MinimumSize = new System.Drawing.Size(100, 33);
             this.Save.Name = "Save";
@@ -71,7 +71,7 @@
             this.Close.BackColor = System.Drawing.Color.SteelBlue;
             this.Close.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Close.ForeColor = System.Drawing.Color.White;
-            this.Close.Location = new System.Drawing.Point(59, 308);
+            this.Close.Location = new System.Drawing.Point(59, 336);
             this.Close.MaximumSize = new System.Drawing.Size(100, 33);
             this.Close.MinimumSize = new System.Drawing.Size(100, 33);
             this.Close.Name = "Close";
@@ -144,22 +144,11 @@
             // 
             this.cmbTable.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbTable.FormattingEnabled = true;
-            this.cmbTable.Location = new System.Drawing.Point(180, 109);
+            this.cmbTable.Location = new System.Drawing.Point(180, 112);
             this.cmbTable.Name = "cmbTable";
             this.cmbTable.Size = new System.Drawing.Size(222, 24);
             this.cmbTable.TabIndex = 18;
             this.cmbTable.Visible = false;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(180, 112);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(2, 22);
-            this.textBox1.TabIndex = 17;
             // 
             // label3
             // 
@@ -179,7 +168,7 @@
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox1.Location = new System.Drawing.Point(17, 240);
+            this.checkBox1.Location = new System.Drawing.Point(17, 227);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(72, 17);
             this.checkBox1.TabIndex = 19;
@@ -194,7 +183,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(14, 200);
+            this.label4.Location = new System.Drawing.Point(14, 268);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(104, 18);
             this.label4.TabIndex = 20;
@@ -204,7 +193,7 @@
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(180, 196);
+            this.textBox2.Location = new System.Drawing.Point(180, 264);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(222, 22);
             this.textBox2.TabIndex = 21;
@@ -218,7 +207,7 @@
             this.button1.BackColor = System.Drawing.Color.SteelBlue;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(302, 308);
+            this.button1.Location = new System.Drawing.Point(302, 336);
             this.button1.MaximumSize = new System.Drawing.Size(100, 33);
             this.button1.MinimumSize = new System.Drawing.Size(100, 33);
             this.button1.Name = "button1";
@@ -228,18 +217,29 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(12, 187);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(108, 23);
+            this.button2.TabIndex = 24;
+            this.button2.Text = "Edito madhësinë";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // DelTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(436, 353);
+            this.ClientSize = new System.Drawing.Size(436, 381);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.cmbTable);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.chckTable);
             this.Controls.Add(this.cmbSpaces);
@@ -268,11 +268,11 @@
         private System.Windows.Forms.ComboBox cmbSpaces;
         private System.Windows.Forms.CheckBox chckTable;
         private System.Windows.Forms.ComboBox cmbTable;
-        public System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }

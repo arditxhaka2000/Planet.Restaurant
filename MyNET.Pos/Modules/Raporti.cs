@@ -16,6 +16,8 @@ using iTextSharp.text;
 using iText.Layout.Properties;
 using Microsoft.Office.Interop.Word;
 using Spire.Doc;
+using Services.Models;
+using Font = System.Drawing.Font;
 
 namespace MyNET.Pos.Modules
 {
@@ -29,6 +31,8 @@ namespace MyNET.Pos.Modules
         public decimal totalCash = 0;
         public decimal totalBank = 0;
         public int totalKupona = 0;
+        public int EmpId;
+
 
         public Raporti()
         {
@@ -249,6 +253,99 @@ namespace MyNET.Pos.Modules
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
 
+
+            var printer = Services.Printer.Get().Find(p => p.Id == Globals.DeviceId);
+            var settings = Services.Settings.Get();
+
+            PrintDocument printDoc = new PrintDocument();
+            printDoc.PrinterSettings.PrinterName = settings.PosPrinter == "1" ? printer.TermalName : settings.ThermalPrinterName;
+            printDoc.PrintPage += new PrintPageEventHandler(PrintRestaurantDataGridView);
+            printDoc.Print();
+
+
+
+
+
+        }
+        public void PrintRestaurantDataGridView(object sender, PrintPageEventArgs e)
+        {
+            var settings = Services.Settings.Get();
+            var printer = Services.Printer.Get().Find(p => p.Id == Globals.DeviceId);
+
+
+            float total_width = settings.PosPrinter == "0" ? Convert.ToInt32(settings.ThermalPrinterPageWidth) + 110f : Convert.ToInt32(printer.TermalPaperWidth) + 110f;
+
+            Font headingFont = new Font("Calibri", total_width / 18f, FontStyle.Bold);
+            Font boldFont = new Font("Calibri", total_width / 23f, FontStyle.Bold);
+            Font normalFont = new Font("Calibri", total_width / 23f, FontStyle.Regular);
+
+            float topMargin = e.MarginBounds.Top;
+            float leftMargin = e.MarginBounds.Left;
+
+            string receipt_date = DateTime.Now.ToString();
+            decimal net_total = 0;
+            string company = Globals.Settings.CompanyName;
+            string line = "--------------------------------------------------------------------------------";
+            float height = 5;
+            // float printerWidth;
+            // float printerHight;
+
+
+            float company_name = 2f;
+            float company_address = 2.5f;
+            float receipt_number = 19f;
+            float rec_date = 1.08f;
+            float rec_desc = 19f;
+
+            float rec_qty = 1.6f;
+            float rec_price = 1.1f;
+            float rec_total = 0.85f;
+
+
+
+
+            //Print Company Name
+            e.Graphics.DrawString($"Raporti i mbylljes së ditës të {Services.User.Get(EmpId).Name}", headingFont, Brushes.Black, 0, height, new StringFormat());
+            height += 30;
+            //Print Company Address
+            e.Graphics.DrawString(company, normalFont, Brushes.Black, total_width / company_address, height, new StringFormat());
+            height += 40;
+
+            //Print Receipt No
+            e.Graphics.DrawString("Date :\n " + receipt_date, boldFont, Brushes.Black,0, height, new StringFormat());
+            height += 40;
+
+            //Print Line
+            e.Graphics.DrawString(line, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
+
+            //Printe Table Headings
+
+            e.Graphics.DrawString($"Total Kupona: {totalKupona}", normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20; 
+            
+            e.Graphics.DrawString($"Bilanci Fillestar: {totalKupona}", normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
+
+            e.Graphics.DrawString($"Total Kesh: {totalCash} EUR", normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
+
+            e.Graphics.DrawString($"Total Banka: {totalBank}  EUR", normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
+
+            e.Graphics.DrawString($"Total Shitje: {totalShitje}  EUR", normalFont, Brushes.Black, 0, height, new StringFormat());
+
+            height += 20;
+
+
+            //Print Line
+            e.Graphics.DrawString(line, normalFont, Brushes.Black, 0, height, new StringFormat());
+
+
+            e.HasMorePages = false;
+        }
     }
 }

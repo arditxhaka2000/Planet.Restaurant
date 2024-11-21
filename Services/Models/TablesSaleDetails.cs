@@ -83,9 +83,9 @@ namespace Services.Models
 
             return rows;
         }
-        public void UpdateTableItem(decimal quantity, decimal total, decimal totalWithVat, string itemname, int tableId)
+        public void UpdateTableItem(decimal quantity, decimal total, decimal totalWithVat, string itemname, int tableId, string description)
         {
-            string jsonParams = JsonConvert.SerializeObject(new { Quantity = quantity, Total = total, TotalWithVat = totalWithVat, ItemName = itemname, tableId = tableId });
+            string jsonParams = JsonConvert.SerializeObject(new { Quantity = quantity, Total = total, TotalWithVat = totalWithVat, ItemName = itemname, tableId = tableId, CostOfGoods = description });
             Services.RestHepler<Models.TablesSaleDetails>.Query("updateTablesSaleDetails", jsonParams);
         }
         public static void UpdateTableSDPrinted(int printed, string id)

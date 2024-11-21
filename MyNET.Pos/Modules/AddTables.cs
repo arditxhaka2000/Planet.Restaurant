@@ -27,6 +27,20 @@ namespace MyNET.Pos.Modules
             tables.Space_id = Convert.ToInt32(cmbSpace.SelectedValue);
             tables.Name = txtTableName.Text;
             tables.station_id = Globals.Station.Id.ToString();
+            tables.Shape = cmbTableShape.SelectedItem.ToString();
+            tables.Width = "120";
+            tables.Height = "120";
+            if (txtAutoGenerateTables.Text != "")
+            {
+                if (Convert.ToInt16(txtAutoGenerateTables.Text) > 0)
+                {
+                    GenerateTables(Convert.ToInt16(txtAutoGenerateTables.Text));
+                }
+                this.Close();
+                return;
+            }
+            
+
 
             Random random = new Random();
             int randomX, randomY;
@@ -57,7 +71,56 @@ namespace MyNET.Pos.Modules
 
             this.Close();
         }
+        public void GenerateTables(int number)
+        {
 
+            Services.Tables tables = new Services.Tables();
+
+            int n = 1;
+
+            int tableWidth = 10; 
+            int tableHeight = 10; 
+            int screenWidth = 95; 
+            int currentX = 2; 
+            int currentY = 15; 
+
+            while (number > 0)
+            {
+                tables.Space_id = Convert.ToInt32(cmbSpace.SelectedValue);
+                tables.Name = n.ToString();
+                tables.station_id = Globals.Station.Id.ToString();
+                tables.Shape = cmbTableShape.SelectedItem.ToString();
+                tables.Width = "120";
+                tables.Height = "120";
+                // Set table location
+                tables.LocationX = currentX.ToString();
+                tables.LocationY = currentY.ToString();
+
+                currentX += tableWidth;
+
+                if (currentX + tableWidth > screenWidth + tableWidth)
+                {
+                    currentX = 2; 
+                    currentY += tableHeight+5; 
+                }
+
+                tables.Status = 0;
+                tables.PrintTotal = 0;
+                tables.PrintFiscal = 0;
+                tables.inPosTotal = "0";
+                var result = tables.Insert();
+
+                while (result == 0)
+                {
+                    n++;
+                    tables.Name = n.ToString();
+                    result = tables.Insert();
+
+                }
+                n++;
+                number--;
+            }
+        }
         private void AddTables_FormClosing(object sender, FormClosingEventArgs e)
         {
             Globals.NextStep = "Exit";
@@ -77,10 +140,17 @@ namespace MyNET.Pos.Modules
                 label1.ForeColor = Color.White;
                 label2.ForeColor = Color.White;
                 label3.ForeColor = Color.White;
+                label4.ForeColor = Color.White;
+                label5.ForeColor = Color.White;
                 txtTableName.BackColor = Color.FromArgb(49, 50, 55);
                 txtTableName.ForeColor = Color.White;
                 cmbSpace.BackColor = Color.FromArgb(49, 50, 55);
-                cmbSpace.ForeColor = Color.White;
+                cmbSpace.ForeColor = Color.White; 
+                cmbTableShape.BackColor = Color.FromArgb(49, 50, 55);
+                cmbTableShape.ForeColor = Color.White; 
+                txtAutoGenerateTables.BackColor = Color.FromArgb(49, 50, 55);
+                txtAutoGenerateTables.ForeColor = Color.White;
+
 
             }
             else
@@ -94,6 +164,14 @@ namespace MyNET.Pos.Modules
                 cmbSpace.BackColor = Color.White;
                 cmbSpace.ForeColor = Color.FromArgb(49, 50, 55);
 
+            }
+        }
+
+        private void txtAutoGenerateTables_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true; 
             }
         }
     }

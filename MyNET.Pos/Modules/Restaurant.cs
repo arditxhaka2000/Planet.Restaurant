@@ -66,7 +66,7 @@ namespace MyNET.Pos.Modules
         }
         private async void Restaurant_Load(object sender, EventArgs e)
         {
-           await webView21.EnsureCoreWebView2Async();
+            await webView21.EnsureCoreWebView2Async();
 
             socket = new SocketIO(Services.Connection.GetConnection());
             socket.On("connect", (server) =>
@@ -82,8 +82,18 @@ namespace MyNET.Pos.Modules
                 int inPos = responseObj[0].inPos;
                 string id = responseObj[0].Id;
                 string color = inPos == 0 ? "green" : "red";
-                UpdateTableColor(id,color);
+                UpdateTableColor(id, color);
 
+
+            });
+            socket.On("PosTotal", (data) =>
+            {
+                Console.WriteLine($"Received query response: {data}");
+                dynamic responseObj = JsonConvert.DeserializeObject(data.ToString());
+                string total = responseObj[0].inPosTotal;
+                string id = responseObj[0].Id;
+
+                UpdateTableTotal(id, total);
 
             });
 
@@ -102,7 +112,7 @@ namespace MyNET.Pos.Modules
 
             await socket.ConnectAsync();
 
-            
+
 
 
         }
@@ -113,7 +123,7 @@ namespace MyNET.Pos.Modules
             webView21.CoreWebView2.WebMessageReceived += CoreWebView2_AddWebMessageReceived;
             webView21.CoreWebView2.DOMContentLoaded += WebView_DOMContentLoaded;
             webView21.CoreWebView2.Navigate(System.Windows.Forms.Application.StartupPath + "\\index.html");
-          
+
         }
         private void WebView_DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
         {
@@ -160,48 +170,56 @@ namespace MyNET.Pos.Modules
                 }
                 else
                 {
-                    if (tbl.Emp_id == Globals.User.Id)
+                    if (tbl.JoinId == 0)
                     {
-                        Services.Tables.UpdateTablePos(1, id);
 
-                        Globals.NextStep = "RestaurantPos" + id;
-                        if (!IsDisposed && !Disposing)
+                        if (tbl.Emp_id == Globals.User.Id)
                         {
-                            this.Invoke((MethodInvoker)delegate
+                            Services.Tables.UpdateTablePos(1, id);
+
+                            Globals.NextStep = "RestaurantPos" + id;
+                            if (!IsDisposed && !Disposing)
                             {
-                                if (!IsDisposed && !Disposing)
+                                this.Invoke((MethodInvoker)delegate
                                 {
-                                    this.Close();
-                                }
-                            });
+                                    if (!IsDisposed && !Disposing)
+                                    {
+                                        this.Close();
+                                    }
+                                });
+                            }
                         }
+                        else
+                        {
+                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                            {
+                                EnterPin enterPin = new EnterPin();
+                                enterPin.ShowDialog();
+                                if (enterPin.flag == true)
+                                {
+                                    Services.Tables.UpdateTablePos(1, id);
+
+                                    Globals.NextStep = "RestaurantPos" + id;
+                                    if (!IsDisposed && !Disposing)
+                                    {
+                                        this.Invoke((MethodInvoker)delegate
+                                        {
+                                            if (!IsDisposed && !Disposing)
+                                            {
+                                                this.Close();
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                            //MessageBox.Show("Tavolina eshte hap nga puntori :" + User.Get(tbl.Emp_id).Name);
+                        }
+
                     }
                     else
                     {
-                        if (Globals.Settings.PIN != "0" || Globals.Settings.PIN != null)
-                        {
-                            EnterPin enterPin = new EnterPin();
-                            enterPin.ShowDialog();
-                            if (enterPin.flag == true)
-                            {
-                                Services.Tables.UpdateTablePos(1, id);
-
-                                Globals.NextStep = "RestaurantPos" + id;
-                                if (!IsDisposed && !Disposing)
-                                {
-                                    this.Invoke((MethodInvoker)delegate
-                                    {
-                                        if (!IsDisposed && !Disposing)
-                                        {
-                                            this.Close();
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                        //MessageBox.Show("Tavolina eshte hap nga puntori :" + User.Get(tbl.Emp_id).Name);
+                        MessageBox.Show($"Tavolina e bashkuar me tavolinen: {Services.Tables.GetTables().Where(p => p.Id == tbl.JoinId).First().Name}.");
                     }
-
 
                 }
             }
@@ -252,6 +270,26 @@ namespace MyNET.Pos.Modules
                 try
                 {
                     await webView21.ExecuteScriptAsync($"changeTableColor('{id}', '{color}')");
+                }
+                catch (Exception ex)
+                {
+                    // Handle or log the exception here
+                    Console.WriteLine("Error executing script: " + ex.Message);
+                }
+            }, null);
+        }       
+        private void UpdateTableTotal(string id, string total)
+        {
+            syncContext.Post(async _ =>
+            {
+                if (webView21.IsDisposed || !webView21.IsHandleCreated)
+                {
+                    return;
+                }
+
+                try
+                {
+                    await webView21.ExecuteScriptAsync($"changeTableTotal('{id}', '{total}')");
                 }
                 catch (Exception ex)
                 {
@@ -485,7 +523,7 @@ namespace MyNET.Pos.Modules
                 bashko1 = dataArray[0].ToString();
                 bashko2 = dataArray[1].ToString();
             }
-            btnJoinTables_Click(null, null);
+            btnTransferTables_Click(null, null);
 
         }
         private void AdjustTableLocation(int x, int y, int id)
@@ -678,19 +716,9 @@ namespace MyNET.Pos.Modules
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var tables = Services.Tables.GetTables().Where(p => p.inPos == 1);
-
-            if (tables.Count() == 0)
-            {
                 CloseCashboxRestaurant close = new CloseCashboxRestaurant();
                 close.Owner = this;
                 close.ShowDialog();
-            }
-            else
-            {
-                MessageBox.Show("Nuk mund ta mbyllni diten pa i mbyll te gjitha tavolinat!");
-            }
-
 
         }
 
@@ -755,7 +783,7 @@ namespace MyNET.Pos.Modules
 
             }
             PassTheme(pictureBox1.Tag.ToString());
-             Settings.UpdateThemePreference(pictureBox1.Tag.ToString(), Globals.Settings.Id);
+            Settings.UpdateThemePreference(pictureBox1.Tag.ToString(), Globals.Settings.Id);
             Globals.LoadSettings();
 
         }
@@ -764,7 +792,7 @@ namespace MyNET.Pos.Modules
         {
             if (Ruaj.Visible == false)
             {
-                if (Globals.Settings.PIN != "0" || Globals.Settings.PIN != null)
+                if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                 {
                     EnterPin enterPin = new EnterPin();
                     enterPin.ShowDialog();
@@ -828,6 +856,63 @@ namespace MyNET.Pos.Modules
                     }
 
                 }
+                else
+                {
+
+                    string selectedItem = comboBox1.SelectedItem.ToString();
+                    options = selectedItem;
+                    switch (selectedItem)
+                    {
+                        case "Mbyll Ditën":
+                            button1_Click(sender, null);
+                            break;
+
+                        case "Shiko Tavolinat":
+                            ManageTables();
+                            break;
+
+                        case "Edito":
+                            btn_Fshij_Click(sender, null);
+                            break;
+
+                        case "Shto Tavolinë":
+                            ShtoTavolina_Click(sender, null);
+                            break;
+
+                        case "Shto Hapsirë":
+                            btnAddSpace_Click(sender, null);
+                            break;
+
+                        case "Lokacionet":
+                            Edito_Click(sender, null);
+                            break;
+
+                        case "Opsionet":
+                            Raportet_Click(sender, null);
+                            break;
+
+                        case "Transfero Tavolinen":
+                            Ruaj.Visible = true;
+                            PassStringToJavaScript("Transfero");
+                            break;
+                        case "Bashko Tavolinat":
+                            Ruaj.Visible = true;
+                            PassStringToJavaScript("Bashko");
+                            break;
+
+                        case "Dil":
+                            Dil_Click(sender, null);
+                            break;
+
+                        case "Shiko Artikujt":
+                            ItemDetails_Click(sender, null);
+                            break;
+
+                        default:
+                            // Handle other cases if needed
+                            break;
+                    }
+                }
             }
             else
             {
@@ -881,7 +966,7 @@ namespace MyNET.Pos.Modules
             catch (Exception)
             {
 
-                throw; 
+                throw;
             }
 
         }
@@ -898,49 +983,162 @@ namespace MyNET.Pos.Modules
                 var currentTable = bashko1;
                 var newTable = bashko2;
 
+                var TableIdCurrent = Services.Tables.GetTables().Where(p => p.Id.ToString() == currentTable).First();
+                var TableIdNew = Services.Tables.GetTables().Where(p => p.Id.ToString() == newTable).First();
+                var checkIfExistsCurrent = Services.Tables.GetTables().Where(p => p.JoinId.ToString() == currentTable).ToList();
+                var checkIfExistsNew = Services.Tables.GetTables().Where(p => p.JoinId.ToString() == newTable).ToList();
 
-                Services.Tables.UpdateTablePos(0, currentTable);
-                Services.Tables.UpdateTablePos(1, newTable);
-                var ts = TableSaleDetails.GetTS();
-                foreach (var item in ts)
+                if (TableIdCurrent.JoinId == 0 && TableIdNew.JoinId == 0 && checkIfExistsCurrent.Count == 0 && checkIfExistsNew.Count == 0)
                 {
-                    if (item.tableId.ToString() == currentTable)
-                    {
-                        // Check if an item with the same ID exists in the new table
-                        var existingItem = ts.Where(i => i.tableId.ToString() == newTable && i.ItemId == item.ItemId && i.Status == 0);
 
-                        if (existingItem != null && existingItem.Count() > 0)
-                        {
-                            // Update the quantity of the existing item
-                            Services.TableSaleDetails.UpdateTSQuantity(newTable, item.ItemId.ToString(), (existingItem.First().Quantity + item.Quantity).ToString(), (existingItem.First().TotalWithVat + item.TotalWithVat).ToString());
-                            Services.TableSaleDetails.DeleteTableSaleWithId(item.Id.ToString());
-                        }
-                        else
-                        {
-                            // If the item doesn't exist in the new table, add it with quantity 1
-                            Services.TableSaleDetails.UpdateTSTableId(newTable, item.Id.ToString());
-                        }
+                    Services.Tables.UpdateTableJoinId(newTable, currentTable);
+                    if (TableIdCurrent.Date == null)
+                    {
+                        Services.Tables.UpdateDate(DateTime.Now.ToString(), currentTable);
+
+                    }
+                    if (TableIdNew.Date == null)
+                    {
+                        Services.Tables.UpdateDate(DateTime.Now.ToString(), newTable);
+
                     }
 
-                    //if (item.tableId.ToString() == currentTable)
-                    //{
-                    //    Services.TableSaleDetails.UpdateTSTableId(newTable, item.Id.ToString());
+                    Services.Tables.UpdateTablePos(1, newTable);
 
-                    //}
+                    var ts = TableSaleDetails.GetTS();
+                    foreach (var item in ts)
+                    {
+                        if (item.tableId.ToString() == currentTable)
+                        {
+                            // Check if an item with the same ID exists in the new table
+                            var existingItem = ts.Where(i => i.tableId.ToString() == newTable && i.ItemId == item.ItemId && i.Status == 0);
 
+                            if (existingItem != null && existingItem.Count() > 0)
+                            {
+                                // Update the quantity of the existing item
+                                Services.TableSaleDetails.UpdateTSQuantity(newTable, item.ItemId.ToString(), (existingItem.First().Quantity + item.Quantity).ToString(), (existingItem.First().TotalWithVat + item.TotalWithVat).ToString());
+                                Services.TableSaleDetails.DeleteTableSaleWithId(item.Id.ToString());
+                            }
+                            else
+                            {
+                                // If the item doesn't exist in the new table, add it with quantity 1
+                                Services.TableSaleDetails.UpdateTSTableId(newTable, item.Id.ToString());
+                            }
+                        }
+
+                        //if (item.tableId.ToString() == currentTable)
+                        //{
+                        //    Services.TableSaleDetails.UpdateTSTableId(newTable, item.Id.ToString());
+
+                        //}
+
+                    }
+                    //Services.Tables.UpdateTableEmpId("0", currentTable);
+                    Services.Tables.UpdateTableEmpId(Globals.User.Id.ToString(), newTable);
+                    var cTotal = Services.Tables.GetTables().Where(p => p.Id.ToString() == currentTable).First().inPosTotal;
+                    var dTotal = Services.Tables.GetTables().Where(p => p.Id.ToString() == newTable).First().inPosTotal;
+                    var total = Convert.ToDecimal(cTotal) + Convert.ToDecimal(dTotal);
+                    Services.Tables.UpdateTotalInPos(total.ToString(), newTable);
+                    Services.Tables.UpdateTotalInPos("0", currentTable);
+
+                    var button = panel1.Controls.OfType<Panel>().FirstOrDefault(b => b.Tag.ToString() == currentTable);
+                    //var oldlblFCount = button.Controls.OfType<Label>().FirstOrDefault(b => b.Tag != null && b.Tag.ToString() == currentTable + "fc");
+                    //oldlblFCount.Text = "";
+                    Ruaj.Visible = false;
                 }
-                Services.Tables.UpdateTableEmpId("0", currentTable);
-                Services.Tables.UpdateTableEmpId(Globals.User.Id.ToString(), newTable);
-                var cTotal = Services.Tables.GetTables().Where(p => p.Id.ToString() == currentTable).First().inPosTotal;
-                var dTotal = Services.Tables.GetTables().Where(p => p.Id.ToString() == newTable).First().inPosTotal;
-                var total = Convert.ToDecimal(cTotal) + Convert.ToDecimal(dTotal);
-                Services.Tables.UpdateTotalInPos(total.ToString(), newTable);
-                Services.Tables.UpdateTotalInPos("0", currentTable);
+                else
+                {
+                    MessageBox.Show("Tavolinat janë te bashkuara");
+                }
 
-                var button = panel1.Controls.OfType<Panel>().FirstOrDefault(b => b.Tag.ToString() == currentTable);
-                //var oldlblFCount = button.Controls.OfType<Label>().FirstOrDefault(b => b.Tag != null && b.Tag.ToString() == currentTable + "fc");
-                //oldlblFCount.Text = "";
-                Ruaj.Visible = false;
+            }
+            catch (Exception)
+            {
+
+
+            }
+
+        }
+        private void btnTransferTables_Click(object sender, EventArgs e)
+        {
+
+            //JoinTables transfer = new JoinTables();
+            //transfer.Owner = this;
+
+            //transfer.ShowDialog();
+            try
+            {
+
+                var currentTable = bashko1;
+                var newTable = bashko2;
+
+                var TableIdCurrent = Services.Tables.GetTables().Where(p => p.Id.ToString() == currentTable).First();
+                var TableIdNew = Services.Tables.GetTables().Where(p => p.Id.ToString() == newTable).First();
+                var checkIfExistsCurrent = Services.Tables.GetTables().Where(p => p.JoinId.ToString() == currentTable).ToList();
+                var checkIfExistsNew = Services.Tables.GetTables().Where(p => p.JoinId.ToString() == newTable).ToList();
+
+                if (TableIdCurrent.JoinId == 0 && TableIdNew.JoinId == 0 && checkIfExistsCurrent.Count == 0 && checkIfExistsNew.Count == 0)
+                {
+
+                    if (TableIdCurrent.Date == null)
+                    {
+                        Services.Tables.UpdateDate(DateTime.Now.ToString(), currentTable);
+
+                    }
+                    if (TableIdNew.Date == null)
+                    {
+                        Services.Tables.UpdateDate(DateTime.Now.ToString(), newTable);
+
+                    }
+
+                    Services.Tables.UpdateTablePos(1, newTable);
+                    Services.Tables.UpdateTablePos(0,currentTable);
+
+                    var ts = TableSaleDetails.GetTS();
+                    foreach (var item in ts)
+                    {
+                        if (item.tableId.ToString() == currentTable)
+                        {
+                            // Check if an item with the same ID exists in the new table
+                            var existingItem = ts.Where(i => i.tableId.ToString() == newTable && i.ItemId == item.ItemId && i.Status == 0);
+
+                            if (existingItem != null && existingItem.Count() > 0)
+                            {
+                                // Update the quantity of the existing item
+                                Services.TableSaleDetails.UpdateTSQuantity(newTable, item.ItemId.ToString(), (existingItem.First().Quantity + item.Quantity).ToString(), (existingItem.First().TotalWithVat + item.TotalWithVat).ToString());
+                                Services.TableSaleDetails.DeleteTableSaleWithId(item.Id.ToString());
+                            }
+                            else
+                            {
+                                // If the item doesn't exist in the new table, add it with quantity 1
+                                Services.TableSaleDetails.UpdateTSTableId(newTable, item.Id.ToString());
+                            }
+                        }
+
+                        //if (item.tableId.ToString() == currentTable)
+                        //{
+                        //    Services.TableSaleDetails.UpdateTSTableId(newTable, item.Id.ToString());
+
+                        //}
+
+                    }
+                    //Services.Tables.UpdateTableEmpId("0", currentTable);
+                    Services.Tables.UpdateTableEmpId(Globals.User.Id.ToString(), newTable);
+                    var cTotal = Services.Tables.GetTables().Where(p => p.Id.ToString() == currentTable).First().inPosTotal;
+                    var dTotal = Services.Tables.GetTables().Where(p => p.Id.ToString() == newTable).First().inPosTotal;
+                    var total = Convert.ToDecimal(cTotal) + Convert.ToDecimal(dTotal);
+                    Services.Tables.UpdateTotalInPos(total.ToString(), newTable);
+                    Services.Tables.UpdateTotalInPos("0", currentTable);
+
+                    var button = panel1.Controls.OfType<Panel>().FirstOrDefault(b => b.Tag.ToString() == currentTable);
+                    //var oldlblFCount = button.Controls.OfType<Label>().FirstOrDefault(b => b.Tag != null && b.Tag.ToString() == currentTable + "fc");
+                    //oldlblFCount.Text = "";
+                    Ruaj.Visible = false;
+                }
+                else
+                {
+                    MessageBox.Show("Tavolinat janë te bashkuara");
+                }
 
             }
             catch (Exception)
@@ -955,7 +1153,7 @@ namespace MyNET.Pos.Modules
             ReportRestaurant report = new ReportRestaurant();
             report.Owner = this;
             report.ShowDialog();
-        } 
+        }
         private void ItemDetails_Click(object sender, EventArgs value)
         {
             ItemDetails details = new ItemDetails();

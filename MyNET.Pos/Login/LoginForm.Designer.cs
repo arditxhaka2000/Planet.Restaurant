@@ -49,7 +49,6 @@
             this.txt1 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.button0 = new System.Windows.Forms.Button();
-            this.btnDel = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -60,7 +59,6 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.word_check_in = new System.Windows.Forms.Button();
-            this.btnEnter = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.lblCompany = new System.Windows.Forms.Label();
@@ -68,6 +66,8 @@
             this.word_change_station = new System.Windows.Forms.Button();
             this.btnRestaurantEnable = new System.Windows.Forms.Button();
             this.txtCodeScan = new System.Windows.Forms.TextBox();
+            this.btnDel = new System.Windows.Forms.Button();
+            this.btnEnter = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -406,22 +406,6 @@
             this.button0.UseVisualStyleBackColor = false;
             this.button0.Click += new System.EventHandler(this.btn_Click);
             // 
-            // btnDel
-            // 
-            this.btnDel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnDel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(83)))), ((int)(((byte)(108)))));
-            this.btnDel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.btnDel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDel.Image = ((System.Drawing.Image)(resources.GetObject("btnDel.Image")));
-            this.btnDel.Location = new System.Drawing.Point(16, 392);
-            this.btnDel.Margin = new System.Windows.Forms.Padding(16, 10, 16, 5);
-            this.btnDel.Name = "btnDel";
-            this.btnDel.Size = new System.Drawing.Size(106, 94);
-            this.btnDel.TabIndex = 9;
-            this.btnDel.UseVisualStyleBackColor = true;
-            this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
-            // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
@@ -584,22 +568,6 @@
             this.word_check_in.Text = "Check In";
             this.word_check_in.UseVisualStyleBackColor = false;
             // 
-            // btnEnter
-            // 
-            this.btnEnter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnEnter.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(88)))), ((int)(((byte)(219)))), ((int)(((byte)(131)))));
-            this.btnEnter.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btnEnter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEnter.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEnter.Image = ((System.Drawing.Image)(resources.GetObject("btnEnter.Image")));
-            this.btnEnter.Location = new System.Drawing.Point(292, 392);
-            this.btnEnter.Margin = new System.Windows.Forms.Padding(16, 10, 16, 5);
-            this.btnEnter.Name = "btnEnter";
-            this.btnEnter.Size = new System.Drawing.Size(108, 94);
-            this.btnEnter.TabIndex = 11;
-            this.btnEnter.UseVisualStyleBackColor = true;
-            this.btnEnter.Click += new System.EventHandler(this.btnLogin_Click);
-            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
@@ -608,7 +576,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.85714F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 111F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 136F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 139F));
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblCompany, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnLoginMtd, 2, 0);
@@ -638,7 +606,7 @@
             this.lblCompany.AutoSize = true;
             this.lblCompany.Font = new System.Drawing.Font("Arial", 16F);
             this.lblCompany.ForeColor = System.Drawing.Color.White;
-            this.lblCompany.Location = new System.Drawing.Point(399, 0);
+            this.lblCompany.Location = new System.Drawing.Point(397, 0);
             this.lblCompany.Name = "lblCompany";
             this.lblCompany.Size = new System.Drawing.Size(0, 25);
             this.lblCompany.TabIndex = 2;
@@ -646,7 +614,7 @@
             // btnLoginMtd
             // 
             this.btnLoginMtd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLoginMtd.Location = new System.Drawing.Point(714, 3);
+            this.btnLoginMtd.Location = new System.Drawing.Point(711, 3);
             this.btnLoginMtd.Name = "btnLoginMtd";
             this.btnLoginMtd.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnLoginMtd.Size = new System.Drawing.Size(75, 28);
@@ -671,7 +639,7 @@
             // btnRestaurantEnable
             // 
             this.btnRestaurantEnable.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnRestaurantEnable.Location = new System.Drawing.Point(825, 3);
+            this.btnRestaurantEnable.Location = new System.Drawing.Point(822, 3);
             this.btnRestaurantEnable.Name = "btnRestaurantEnable";
             this.btnRestaurantEnable.Size = new System.Drawing.Size(75, 28);
             this.btnRestaurantEnable.TabIndex = 15;
@@ -692,6 +660,38 @@
             this.txtCodeScan.Visible = false;
             this.txtCodeScan.TextChanged += new System.EventHandler(this.txtCodeScan_TextChanged);
             this.txtCodeScan.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCodeScan_KeyUp);
+            // 
+            // btnDel
+            // 
+            this.btnDel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnDel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(83)))), ((int)(((byte)(108)))));
+            this.btnDel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnDel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDel.Image = ((System.Drawing.Image)(resources.GetObject("btnDel.Image")));
+            this.btnDel.Location = new System.Drawing.Point(16, 392);
+            this.btnDel.Margin = new System.Windows.Forms.Padding(16, 10, 16, 5);
+            this.btnDel.Name = "btnDel";
+            this.btnDel.Size = new System.Drawing.Size(106, 94);
+            this.btnDel.TabIndex = 9;
+            this.btnDel.UseVisualStyleBackColor = true;
+            this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
+            // 
+            // btnEnter
+            // 
+            this.btnEnter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnEnter.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(88)))), ((int)(((byte)(219)))), ((int)(((byte)(131)))));
+            this.btnEnter.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnEnter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEnter.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEnter.Image = ((System.Drawing.Image)(resources.GetObject("btnEnter.Image")));
+            this.btnEnter.Location = new System.Drawing.Point(292, 392);
+            this.btnEnter.Margin = new System.Windows.Forms.Padding(16, 10, 16, 5);
+            this.btnEnter.Name = "btnEnter";
+            this.btnEnter.Size = new System.Drawing.Size(108, 94);
+            this.btnEnter.TabIndex = 11;
+            this.btnEnter.UseVisualStyleBackColor = true;
+            this.btnEnter.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // LoginForm
             // 

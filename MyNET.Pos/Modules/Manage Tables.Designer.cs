@@ -31,6 +31,7 @@
             this.dg_openTables = new System.Windows.Forms.DataGridView();
             this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colWorkerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTimer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCloseTable = new System.Windows.Forms.DataGridViewButtonColumn();
@@ -47,6 +48,7 @@
             this.dg_openTables.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colId,
             this.colName,
+            this.colWorkerName,
             this.colTotal,
             this.colTimer,
             this.colCloseTable,
@@ -58,6 +60,7 @@
             this.dg_openTables.Size = new System.Drawing.Size(800, 450);
             this.dg_openTables.TabIndex = 0;
             this.dg_openTables.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_openTables_CellContentClick);
+            this.dg_openTables.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.grid_CellPainting);
             // 
             // colId
             // 
@@ -71,6 +74,12 @@
             this.colName.HeaderText = "Emri i Tavolines";
             this.colName.Name = "colName";
             this.colName.ReadOnly = true;
+            // 
+            // colWorkerName
+            // 
+            this.colWorkerName.HeaderText = "Puntori";
+            this.colWorkerName.Name = "colWorkerName";
+            this.colWorkerName.ReadOnly = true;
             // 
             // colTotal
             // 
@@ -115,6 +124,7 @@
         private System.Windows.Forms.DataGridView dg_openTables;
         private System.Windows.Forms.DataGridViewTextBoxColumn colId;
         private System.Windows.Forms.DataGridViewTextBoxColumn colName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colWorkerName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTotal;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTimer;
         private System.Windows.Forms.DataGridViewButtonColumn colCloseTable;

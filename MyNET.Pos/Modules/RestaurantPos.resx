@@ -1387,7 +1387,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnInvoice.Location" type="System.Drawing.Point, System.Drawing">
-    <value>466, -5</value>
+    <value>460, -5</value>
   </data>
   <data name="btnInvoice.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 2, 3, 2</value>
@@ -1687,7 +1687,7 @@
     <value>True</value>
   </data>
   <data name="pnlDrinks.Location" type="System.Drawing.Point, System.Drawing">
-    <value>66, 115</value>
+    <value>63, 109</value>
   </data>
   <data name="pnlDrinks.Size" type="System.Drawing.Size, System.Drawing">
     <value>414, 117</value>
@@ -1720,7 +1720,7 @@
     <value>1, -1</value>
   </data>
   <data name="pnlItems1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>545, 197</value>
+    <value>539, 197</value>
   </data>
   <data name="pnlItems1.TabIndex" type="System.Int32, mscorlib">
     <value>220</value>

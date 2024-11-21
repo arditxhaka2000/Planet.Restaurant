@@ -53,11 +53,49 @@ namespace MyNET.Pos.Modules
                     dateT = date.Minutes == 1 ? date.Minutes + " minut" : date.Minutes + " minuta";
                 }
 
-                dg_openTables.Rows.Add(table.Id,table.Name, table.inPosTotal, dateT);
+                dg_openTables.Rows.Add(table.Id,table.Name, User.Get(table.Emp_id).Name ,table.inPosTotal, dateT);
 
             }
         }
+        Image mbyll = Properties.Resources.close;
+        Image hap = Properties.Resources.open1;
+        private void grid_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
 
+            if (e.ColumnIndex == 5)
+            {
+
+                e.Paint(e.CellBounds, DataGridViewPaintParts.All);
+
+                var w = 23;
+                var h = 23;
+                var x = e.CellBounds.Left + (e.CellBounds.Width - w) / 2;
+                var y = e.CellBounds.Top - 2 + (e.CellBounds.Height - h) / 2;
+                var rect = new System.Drawing.Rectangle(x, y, w, h);
+                //using (var brush = new SolidBrush(Color.IndianRed))
+                //    e.Graphics.FillRectangle(brush,e.CellBounds.X,e.CellBounds.Y,e.CellBounds.Width,e.CellBounds.Height - 2);
+                e.Graphics.DrawImage(mbyll, rect);
+                e.Handled = true;
+            }
+            if (e.ColumnIndex == 6)
+            {
+
+                e.Paint(e.CellBounds, DataGridViewPaintParts.All);
+
+                var w = 23;
+                var h = 23;
+                var x = e.CellBounds.Left + (e.CellBounds.Width - w) / 2;
+                var y = e.CellBounds.Top - 2 + (e.CellBounds.Height - h) / 2;
+                var rect = new System.Drawing.Rectangle(x, y, w, h);
+                //using (var brush = new SolidBrush(Color.IndianRed))
+                //    e.Graphics.FillRectangle(brush,e.CellBounds.X,e.CellBounds.Y,e.CellBounds.Width,e.CellBounds.Height - 2);
+                e.Graphics.DrawImage(hap, rect);
+                e.Handled = true;
+            }
+            
+        }
         private void dg_openTables_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)

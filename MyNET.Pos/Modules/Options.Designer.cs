@@ -32,6 +32,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Options));
             this.word_configuration = new System.Windows.Forms.Button();
             this.word_logout = new System.Windows.Forms.Button();
@@ -83,9 +84,24 @@
             this.dataGridView5 = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button14 = new System.Windows.Forms.Button();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.btnPrintICSale = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.btnItemCategorySale = new System.Windows.Forms.Button();
+            this.dataGridView6 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label15 = new System.Windows.Forms.Label();
+            this.dateTimePicker4 = new System.Windows.Forms.DateTimePicker();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.dateTimePicker5 = new System.Windows.Forms.DateTimePicker();
+            this.label18 = new System.Windows.Forms.Label();
+            this.button18 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.btn_bonusCard = new System.Windows.Forms.Button();
             this.btn_updatePOS = new System.Windows.Forms.Button();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
@@ -176,7 +192,8 @@
             this.paragraph_initail_balance_sheet = new System.Windows.Forms.Label();
             this.word_complete = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.btn_bonusCard = new System.Windows.Forms.Button();
+            this.colCategoryName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTotalCat = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -186,6 +203,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).BeginInit();
+            this.tabPage10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -374,6 +393,7 @@
             this.tabControl2.Controls.Add(this.tabPage4);
             this.tabControl2.Controls.Add(this.tabPage9);
             this.tabControl2.Controls.Add(this.tabPage3);
+            this.tabControl2.Controls.Add(this.tabPage10);
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
@@ -988,6 +1008,219 @@
             this.button14.Text = "Shfaq";
             this.button14.UseVisualStyleBackColor = false;
             // 
+            // tabPage10
+            // 
+            this.tabPage10.Controls.Add(this.btnPrintICSale);
+            this.tabPage10.Controls.Add(this.comboBox1);
+            this.tabPage10.Controls.Add(this.label14);
+            this.tabPage10.Controls.Add(this.btnItemCategorySale);
+            this.tabPage10.Controls.Add(this.dataGridView6);
+            this.tabPage10.Controls.Add(this.label15);
+            this.tabPage10.Controls.Add(this.dateTimePicker4);
+            this.tabPage10.Controls.Add(this.label16);
+            this.tabPage10.Controls.Add(this.label17);
+            this.tabPage10.Controls.Add(this.dateTimePicker5);
+            this.tabPage10.Controls.Add(this.label18);
+            this.tabPage10.Controls.Add(this.button18);
+            this.tabPage10.Location = new System.Drawing.Point(4, 22);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage10.Size = new System.Drawing.Size(837, 592);
+            this.tabPage10.TabIndex = 5;
+            this.tabPage10.Text = "Raporti i Shitjev me kategori";
+            this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // btnPrintICSale
+            // 
+            this.btnPrintICSale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPrintICSale.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnPrintICSale.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.btnPrintICSale.FlatAppearance.BorderSize = 0;
+            this.btnPrintICSale.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnPrintICSale.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.btnPrintICSale.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnPrintICSale.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrintICSale.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnPrintICSale.Location = new System.Drawing.Point(576, 5);
+            this.btnPrintICSale.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPrintICSale.Name = "btnPrintICSale";
+            this.btnPrintICSale.Size = new System.Drawing.Size(110, 34);
+            this.btnPrintICSale.TabIndex = 114;
+            this.btnPrintICSale.Text = "Printo";
+            this.btnPrintICSale.UseVisualStyleBackColor = false;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(111, 213);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(187, 28);
+            this.comboBox1.TabIndex = 113;
+            this.comboBox1.Text = "Të gjithë";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.BackColor = System.Drawing.Color.Transparent;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.Black;
+            this.label14.Location = new System.Drawing.Point(107, 190);
+            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(71, 20);
+            this.label14.TabIndex = 112;
+            this.label14.Text = "Puntori:";
+            // 
+            // btnItemCategorySale
+            // 
+            this.btnItemCategorySale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnItemCategorySale.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnItemCategorySale.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.btnItemCategorySale.FlatAppearance.BorderSize = 0;
+            this.btnItemCategorySale.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnItemCategorySale.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.btnItemCategorySale.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnItemCategorySale.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnItemCategorySale.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnItemCategorySale.Location = new System.Drawing.Point(722, 5);
+            this.btnItemCategorySale.Margin = new System.Windows.Forms.Padding(2);
+            this.btnItemCategorySale.Name = "btnItemCategorySale";
+            this.btnItemCategorySale.Size = new System.Drawing.Size(110, 34);
+            this.btnItemCategorySale.TabIndex = 111;
+            this.btnItemCategorySale.Text = "Shfaq";
+            this.btnItemCategorySale.UseVisualStyleBackColor = false;
+            this.btnItemCategorySale.Click += new System.EventHandler(this.btnItemCategorySale_Click);
+            // 
+            // dataGridView6
+            // 
+            this.dataGridView6.AllowUserToAddRows = false;
+            this.dataGridView6.AllowUserToDeleteRows = false;
+            this.dataGridView6.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView6.BackgroundColor = System.Drawing.Color.White;
+            this.dataGridView6.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView6.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn3,
+            this.colCategoryName,
+            this.colTotalCat});
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView6.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dataGridView6.Location = new System.Drawing.Point(111, 268);
+            this.dataGridView6.Name = "dataGridView6";
+            this.dataGridView6.ReadOnly = true;
+            this.dataGridView6.RowHeadersWidth = 51;
+            this.dataGridView6.Size = new System.Drawing.Size(612, 210);
+            this.dataGridView6.TabIndex = 110;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "Nr.";
+            this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Visible = false;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.BackColor = System.Drawing.Color.Transparent;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.ForeColor = System.Drawing.Color.Black;
+            this.label15.Location = new System.Drawing.Point(107, 110);
+            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(42, 20);
+            this.label15.TabIndex = 109;
+            this.label15.Text = "Deri";
+            // 
+            // dateTimePicker4
+            // 
+            this.dateTimePicker4.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker4.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker4.Location = new System.Drawing.Point(111, 132);
+            this.dateTimePicker4.Margin = new System.Windows.Forms.Padding(2);
+            this.dateTimePicker4.Name = "dateTimePicker4";
+            this.dateTimePicker4.Size = new System.Drawing.Size(187, 26);
+            this.dateTimePicker4.TabIndex = 108;
+            // 
+            // label16
+            // 
+            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label16.AutoSize = true;
+            this.label16.BackColor = System.Drawing.Color.Transparent;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.ForeColor = System.Drawing.Color.Black;
+            this.label16.Location = new System.Drawing.Point(557, 535);
+            this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(79, 20);
+            this.label16.TabIndex = 107;
+            this.label16.Text = "__ __ __";
+            // 
+            // label17
+            // 
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label17.AutoSize = true;
+            this.label17.BackColor = System.Drawing.Color.Transparent;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.ForeColor = System.Drawing.Color.Black;
+            this.label17.Location = new System.Drawing.Point(394, 535);
+            this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(133, 20);
+            this.label17.TabIndex = 106;
+            this.label17.Text = "Totali i shitjeve:";
+            // 
+            // dateTimePicker5
+            // 
+            this.dateTimePicker5.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker5.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker5.Location = new System.Drawing.Point(111, 60);
+            this.dateTimePicker5.Margin = new System.Windows.Forms.Padding(2);
+            this.dateTimePicker5.Name = "dateTimePicker5";
+            this.dateTimePicker5.Size = new System.Drawing.Size(187, 26);
+            this.dateTimePicker5.TabIndex = 105;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.BackColor = System.Drawing.Color.Transparent;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.ForeColor = System.Drawing.Color.Black;
+            this.label18.Location = new System.Drawing.Point(107, 31);
+            this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(40, 20);
+            this.label18.TabIndex = 104;
+            this.label18.Text = "Prej";
+            // 
+            // button18
+            // 
+            this.button18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button18.BackColor = System.Drawing.Color.SteelBlue;
+            this.button18.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.button18.FlatAppearance.BorderSize = 0;
+            this.button18.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.button18.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.button18.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button18.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button18.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button18.Location = new System.Drawing.Point(267, 268);
+            this.button18.Margin = new System.Windows.Forms.Padding(2);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(110, 34);
+            this.button18.TabIndex = 103;
+            this.button18.Text = "Shfaq";
+            this.button18.UseVisualStyleBackColor = false;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.tabControl3);
@@ -1035,6 +1268,25 @@
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "Info rreth kompanise";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // btn_bonusCard
+            // 
+            this.btn_bonusCard.BackColor = System.Drawing.Color.SteelBlue;
+            this.btn_bonusCard.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
+            this.btn_bonusCard.FlatAppearance.BorderSize = 0;
+            this.btn_bonusCard.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
+            this.btn_bonusCard.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.btn_bonusCard.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_bonusCard.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_bonusCard.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btn_bonusCard.Location = new System.Drawing.Point(713, 451);
+            this.btn_bonusCard.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_bonusCard.Name = "btn_bonusCard";
+            this.btn_bonusCard.Size = new System.Drawing.Size(101, 40);
+            this.btn_bonusCard.TabIndex = 121;
+            this.btn_bonusCard.Text = "Shto Bonus Kartelë";
+            this.btn_bonusCard.UseVisualStyleBackColor = false;
+            this.btn_bonusCard.Click += new System.EventHandler(this.btn_bonusCard_Click);
             // 
             // btn_updatePOS
             // 
@@ -2226,24 +2478,17 @@
             this.word_complete.UseVisualStyleBackColor = false;
             this.word_complete.Click += new System.EventHandler(this.word_complete_Click);
             // 
-            // btn_bonusCard
+            // colCategoryName
             // 
-            this.btn_bonusCard.BackColor = System.Drawing.Color.SteelBlue;
-            this.btn_bonusCard.FlatAppearance.BorderColor = System.Drawing.Color.SeaGreen;
-            this.btn_bonusCard.FlatAppearance.BorderSize = 0;
-            this.btn_bonusCard.FlatAppearance.MouseDownBackColor = System.Drawing.Color.CornflowerBlue;
-            this.btn_bonusCard.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
-            this.btn_bonusCard.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btn_bonusCard.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_bonusCard.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btn_bonusCard.Location = new System.Drawing.Point(713, 451);
-            this.btn_bonusCard.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_bonusCard.Name = "btn_bonusCard";
-            this.btn_bonusCard.Size = new System.Drawing.Size(101, 40);
-            this.btn_bonusCard.TabIndex = 121;
-            this.btn_bonusCard.Text = "Shto Bonus Kartelë";
-            this.btn_bonusCard.UseVisualStyleBackColor = false;
-            this.btn_bonusCard.Click += new System.EventHandler(this.btn_bonusCard_Click);
+            this.colCategoryName.HeaderText = "Kategoria";
+            this.colCategoryName.Name = "colCategoryName";
+            this.colCategoryName.ReadOnly = true;
+            // 
+            // colTotalCat
+            // 
+            this.colTotalCat.HeaderText = "Totali";
+            this.colTotalCat.Name = "colTotalCat";
+            this.colTotalCat.ReadOnly = true;
             // 
             // Options
             // 
@@ -2283,6 +2528,9 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).EndInit();
+            this.tabPage10.ResumeLayout(false);
+            this.tabPage10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabControl3.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
@@ -2458,5 +2706,21 @@
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.Button btn_updatePOS;
         private System.Windows.Forms.Button btn_bonusCard;
+        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.Button btnPrintICSale;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button btnItemCategorySale;
+        private System.Windows.Forms.DataGridView dataGridView6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.DateTimePicker dateTimePicker4;
+        public System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.DateTimePicker dateTimePicker5;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCategoryName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTotalCat;
     }
 }

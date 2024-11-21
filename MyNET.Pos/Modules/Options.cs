@@ -17,6 +17,7 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -35,6 +36,8 @@ namespace MyNET.Pos
         public static DateTime dateFTo;
         public static DateTime dateF;
         public static DateTime dateFF;
+        public static DateTime dateCatF;
+        public static DateTime dateCatT;
         public static decimal openAmount;
         public static decimal totalsum;
         public static decimal gjendjaMomentale;
@@ -221,15 +224,25 @@ namespace MyNET.Pos
             var globals = Services.Settings.Get();
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
             dateTimePicker1.CustomFormat = "MM/dd/yyyy";
+
             dFDate.Format = DateTimePickerFormat.Custom;
             dFDate.CustomFormat = "MM/dd/yyyy";
+
             dateTimePicker1.Value = DateTime.Now.AddDays(1);
 
             dateTimePicker3.Format = DateTimePickerFormat.Custom;
             dateTimePicker3.CustomFormat = "MM/dd/yyyy";
+
             dateTimePicker2.Format = DateTimePickerFormat.Custom;
             dateTimePicker2.CustomFormat = "MM/dd/yyyy";
+
             dateTimePicker3.Value = DateTime.Now.AddDays(-1);
+
+            dateTimePicker5.Format = DateTimePickerFormat.Custom;
+            dateTimePicker5.CustomFormat = "MM/dd/yyyy";
+            
+            dateTimePicker4.Format = DateTimePickerFormat.Custom;
+            dateTimePicker4.CustomFormat = "MM/dd/yyyy";
 
 
             var users = User.GetByStation(Globals.Station.Id);
@@ -753,7 +766,7 @@ namespace MyNET.Pos
 
 
 
-                        Label messageLabel = new Label();
+                        System.Windows.Forms.Label messageLabel = new System.Windows.Forms.Label();
                         messageLabel.Text = "Konfigurimin duhet ta bëni në Server!";
                         messageLabel.AutoSize = true;
                         messageLabel.Dock = DockStyle.Fill;
@@ -1864,72 +1877,7 @@ namespace MyNET.Pos
             dateFTo = new DateTime(selectedToDate.Year, selectedToDate.Month, selectedToDate.Day, selectedToDate.Hour, selectedToDate.Minute, selectedToDate.Second);
             string formattedFromDate = selectedFromDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
             string formattedToDate = selectedToDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
-            //System.Data.DataTable dataTable = new System.Data.DataTable();
-            //List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
-            //if (cmbUser2.Text != "Të gjithë")
-            //{
-
-            //    int selectedUserId = (int)cmbUser2.SelectedValue;
-            //    list = Sale.SalesByDateNoStock(formattedFromDate, formattedToDate)
-            //        .Where(p => p.ContainsKey("id_saler") && Convert.ToInt32(p["id_saler"]) == selectedUserId)
-            //        .ToList();
-
-            //}
-            //else
-            //{
-            //    list = Sale.SalesByDateNoStock(formattedFromDate, formattedToDate);
-            //}
-            //List<Sale> sales = new List<Sale>();
-            //decimal t = 0.0m;
-            //foreach (var sale in list)
-            //{
-            //    if (sale.ContainsKey("TotalSum"))
-            //    {
-            //        decimal totalSum = Convert.ToDecimal(sale["TotalSum"]);
-            //        t += totalSum;
-
-            //    }
-
-
-
-            //    // Access other values in a similar manner
-            //}
-            //if (list.Count > 0)
-            //{
-            //    foreach (string key in list[0].Keys)
-            //    {
-            //        dataTable.Columns.Add(key);
-            //    }
-            //}
-
-            //// Add rows to the DataTable
-            //foreach (var sale in list)
-            //{
-            //    DataRow row = dataTable.NewRow();
-            //    foreach (var key in sale.Keys)
-            //    {
-            //        row[key] = sale[key];
-            //    }
-            //    dataTable.Rows.Add(row);
-            //}
-
-            //// Bind the DataTable to the DataGridView
-            //dataGridView4.DataSource = dataTable;
-            //if (dataTable.Rows.Count > 0)
-            //{
-            //    dataGridView4.Columns[1].HeaderText = "Nr.Fatures";
-            //    dataGridView4.Columns[3].HeaderText = "Shuma ne €";
-            //    dataGridView4.Columns[4].HeaderText = "Artikulli";
-            //    dataGridView4.Columns[5].HeaderText = "Puntori";
-            //    dataGridView4.Columns[2].Visible = false;
-            //    var totalshitje = t;
-            //    label10.Text = totalshitje.ToString();
-            //}
-            //else
-            //{
-            //    label10.Text = "0.00";
-
-            //}
+            
             var list = new List<Sale>();
             if (cmbUser2.Text != "Të gjithë")
             {
@@ -2302,6 +2250,22 @@ namespace MyNET.Pos
             BonusCardTemplateForm bonusCard = new BonusCardTemplateForm();
             bonusCard.ShowDialog();
             
+        }
+
+        private void btnItemCategorySale_Click(object sender, EventArgs e)
+        {
+            var selectedFromDate = dateTimePicker5.Value;
+            var selectedToDate = dateTimePicker4.Value;
+            dateCatF = new DateTime(selectedFromDate.Year, selectedFromDate.Month, selectedFromDate.Day, selectedFromDate.Hour, selectedFromDate.Minute, selectedFromDate.Second);
+            dateCatT = new DateTime(selectedToDate.Year, selectedToDate.Month, selectedToDate.Day, selectedToDate.Hour, selectedToDate.Minute, selectedToDate.Second);
+            string formattedFromDate = selectedFromDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
+            string formattedToDate = selectedToDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
+
+            foreach (var item in ItemCategory.Get())
+            {
+                dataGridView6.Rows.Add(item);
+            }
+
         }
     }
 }

@@ -30,18 +30,37 @@ function receiveTables(jsonData) {
     var container = document.getElementById('table_div');
     var html = "";
 
-    console.log(data);
     data.forEach(function (element) {
         var left = (element.LocationX * screen.width) / 100;
         var top = (element.LocationY * screen.height) / 100;
+        var tWidth = element.Width; 
+        var tHeight = element.Height; 
+        console.log(tWidth, tHeight);
         var pic = "Table";
         var forecolor = "black";
+        var backcolor = "#618368";
         if (element.inPos === 1) {
+
             backcolor = "#682825";
             var forecolor = "white";
             pic = "Table1";
         }
-        html += "<div class='draggable' id= " + element.Id + " onclick ='sendPOS(" + element.Id + ")' style='left: " + left + "px; top: " + top + "px; user-select: none; background-image:url(Resources/" + pic + ".png);'>";
+
+        if (element.Shape === "Katrore") {
+
+            html += "<div class='draggable' data-tableId= " + element.Id + " onclick ='sendPOS(" + element.Id + ")' style='left: " + left + "px; top: " + top + "px; width: " + tWidth + "px; height: "+tHeight+"px; user-select: none; background:" + backcolor + ";'>";
+
+        }
+        else if (element.Shape === "Rreth") {
+            html += "<div class='draggable' data-tableId= " + element.Id + " onclick ='sendPOS(" + element.Id + ")' style='left: " + left + "px; top: " + top + "px; width: " + tWidth + "px; height: " + tHeight +"px; user-select: none; background:" + backcolor + ";border-radius: 50%;'>";
+
+        }
+        else {
+
+            html += "<div class='draggable' data-tableId= " + element.Id + " onclick ='sendPOS(" + element.Id + ")' style='left: " + left + "px; top: " + top + "px; user-select: none; background-image:url(Resources/" + pic + ".png);'>";
+
+        }
+
         html += "<div class='check-icon'></div>";
         html += "<br>"
         html += "<div class='row'>";
@@ -53,7 +72,7 @@ function receiveTables(jsonData) {
         html += "</div>"
         html += "<br>"
         html += "<div class='row'>";
-        html += "<h5  style = 'color:" + forecolor + "'>" + element.inPosTotal + "</h5>";
+        html += "<h5 class='total' style = 'color:" + forecolor + "'>" + element.inPosTotal + "</h5>";
         html += "</div>"
         html += "</div>"
 
@@ -67,13 +86,14 @@ function openPos() {
 }
 function sendPOS(id) {
     tableId = id;
-    if (optionValue === 'Bashko') {
+    if (optionValue === 'Transfero') {
 
-        var parentDiv = document.getElementById(id);
+        var parentDiv = document.querySelector("[data-tableId='" + tableId + "']");
 
         if (parentDiv) {
-
             var checkIcon = parentDiv.querySelector('.check-icon');
+
+
             console.log('1', bashkocount);
             if (checkIcon && bashkocount < 2) {
                 if (checkIcon.style.display === 'block') {
@@ -112,14 +132,15 @@ function sendPOS(id) {
             }
         }
     }
-    else if (optionValue === 'Transfero') {
-        var parentDiv = document.getElementById(id);
+    else if (optionValue === 'Bashko') {
+
+        var parentDiv = document.querySelector("[data-tableId='" + tableId + "']");
+
 
         if (parentDiv) {
 
             var checkIcon = parentDiv.querySelector('.check-icon');
-            console.log('ch', checkIcon);
-            console.log('1', bashkocount);
+
             if (checkIcon && bashkocount < 2) {
                 if (checkIcon.style.display === 'block') {
 
@@ -164,7 +185,7 @@ function sendPOS(id) {
 
 }
 function sendBashko() {
-    console.log('sadasd',selectableDivs);
+    console.log('sadasd', selectableDivs);
     return selectableDivs;
 }
 function sendSpaceId(value) {
@@ -213,8 +234,8 @@ function functionOptionsRestaurant(m) {
         //toggleCheckIcons();
     }
 }
-function changeTableColor(tableId,color) {
-    const tableElement = document.getElementById(tableId);
+function changeTableColor(tableId, color) {
+    const tableElement = document.querySelector("[data-tableId='" + tableId + "']");
     console.log('ktu12', color);
     if (tableElement) {
         const h5 = tableElement.getElementsByTagName('h5');
@@ -222,7 +243,7 @@ function changeTableColor(tableId,color) {
         if (color === 'red') {
             tableElement.style.backgroundImage = "url('Resources/Table1.png')";
             for (let i = 0; i < h5.length; i++) {
-                h5[i].style.color = 'white';  
+                h5[i].style.color = 'white';
             }
 
         }
@@ -235,6 +256,20 @@ function changeTableColor(tableId,color) {
 
     }
 }
+function changeTableTotal(tableId, total) {
+    const tableElement = document.querySelector("[data-tableId='" + tableId + "']");
+    if (tableElement) {
+        const h5Total = tableElement.querySelector('h5.total');
+        console.log('ktu2', h5Total);
+
+        if (h5Total) {
+            h5Total.textContent = total;
+            console.log('ktu22', total);
+
+        }
+
+    }
+}
 function getDivLocations() {
     var divs = document.querySelectorAll('.draggable');
     var locations = [];
@@ -242,7 +277,7 @@ function getDivLocations() {
     divs.forEach(function (div) {
         var rect = div.getBoundingClientRect();
         var location = {
-            id: div.id,
+            id: div.getAttribute('data-tableId'),
             LocationX: rect.left.toString(),
             LocationY: rect.top.toString()
         };

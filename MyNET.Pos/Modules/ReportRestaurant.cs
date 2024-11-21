@@ -1,5 +1,7 @@
-﻿using iTextSharp.text;
+﻿using ExtendedXmlSerializer;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Microsoft.Office.Interop.Word;
 using MyNET.Pos.Modules;
 using MyNET.Shops;
 using RestSharp;
@@ -8,18 +10,21 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Data;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web.UI.WebControls;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 using TremolZFP;
+using Font = System.Drawing.Font;
 using Label = System.Windows.Forms.Label;
 
 namespace MyNET.Pos.Modules
@@ -35,11 +40,14 @@ namespace MyNET.Pos.Modules
         public static DateTime dateFTo;
         public static DateTime dateF;
         public static DateTime dateFF;
+        public static DateTime dateCatF;
+        public static DateTime dateCatT;
         public static decimal openAmount;
         public static decimal totalsum;
         public static decimal gjendjaMomentale;
         public static decimal dorezimi;
         public static decimal totaliRaport;
+        public static decimal totalCat;
         public int dailyOpenId = Globals.User.Id;
         public static int formButton = 0;
 
@@ -231,12 +239,20 @@ namespace MyNET.Pos.Modules
             dateTimePicker1.Value = DateTime.Now.AddDays(1);
             dateTimePicker4.Value = DateTime.Now.AddDays(1);
 
+            dateTimePicker6.Value = DateTime.Today.AddDays(1).AddTicks(-1);
+
+
             dateTimePicker3.Format = DateTimePickerFormat.Custom;
             dateTimePicker3.CustomFormat = "MM/dd/yyyy";
             dateTimePicker2.Format = DateTimePickerFormat.Custom;
             dateTimePicker2.CustomFormat = "MM/dd/yyyy";
             dateTimePicker3.Value = DateTime.Now.AddDays(-1);
 
+            dateTimePicker7.Format = DateTimePickerFormat.Custom;
+            dateTimePicker7.CustomFormat = "MM/dd/yyyy";
+
+            dateTimePicker6.Format = DateTimePickerFormat.Custom;
+            dateTimePicker6.CustomFormat = "MM/dd/yyyy";
 
             var users = User.GetByStation(Globals.Station.Id);
             User user = new User();
@@ -252,6 +268,12 @@ namespace MyNET.Pos.Modules
             cmbUser2.DisplayMember = "Name";
             cmbUser2.ValueMember = "Id";
             cmbUser2.Text = "Të gjithë";
+
+            comboBox2.DataSource = users;
+            comboBox2.DisplayMember = "Name";
+            comboBox2.ValueMember = "Id";
+            comboBox2.Text = "Të gjithë";
+
 
         }
         public void ReloadForm()
@@ -2404,6 +2426,151 @@ namespace MyNET.Pos.Modules
             dataGridView6.Columns[23].HeaderText = "Krijuar nga: ";
             var totalshitje = t;
             label16.Text = totalshitje.ToString();
+        }
+
+        private void btnItemCategorySale_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            dataGridView7.Rows.Clear();
+            var totalSumCat = 0.0m;
+
+            var selectedFromDate = dateTimePicker7.Value;
+            var selectedToDate = dateTimePicker6.Value;
+            dateCatF = new DateTime(selectedFromDate.Year, selectedFromDate.Month, selectedFromDate.Day, selectedFromDate.Hour, selectedFromDate.Minute, selectedFromDate.Second);
+            dateCatT = new DateTime(selectedToDate.Year, selectedToDate.Month, selectedToDate.Day, selectedToDate.Hour, selectedToDate.Minute, selectedToDate.Second);
+            string formattedFromDate = selectedFromDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
+            string formattedToDate = selectedToDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
+            var categoryValues = new Dictionary<string, decimal>();
+
+            foreach (var item in ItemCategory.Get())
+            {
+                dataGridView7.Rows.Add(item.Id, item.Name); 
+            }
+
+            var list = new List<Sale>();
+            if (comboBox2.Text != "Të gjithë")
+            {
+
+                list = Sale.SalesByDate(formattedFromDate, formattedToDate).Where(p => p.id_saler == (int)comboBox2.SelectedValue).ToList();
+
+            }
+            else
+            {
+                list = Sale.SalesByDate(formattedFromDate, formattedToDate);
+            }
+
+            var listSaleDetails = new List<Services.SaleDetails>();
+
+            if (list.Count > 0)
+            {
+                foreach (var item in list)
+                {
+                    foreach( var s in SaleDetails.GetSdById(item.Id))
+                    {
+                        listSaleDetails.Add(s);
+
+                    }
+                }
+            }
+
+            foreach (DataGridViewRow item in dataGridView7.Rows) 
+            {
+                var total = 0.0m;
+                foreach (var sd in listSaleDetails)
+                {
+
+                    if (item.Cells[0].Value.ToString() == Item.GetById(sd.ItemId).First().CategoryId.ToString())
+                    {
+                        var priceBase = sd.Price;
+                        var discount = sd.Discount / 100;
+                        var amountDiscount = (priceBase * discount);
+                        var priceNovat = sd.Price - amountDiscount;
+                        var patvsh = priceNovat * sd.Quantity;
+                        var ta = Math.Round(patvsh * (1 + (Convert.ToDecimal(sd.VAT) / 100)), 5);
+
+                        total += ta;
+                        
+                    }
+
+                }
+                item.Cells[2].Value = total;
+                totalSumCat += total;
+            }
+            totalCat = totalSumCat;
+            label21.Text = totalSumCat.ToString();
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            var settings = Settings.Get();
+            var printer = Printer.Get().Find(p => p.Id == Globals.DeviceId);
+            PrintDocument printDoc = new PrintDocument();
+            printDoc.PrinterSettings.PrinterName = settings.PosPrinter == "1" ? printer.TermalName : settings.ThermalPrinterName;
+            printDoc.PrintPage += new PrintPageEventHandler(PrintRestaurantDataGridView);
+            printDoc.Print();
+        }
+        public void PrintRestaurantDataGridView(object sender, PrintPageEventArgs e)
+        {
+            var settings = Services.Settings.Get();
+            var printer = Services.Printer.Get().Find(p => p.Id == Globals.DeviceId);
+
+            float total_width = settings.PosPrinter == "0"
+                ? Convert.ToInt32(settings.ThermalPrinterPageWidth) + 110f
+                : Convert.ToInt32(printer.TermalPaperWidth) + 110f;
+
+            Font headingFont = new Font("Calibri", total_width / 18f, FontStyle.Bold);
+            Font boldFont = new Font("Calibri", total_width / 23f, FontStyle.Bold);
+            Font normalFont = new Font("Calibri", total_width / 23f, FontStyle.Regular);
+
+            float height = 5;
+            string company = Globals.Settings.CompanyName;
+            string receiptDate = DateTime.Now.ToString();
+
+            // Print Header
+            e.Graphics.DrawString($"Raporti i kategorive të {Services.User.Get(dailyOpenId).Name}", headingFont, Brushes.Black, 0, height, new StringFormat());
+            height += 30;
+
+            e.Graphics.DrawString(company, normalFont, Brushes.Black, total_width / 2f, height, new StringFormat() { Alignment = StringAlignment.Center });
+            height += 40;
+
+            e.Graphics.DrawString("Date: " + receiptDate, boldFont, Brushes.Black, 0, height, new StringFormat());
+            height += 40;
+
+            float tableTop = height + 20; // Start of the table
+            float rowHeight = 30;
+            float col1Width = total_width - 63; // Width of the first column
+            float col2Width = total_width - 63; // Width of the second column
+
+
+            e.Graphics.DrawRectangle(Pens.Black, 0, height, col1Width, rowHeight); // Header for "Kategoritë"
+            e.Graphics.DrawRectangle(Pens.Black, col1Width, height, col2Width, rowHeight); // Header for "Totali"
+
+            e.Graphics.DrawString("Kategoritë", normalFont, Brushes.Black, 5, height + 5, new StringFormat());
+            e.Graphics.DrawString("Totali", normalFont, Brushes.Black, col1Width + 5, height + 5, new StringFormat());
+
+            // Move height down for rows
+            height += rowHeight;
+
+
+
+            // Draw table rows
+            foreach (DataGridViewRow row in dataGridView7.Rows)
+            {
+                e.Graphics.DrawRectangle(Pens.Black, 0, height, col1Width, rowHeight);
+                e.Graphics.DrawRectangle(Pens.Black, col1Width, height, col2Width, rowHeight);
+
+                e.Graphics.DrawString(row.Cells[1].Value.ToString(), normalFont, Brushes.Black, 5, height + 5, new StringFormat());
+                e.Graphics.DrawString(row.Cells[2].Value.ToString(), normalFont, Brushes.Black, col1Width + 5, height + 5, new StringFormat());
+                height += rowHeight; // Move to the next row
+            }
+
+            e.Graphics.DrawString($"Totali: {totalCat.ToString()}", normalFont, Brushes.Black, 5, height + 5, new StringFormat());
+
+            e.HasMorePages = false;
         }
     }
 }

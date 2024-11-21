@@ -48,6 +48,10 @@
             this.paragraph_initail_balance_sheet = new System.Windows.Forms.Label();
             this.word_complete = new System.Windows.Forms.Button();
             this.txtOpenAmount = new System.Windows.Forms.TextBox();
+            this.pnlChooseEmp = new System.Windows.Forms.Panel();
+            this.cmbEmp = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.pnlChooseEmp.SuspendLayout();
             this.SuspendLayout();
             // 
             // paragraph_print_the_report
@@ -278,6 +282,7 @@
             this.word_cancel.TabIndex = 99;
             this.word_cancel.Text = "Anulo";
             this.word_cancel.UseVisualStyleBackColor = false;
+            this.word_cancel.Click += new System.EventHandler(this.word_cancel_Click);
             // 
             // paragraph_initail_balance_sheet
             // 
@@ -326,6 +331,36 @@
             this.txtOpenAmount.TabIndex = 96;
             this.txtOpenAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // pnlChooseEmp
+            // 
+            this.pnlChooseEmp.Controls.Add(this.cmbEmp);
+            this.pnlChooseEmp.Controls.Add(this.label1);
+            this.pnlChooseEmp.Location = new System.Drawing.Point(12, 12);
+            this.pnlChooseEmp.Name = "pnlChooseEmp";
+            this.pnlChooseEmp.Size = new System.Drawing.Size(670, 601);
+            this.pnlChooseEmp.TabIndex = 115;
+            this.pnlChooseEmp.Visible = false;
+            // 
+            // cmbEmp
+            // 
+            this.cmbEmp.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbEmp.FormattingEnabled = true;
+            this.cmbEmp.Location = new System.Drawing.Point(328, 170);
+            this.cmbEmp.Name = "cmbEmp";
+            this.cmbEmp.Size = new System.Drawing.Size(121, 28);
+            this.cmbEmp.TabIndex = 1;
+            this.cmbEmp.SelectionChangeCommitted += new System.EventHandler(this.cmbEmp_SelectionChangeCommitted);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(181, 173);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(125, 20);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Zgjedh Puntorin:";
+            // 
             // CloseCashboxRestaurant
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -333,6 +368,7 @@
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(694, 625);
+            this.Controls.Add(this.pnlChooseEmp);
             this.Controls.Add(this.paragraph_print_the_report);
             this.Controls.Add(this.word_amount_left_in_cashbox);
             this.Controls.Add(this.txtGjendjaMomentale);
@@ -356,6 +392,8 @@
             this.Name = "CloseCashboxRestaurant";
             this.Text = "Mbyll Ditën";
             this.Load += new System.EventHandler(this.CloseCashboxRestaurant_Load);
+            this.pnlChooseEmp.ResumeLayout(false);
+            this.pnlChooseEmp.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -382,5 +420,8 @@
         private System.Windows.Forms.Label paragraph_initail_balance_sheet;
         private System.Windows.Forms.Button word_complete;
         public System.Windows.Forms.TextBox txtOpenAmount;
+        private System.Windows.Forms.Panel pnlChooseEmp;
+        private System.Windows.Forms.ComboBox cmbEmp;
+        private System.Windows.Forms.Label label1;
     }
 }

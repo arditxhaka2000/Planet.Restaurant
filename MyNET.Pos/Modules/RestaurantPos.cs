@@ -135,7 +135,7 @@ namespace MyNET.Pos
             try
             {
 
-               
+
                 if (cbPartners.SelectedItem != null)
                 {
                     if (ug.Rows.Count > 0)
@@ -189,12 +189,28 @@ namespace MyNET.Pos
                             Services.Models.TablesSaleDetails.UpdateTStoClose(1, tableId);
                             Services.Tables.UpdateTableFiscalCount("0", tableId);
                             Services.Tables.UpdateTableEmpId("0", tableId);
+                            Services.Tables.UpdateTableJoinId("0", tableId);
+                            Services.Tables.UpdateDate(null, tableId);
+                            Services.Models.TablesSaleDetails.UpdateStatus(1, tableId);
 
 
                             Services.Tables.UpdateTotalInPos("0", tableId);
                             Globals.NextStep = "Restaurant";
                             this.Close();
                         }
+                        var checkIfExistsNew = Services.Tables.GetTables().Where(p => p.JoinId.ToString() == tableId).ToList();
+
+                        if (checkIfExistsNew.Count > 0)
+                        {
+                            
+                            Manage_Tables.closeTable = true;
+                            Globals.NextStep = "RestaurantPos" + checkIfExistsNew.First().Id;
+
+                            this.Close();
+                        }
+                       
+                        Services.Tables.UpdateTableJoinId("0", checkIfExistsNew.First().Id.ToString());
+
                     }
                     else
                     {
@@ -203,6 +219,10 @@ namespace MyNET.Pos
                         Services.Models.TablesSaleDetails.UpdateStatus(1, tableId);
                         Services.Tables.UpdateTableFiscalCount("0", tableId);
                         Services.Tables.UpdateTableEmpId("0", tableId);
+                        Services.Tables.UpdateTableJoinId("0", tableId);
+                        Services.Tables.UpdateDate(null, tableId);
+
+                        Manage_Tables.closeTable = false;
 
 
                         Services.Tables.UpdateTotalInPos("0", tableId);
@@ -421,7 +441,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -511,7 +531,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -608,7 +628,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -698,7 +718,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -789,7 +809,7 @@ namespace MyNET.Pos
                                                     }
                                                     else
                                                     {
-                                                        if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                                         {
                                                             if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                             {
@@ -1099,7 +1119,7 @@ namespace MyNET.Pos
                         }
                     }
 
-                 }
+                }
                 catch (Exception ex)
                 {
 
@@ -1491,7 +1511,7 @@ namespace MyNET.Pos
             //Print Receipt No
             e.Graphics.DrawString("Numri i porosisë :\n " + receipt_no, boldFont, Brushes.Black, total_width / receipt_number, height, new StringFormat());
             //Print Receipt Date
-            e.Graphics.DrawString("Date :\n " + receipt_date, boldFont, Brushes.Black, total_width / rec_date-27, height, new StringFormat());
+            e.Graphics.DrawString("Date :\n " + receipt_date, boldFont, Brushes.Black, total_width / rec_date - 27, height, new StringFormat());
             height += 40;
 
             //Print Line
@@ -1565,7 +1585,8 @@ namespace MyNET.Pos
                 {
                     if ((decimal)row.Cells["Quantity"].Value - currentItem.First().PrintedQuantity > 0)
                     {
-                        var iName = row.Cells["ItemName"].Value.ToString().Count() > 40 ? row.Cells["ItemName"].Value.ToString().Substring(0, 20) : row.Cells["ItemName"].Value.ToString();
+                        var iName = (row.Cells["ItemName"].Value.ToString() + " " + row.Cells["CostOfGoods"].Value).Count() > 40 ? row.Cells["ItemName"].Value.ToString().Substring(0, 20) + row.Cells["CostOfGoods"].Value : row.Cells["ItemName"].Value.ToString() + "\n" + row.Cells["CostOfGoods"].Value;
+
 
                         var words = iName.Split(' ');
                         var lines = new List<string>();
@@ -1614,7 +1635,12 @@ namespace MyNET.Pos
 
                 Services.Models.TablesSaleDetails.UpdateTableQuantityPrinted((decimal)row.Cells["Quantity"].Value, tableId, (int)row.Cells["ItemId"].Value);
                 TablesSaleDetails tabledt = new TablesSaleDetails();
-                tabledt.UpdateTableItem((decimal)row.Cells["Quantity"].Value, (decimal)row.Cells["Total"].Value, (decimal)row.Cells["TotalWithVat"].Value, row.Cells["ItemName"].Value.ToString(), Convert.ToInt32(row.Cells["Id"].Value.ToString()));
+                var desc = "";
+                if (row.Cells[11].Value != null)
+                {
+                    desc = row.Cells[11].Value.ToString();
+                }
+                tabledt.UpdateTableItem((decimal)row.Cells["Quantity"].Value, (decimal)row.Cells["Total"].Value, (decimal)row.Cells["TotalWithVat"].Value, row.Cells["ItemName"].Value.ToString(), Convert.ToInt32(row.Cells["Id"].Value.ToString()), desc);
 
             }
             //Print Line
@@ -1826,7 +1852,7 @@ namespace MyNET.Pos
                 }
 
             }
-            if(sett.Theme is "light")
+            if (sett.Theme is "light")
             {
                 word_station_branch.BackColor = Color.FromArgb(55, 67, 82);
                 smlLogo.BackColor = Color.FromArgb(55, 67, 82);
@@ -1837,17 +1863,17 @@ namespace MyNET.Pos
                 pnlMenu.BackColor = Color.FromArgb(55, 67, 82);
                 splitContainer1.BackColor = Color.FromArgb(55, 67, 82);
                 splitContainer1.Panel1.BackColor = Color.FromArgb(55, 67, 82);
-                tableLayoutPanel6.BackColor = Color.FromArgb(55, 67, 82); 
-                tableLayoutPanel3.BackColor = Color.WhiteSmoke; 
-                tableLayoutPanel2.BackColor = Color.WhiteSmoke; 
-                tableLayoutPanel11.BackColor = Color.WhiteSmoke; 
-                tableLayoutPanel5.BackColor = Color.WhiteSmoke; 
-                tableLayoutPanel4.BackColor = Color.WhiteSmoke; 
-                tableLayoutPanel1.BackColor = Color.WhiteSmoke; 
-                tableLayoutPanel8.BackColor = Color.WhiteSmoke; 
-                tableLayoutPanel9.BackColor = Color.WhiteSmoke; 
-                tableLayoutPanel7.BackColor = Color.WhiteSmoke; 
-                ug.BackgroundColor = Color.WhiteSmoke; 
+                tableLayoutPanel6.BackColor = Color.FromArgb(55, 67, 82);
+                tableLayoutPanel3.BackColor = Color.WhiteSmoke;
+                tableLayoutPanel2.BackColor = Color.WhiteSmoke;
+                tableLayoutPanel11.BackColor = Color.WhiteSmoke;
+                tableLayoutPanel5.BackColor = Color.WhiteSmoke;
+                tableLayoutPanel4.BackColor = Color.WhiteSmoke;
+                tableLayoutPanel1.BackColor = Color.WhiteSmoke;
+                tableLayoutPanel8.BackColor = Color.WhiteSmoke;
+                tableLayoutPanel9.BackColor = Color.WhiteSmoke;
+                tableLayoutPanel7.BackColor = Color.WhiteSmoke;
+                ug.BackgroundColor = Color.WhiteSmoke;
                 pnlGrids.BackColor = Color.WhiteSmoke;
                 pnlTotal.BackColor = Color.WhiteSmoke;
                 pnlCategories.BackColor = Color.WhiteSmoke;
@@ -1859,7 +1885,7 @@ namespace MyNET.Pos
                 tableLayoutPanel11.BackColor = Color.WhiteSmoke;
                 panel1.BackColor = Color.WhiteSmoke;
 
-               
+
 
                 lblFiscalCount.BackColor = Color.WhiteSmoke;
                 lblFiscalCount.ForeColor = Color.Black;
@@ -1927,7 +1953,7 @@ namespace MyNET.Pos
             if (Manage_Tables.closeTable == true)
             {
                 btnPrint_Click(null, null);
-                Manage_Tables.closeTable = false;
+                //Manage_Tables.closeTable = false;
             }
         }
 
@@ -2724,7 +2750,7 @@ namespace MyNET.Pos
             //txtsearch.Focus();
         }
 
-        Image trash = Globals.Settings.Theme=="dark"? Properties.Resources.redTrash: Properties.Resources.trash_removebg_preview;
+        Image trash = Globals.Settings.Theme == "dark" ? Properties.Resources.redTrash : Properties.Resources.trash_removebg_preview;
         private void grid_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex < 0)
@@ -2821,7 +2847,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {item.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -2934,7 +2960,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {item.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -3050,7 +3076,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {item.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -3165,7 +3191,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {item.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -3305,7 +3331,7 @@ namespace MyNET.Pos
                                     }
                                     else
                                     {
-                                        if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                         {
                                             if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {item.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                             {
@@ -3779,7 +3805,7 @@ namespace MyNET.Pos
 
                 if (availableStock < quantity && Globals.Settings.StockWMinus == "0")
                 {
-                    if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                    if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                     {
                         if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                         {
@@ -3926,10 +3952,32 @@ namespace MyNET.Pos
 
                             ug[DiscountPrice, e.RowIndex].Value = "0";
                         }
+                        
                         else
                         {
-                            MessageBox.Show($"Nuk mund te editoni sasine. Sasia e shtypur ne kupon fiskal eshte {tsQuantity}!");
-                            ug[quantityRowIndex, e.RowIndex].Value = tsQuantity;
+                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                            {
+                                EnterPin enter = new EnterPin();
+                                enter.ShowDialog();
+                                if (enter.flag == true)
+                                {
+                                    ug[totalRowIndex, e.RowIndex].Value = totalprice;
+
+                                    ug[DiscountPrice, e.RowIndex].Value = "0";
+                                }
+                            }
+                            else if(Globals.User.Role == "1")
+                            {
+                                ug[totalRowIndex, e.RowIndex].Value = totalprice;
+
+                                ug[DiscountPrice, e.RowIndex].Value = "0";
+                            }
+                            else
+                            {
+                                MessageBox.Show($"Nuk mund te editoni sasine. Sasia e shtypur ne kupon fiskal eshte {tsQuantity}!");
+                                ug[quantityRowIndex, e.RowIndex].Value = tsQuantity;
+                            }
+                                
 
                         }
 
@@ -4832,7 +4880,7 @@ namespace MyNET.Pos
                                          Price = group.First().Price,
                                          AvgPrice = group.First().AvgPrice,
                                          CategoryId = group.First().CategoryId,
-                                         CostOfGoods = group.First().CostOfGoods,
+                                         CostOfGoods = "",
                                          Discount = group.First().Discount,
                                          DiscountPrice = group.First().DiscountPrice,
                                          DiscountPriceWithVat = group.First().DiscountPriceWithVat,
@@ -5509,8 +5557,9 @@ namespace MyNET.Pos
                 Globals.Station.LastInvoiceNumber++;
                 DailyOpenFiscalCount += 1;
                 var daily = new DailyOpenCloseBalance();
-                var lastdaily = Services.DailyOpenCloseBalance.GetLastDailyBalanceByEmployee(Globals.User.Id);
-                totalSumOpenBalance = sale.TotalSum + lastdaily.TotalShitje;
+                var lastdaily = Services.DailyOpenCloseBalance.GetLastDailyBalanceByEmployee(Services.Tables.GetTables().Where(p=>p.Id.ToString()==tableId).First().Emp_id);
+                DailyOpenFiscalCount += lastdaily.DailyFiscalCount;
+                 totalSumOpenBalance = sale.TotalSum + lastdaily.TotalShitje;
                 var totalcash = 0.0m;
 
                 totalcash += lastdaily.TotalCash + frmPayment.Kesh;
@@ -7050,7 +7099,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -7139,7 +7188,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -7232,7 +7281,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -7321,7 +7370,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -7415,7 +7464,7 @@ namespace MyNET.Pos
                                     }
                                     else
                                     {
-                                        if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                         {
                                             if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                             {
@@ -7819,7 +7868,7 @@ namespace MyNET.Pos
                 details.Barcode = item.Cells["Barcode"].Value.ToString();
                 details.Unit = item.Cells["Unit"].Value.ToString();
                 details.QuantityNow = (decimal)item.Cells["QuantityNow"].Value;
-
+                details.CostOfGoods = item.Cells[11].Value!=null? item.Cells[11].Value.ToString():"";
                 details.Quantity = (decimal)item.Cells["Quantity"].Value;
                 details.Price = (decimal)item.Cells["Price"].Value;
                 details.AvgPrice = (decimal)item.Cells["AvgPrice"].Value;
@@ -7844,7 +7893,7 @@ namespace MyNET.Pos
 
                 if (result == 0)
                 {
-                    details.UpdateTableItem(details.Quantity, details.Total, details.TotalWithVat, details.ItemName, details.tableId);
+                    details.UpdateTableItem(details.Quantity, details.Total, details.TotalWithVat, details.ItemName, details.tableId,details.CostOfGoods);
                     item.Cells["Id"].Value = (int)item.Cells["Id"].Value;
 
                 }
@@ -7971,7 +8020,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -8060,7 +8109,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -8153,7 +8202,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -8241,7 +8290,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -8335,7 +8384,7 @@ namespace MyNET.Pos
                                     }
                                     else
                                     {
-                                        if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                         {
                                             if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                             {
@@ -8823,7 +8872,7 @@ namespace MyNET.Pos
                 }
                 else
                 {
-                    
+
                     if (printer.FiscalType == "Tremol")
                     {
                         if (dt.Rows.Count > 0)
@@ -8975,7 +9024,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -9065,7 +9114,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -9162,7 +9211,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -9252,7 +9301,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -9343,7 +9392,7 @@ namespace MyNET.Pos
                                                     }
                                                     else
                                                     {
-                                                        if (Globals.Settings.PIN != "0" || Globals.Settings.PIN == null)
+                                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
                                                         {
                                                             if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                             {
@@ -9677,7 +9726,7 @@ namespace MyNET.Pos
                 }
             }
         }
-      
+
 
     }
 }

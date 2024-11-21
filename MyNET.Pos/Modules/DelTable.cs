@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -67,6 +68,44 @@ namespace MyNET.Pos.Modules
             cmbSpaces.DataSource = Spaces.GetSpaces();
             cmbSpaces.DisplayMember = "Name";
             cmbSpaces.ValueMember = "Id";
+            var settings = Services.Settings.Get();
+
+            if (settings.Theme == "dark")
+            {
+                this.BackColor = Color.FromArgb(49, 50, 55);
+                label1.ForeColor = Color.White;
+                label2.ForeColor = Color.White;
+                label3.ForeColor = Color.White;
+                label4.ForeColor = Color.White;
+                txtTableName.BackColor = Color.FromArgb(49, 50, 55);
+                txtTableName.ForeColor = Color.White;
+                cmbSpaces.BackColor = Color.FromArgb(49, 50, 55);
+                cmbSpaces.ForeColor = Color.White; 
+                textBox2.BackColor = Color.FromArgb(49, 50, 55);
+                textBox2.ForeColor = Color.White;
+                chckTable.ForeColor = Color.White;
+                checkBox1.ForeColor = Color.White;
+
+
+            }
+            else
+            {
+                this.BackColor = Color.WhiteSmoke;
+                label1.ForeColor = Color.Black;
+                label2.ForeColor = Color.Black;
+                label3.ForeColor = Color.Black;
+                label4.ForeColor = Color.Black;
+                txtTableName.BackColor = Color.White;
+                txtTableName.ForeColor = Color.FromArgb(49, 50, 55);
+                cmbSpaces.BackColor = Color.White;
+                cmbSpaces.ForeColor = Color.FromArgb(49, 50, 55);
+                textBox2.BackColor = Color.White;
+                textBox2.ForeColor = Color.FromArgb(49, 50, 55);
+                chckTable.ForeColor = Color.Black;
+                checkBox1.ForeColor = Color.Black;
+
+
+            }
 
         }
 
@@ -76,11 +115,13 @@ namespace MyNET.Pos.Modules
             {
                 label3.Visible = true;
                 cmbTable.Visible = true;
+                button2.Visible = true;
             }
             else
             {
                 label3.Visible = false;
                 cmbTable.Visible = false;
+                button2.Visible = false;
 
             }
         }
@@ -164,6 +205,13 @@ namespace MyNET.Pos.Modules
                 space.Update();
             }
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            EditTableSize edit = new EditTableSize();
+            edit.Id = Convert.ToInt16(cmbTable.SelectedValue);
+            edit.ShowDialog(); 
         }
     }
 }

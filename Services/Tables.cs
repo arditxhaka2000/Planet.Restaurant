@@ -8,13 +8,16 @@ using System.Windows.Forms;
 
 namespace Services
 {
-    public class Tables :IBaseObj
+    public class Tables : IBaseObj
     {
         public int Id { get; set; }
         public int Space_id { get; set; }
         public string Name { get; set; }
         public string LocationX { get; set; }
         public string LocationY { get; set; }
+        public string Shape { get; set; }
+        public string Width { get; set; }
+        public string Height { get; set; }
         public int inPos { get; set; }
         public int Status { get; set; }
         public string station_id { get; set; }
@@ -26,6 +29,7 @@ namespace Services
         public int saleId { get; set; }
         public int FiscalCount { get; set; }
         public int Emp_id { get; set; }
+        public int JoinId { get; set; }
         public string Date { get; set; }
 
         public static List<Tables> GetTables()
@@ -69,7 +73,7 @@ namespace Services
             string jsonParams = JsonConvert.SerializeObject(new { inPos = posOn, Id = id });
             Services.RestHepler<Tables>.RestaurantQuery("updateTablePos", jsonParams);
 
-        } 
+        }
         public static void UpdateTotalInPos(string inPosTotal, string id)
         {
             string jsonParams = JsonConvert.SerializeObject(new { inPosTotal = inPosTotal, Id = id });
@@ -106,15 +110,34 @@ namespace Services
             Services.RestHepler<Tables>.RestaurantQuery("updateTableEmpId", jsonParams);
 
         }
+        public static void UpdateTableJoinId(string joinId, string id)
+        {
+            string jsonParams = JsonConvert.SerializeObject(new { JoinId = joinId, Id = id });
+            Services.RestHepler<Tables>.RestaurantQuery("updateTableJoinId", jsonParams);
+
+        }
         public static void UpdateToUpdate(string id)
         {
             string jsonParams = JsonConvert.SerializeObject(new { Id = id });
             Services.RestHepler<Tables>.RestaurantQuery("updateToUpdateTables", jsonParams);
 
-        } public static void UpdateDate(string date,string id)
+        }
+        public static void UpdateDate(string date, string id)
         {
             string jsonParams = JsonConvert.SerializeObject(new { Date = date, Id = id });
             Services.RestHepler<Tables>.RestaurantQuery("updateDateTables", jsonParams);
+
+        }
+        public static void UpdateTableShape(string shape, string id)
+        {
+            string jsonParams = JsonConvert.SerializeObject(new { Shape = shape, Id = id });
+            Services.RestHepler<Tables>.RestaurantQuery("updateTableShape", jsonParams);
+
+        }
+        public static void UpdateTableSize(string width, string height, string id)
+        {
+            string jsonParams = JsonConvert.SerializeObject(new { Width = width, Height = height, Id = id });
+            Services.RestHepler<Tables>.RestaurantQuery("updateTableSize", jsonParams);
 
         }
     }
