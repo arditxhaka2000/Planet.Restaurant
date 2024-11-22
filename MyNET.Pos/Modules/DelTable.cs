@@ -116,12 +116,17 @@ namespace MyNET.Pos.Modules
                 label3.Visible = true;
                 cmbTable.Visible = true;
                 button2.Visible = true;
+                label5.Visible = true;
+                cmbTableShape.Visible = true;
+
             }
             else
             {
                 label3.Visible = false;
                 cmbTable.Visible = false;
                 button2.Visible = false;
+                cmbTableShape.Visible = false;
+                label5.Visible = false;
 
             }
         }
@@ -180,9 +185,13 @@ namespace MyNET.Pos.Modules
                     var t = Tables.GetTables().Where(p => p.Name == cmbTable.Text).First();
                     table.Id = t.Id;
                     table.Space_id = space.Id;
-                    table.Name = textBox2.Text.ToString();
+                    table.Name = textBox2.Text.ToString()!=""?textBox2.Text.ToString():table.Name;
+                    table.inPosTotal = "0";
                     table.station_id = Globals.Station.Id.ToString();
+                    table.Shape = cmbTableShape.Text;
                     table.LocationX = t.LocationX;
+                    table.Width = table.Width;
+                    table.Height = table.Height;
                     table.LocationY = t.LocationY;
                     table.toUpdate = "1";
                     table.Status = 1;
@@ -212,6 +221,11 @@ namespace MyNET.Pos.Modules
             EditTableSize edit = new EditTableSize();
             edit.Id = Convert.ToInt16(cmbTable.SelectedValue);
             edit.ShowDialog(); 
+        }
+
+        private void cmbTableShape_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -23,7 +23,7 @@ namespace MyNET.Pos.Modules
         Point initialMousePosition;
         int initialDiameter;
 
-        public EditTableSize()
+        public EditTableSize() 
         {
             InitializeComponent();
 
