@@ -2452,7 +2452,7 @@ namespace MyNET.Pos.Modules
             }
 
             var list = new List<Sale>();
-            if (comboBox2.Text != "Të gjithë")
+            if (comboBox2.Text != "Të gjithë ")
             {
 
                 list = Sale.SalesByDate(formattedFromDate, formattedToDate).Where(p => p.id_saler == (int)comboBox2.SelectedValue).ToList();

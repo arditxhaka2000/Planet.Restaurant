@@ -17,6 +17,7 @@ namespace Services
         public string TotalPrice { get; set; }
 
         public int ParentId { get; set; }
+        public string ThermalName { get; set; }
 
 
         #endregion

@@ -202,13 +202,13 @@ namespace MyNET.Pos
 
                         if (checkIfExistsNew.Count > 0)
                         {
-                            
+
                             Manage_Tables.closeTable = true;
                             Globals.NextStep = "RestaurantPos" + checkIfExistsNew.First().Id;
 
                             this.Close();
                         }
-                       
+
                         Services.Tables.UpdateTableJoinId("0", checkIfExistsNew.First().Id.ToString());
 
                     }
@@ -273,31 +273,87 @@ namespace MyNET.Pos
 
             var printer = Services.Printer.Get().Find(p => p.Id == Globals.DeviceId);
             var settings = Services.Settings.Get();
-
+            var printCategory = ItemCategory.Get();
             PrintDocument printDoc = new PrintDocument();
-            printDoc.PrinterSettings.PrinterName = settings.PosPrinter == "1" ? printer.TermalName : settings.ThermalPrinterName;
-            printDoc.PrintPage += new PrintPageEventHandler(PrintRestaurantDataGridView);
             bool flag = false;
-            foreach (DataGridViewRow item in ug.Rows)
+            if (printCategory.Any(p => !string.IsNullOrEmpty(p.ThermalName)))
             {
-                int quantity = Convert.ToInt32(item.Cells["Quantity"].Value);
-                int printedQuantity = Convert.ToInt32(item.Cells["PrintedQuantity"].Value);
-
-                if (quantity > printedQuantity)
+                foreach (var currentPrinter in printCategory.Where(p => !string.IsNullOrEmpty(p.ThermalName)))
                 {
-                    flag = true;
-                    break;
+                    // Create a new PrintDocument for each printer
+                    using (PrintDocument printDocs = new PrintDocument())
+                    {
+                        printDoc.PrinterSettings.PrinterName = currentPrinter.ThermalName;
+
+                        // Capture the current printer ID in a local variable to avoid closure issues
+                        var printerIdForHandler = currentPrinter.Id;
+
+                        // Add the event handler
+                        PrintPageEventHandler printHandler = (sender, e) =>
+                        {
+                            PrintRestaurantDataGridViewItemCategory(sender, e, printerIdForHandler);
+                        };
+                        printDoc.PrintPage += printHandler;
+
+                        // Check if there are items to print
+                        flag = false;
+                        foreach (DataGridViewRow r in ug.Rows)
+                        {
+                            if (Item.GetById((int)r.Cells["ItemId"].Value).First().CategoryId == currentPrinter.Id)
+                            {
+                                int quantity = Convert.ToInt32(r.Cells["Quantity"].Value);
+                                int printedQuantity = Convert.ToInt32(r.Cells["PrintedQuantity"].Value);
+                                if (quantity > printedQuantity)
+                                {
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        // Print if needed
+                        if (flag)
+                        {
+                            try
+                            {
+                                printDoc.Print();
+                            }
+                            finally
+                            {
+                                // Remove the event handler
+                                printDoc.PrintPage -= printHandler;
+                            }
+                        }
+                    }
                 }
             }
-            if (flag)
+            else
             {
-                printDoc.Print();
+                printDoc.PrinterSettings.PrinterName = settings.PosPrinter == "1" ? printer.TermalName : settings.ThermalPrinterName;
+                printDoc.PrintPage += new PrintPageEventHandler(PrintRestaurantDataGridView);
+                foreach (DataGridViewRow item in ug.Rows)
+                {
+                    int quantity = Convert.ToInt32(item.Cells["Quantity"].Value);
+                    int printedQuantity = Convert.ToInt32(item.Cells["PrintedQuantity"].Value);
 
+                    if (quantity > printedQuantity)
+                    {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    printDoc.Print();
+
+                }
             }
+
+
+
 
 
         }
-
         public void ClickAll()
         {
 
@@ -441,7 +497,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -531,7 +587,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -628,7 +684,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -718,7 +774,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -809,7 +865,7 @@ namespace MyNET.Pos
                                                     }
                                                     else
                                                     {
-                                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                                         {
                                                             if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                             {
@@ -1529,6 +1585,7 @@ namespace MyNET.Pos
             height += 20;
 
             var orderDetails = Services.Models.TablesSaleDetails.GetSaleDetailsBySaleId(Convert.ToInt32(tableId));
+            var printCategory = ItemCategory.Get();
 
             foreach (DataGridViewRow row in ug.Rows)
             {
@@ -1642,6 +1699,208 @@ namespace MyNET.Pos
                 }
                 tabledt.UpdateTableItem((decimal)row.Cells["Quantity"].Value, (decimal)row.Cells["Total"].Value, (decimal)row.Cells["TotalWithVat"].Value, row.Cells["ItemName"].Value.ToString(), Convert.ToInt32(row.Cells["Id"].Value.ToString()), desc);
 
+            }
+
+
+            //Print Line
+            e.Graphics.DrawString(line, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
+
+            //Print Net Total
+            e.Graphics.DrawString("Total", normalFont, Brushes.Black, total_width, height, new StringFormat());
+
+            SizeF netWidth = e.Graphics.MeasureString(net_total.ToString(), normalFont);
+            e.Graphics.DrawString(Math.Round(net_total, 2).ToString(), normalFont, Brushes.Black, total_width / rec_total, height, new StringFormat());
+            height += 20;
+
+            //Print Line
+            e.Graphics.DrawString(line, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 40;
+
+            e.Graphics.DrawString("Faleminderit", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
+
+            e.HasMorePages = false;
+        }
+        public void PrintRestaurantDataGridViewItemCategory(object sender, PrintPageEventArgs e, int categoryId)
+        {
+            var settings = Services.Settings.Get();
+            var printer = Services.Printer.Get().Find(p => p.Id == Globals.DeviceId);
+
+
+            float total_width = settings.PosPrinter == "0" ? Convert.ToInt32(settings.ThermalPrinterPageWidth) + 110f : Convert.ToInt32(printer.TermalPaperWidth) + 110f;
+
+            Font headingFont = new Font("Calibri", total_width / 14f, FontStyle.Bold);
+            Font boldFont = new Font("Calibri", total_width / 23f, FontStyle.Bold);
+            Font normalFont = new Font("Calibri", total_width / 23f, FontStyle.Regular);
+
+            float topMargin = e.MarginBounds.Top;
+            float leftMargin = e.MarginBounds.Left;
+
+            string receipt_no = daily.DailyFiscalCount.ToString();
+            string receipt_date = DateTime.Now.ToString();
+            decimal net_total = 0;
+            string company = Globals.Settings.CompanyName;
+            string line = "--------------------------------------------------------------------------------";
+            float height = 5;
+            // float printerWidth;
+            // float printerHight;
+
+
+            float company_name = 2f;
+            float company_address = 2.5f;
+            float receipt_number = 19f;
+            float rec_date = 1.08f;
+            float rec_desc = 19f;
+
+            float rec_qty = 1.6f;
+            float rec_price = 1.1f;
+            float rec_total = 0.85f;
+
+
+
+
+            //Print Company Name
+            e.Graphics.DrawString("Porosia", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
+            height += 30;
+            //Print Company Address
+            e.Graphics.DrawString(company, normalFont, Brushes.Black, total_width / company_address, height, new StringFormat());
+            height += 40;
+
+            //Print Receipt No
+            e.Graphics.DrawString("Numri i porosisë :\n " + receipt_no, boldFont, Brushes.Black, total_width / receipt_number, height, new StringFormat());
+            //Print Receipt Date
+            e.Graphics.DrawString("Date :\n " + receipt_date, boldFont, Brushes.Black, total_width / rec_date - 27, height, new StringFormat());
+            height += 40;
+
+            //Print Line
+            e.Graphics.DrawString(line, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
+
+            //Printe Table Headings
+
+            e.Graphics.DrawString("Qty", normalFont, Brushes.Black, total_width / rec_qty, height, new StringFormat());
+            e.Graphics.DrawString("Çmimi", normalFont, Brushes.Black, total_width / rec_total, height, new StringFormat());
+            height += 20;
+
+            //Print Line
+            e.Graphics.DrawString(line, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
+
+            var orderDetails = Services.Models.TablesSaleDetails.GetSaleDetailsBySaleId(Convert.ToInt32(tableId));
+            foreach (DataGridViewRow row in ug.Rows)
+            {
+                var currentItem = orderDetails.Where(p => p.ItemId == (int)row.Cells["ItemId"].Value);
+                if (currentItem.First().CategoryId == categoryId)
+                {
+                    if ((int)row.Cells["Printed"].Value == 0)
+                    {
+
+                        var iName = (row.Cells["ItemName"].Value.ToString() + " " + row.Cells["CostOfGoods"].Value).Count() > 40 ? row.Cells["ItemName"].Value.ToString().Substring(0, 20) + row.Cells["CostOfGoods"].Value : row.Cells["ItemName"].Value.ToString() + "\n" + row.Cells["CostOfGoods"].Value;
+
+                        var words = iName.Split(' ');
+                        var lines = new List<string>();
+                        var currentLine = new StringBuilder();
+                        foreach (var word in words)
+                        {
+                            if (currentLine.Length + word.Length + 1 > 20)
+                            {
+                                lines.Add(currentLine.ToString());
+                                currentLine.Clear();
+                            }
+                            currentLine.Append(word + " ");
+                        }
+                        if (currentLine.Length > 0)
+                        {
+                            lines.Add(currentLine.ToString());
+                        }
+                        iName = string.Join("\n", lines);
+
+                        SizeF qtyWidth = e.Graphics.MeasureString(row.Cells["Quantity"].Value.ToString(), normalFont);
+                        SizeF priceWidth = e.Graphics.MeasureString(row.Cells["Total"].Value.ToString(), normalFont);
+                        SizeF totalWidth = e.Graphics.MeasureString(row.Cells["TotalWithVat"].Value.ToString(), normalFont);
+
+                        e.Graphics.DrawString(iName, normalFont, Brushes.Black, total_width / receipt_number, height, new StringFormat());
+
+
+                        if (currentItem.First().PrintedQuantity == 0)
+                        {
+                            e.Graphics.DrawString(((decimal)row.Cells["Quantity"].Value).ToString(), normalFont, Brushes.Black, total_width / rec_qty, height, new StringFormat());
+                            e.Graphics.DrawString(((decimal)row.Cells["TotalWithVat"].Value).ToString(), normalFont, Brushes.Black, total_width / rec_total, height, new StringFormat());
+                        }
+                        else
+                        {
+                            e.Graphics.DrawString(((decimal)row.Cells["Quantity"].Value - currentItem.First().PrintedQuantity).ToString(), normalFont, Brushes.Black, total_width / rec_qty, height, new StringFormat());
+                            e.Graphics.DrawString(((decimal)row.Cells["TotalWithVat"].Value - currentItem.First().TotalWithVat).ToString(), normalFont, Brushes.Black, total_width / rec_total, height, new StringFormat());
+                        }
+
+
+                        net_total += (decimal)row.Cells["TotalWithVat"].Value;
+                        height += 30 + (lines.Count * 10);
+
+
+                    }
+                    else
+                    {
+                        if ((decimal)row.Cells["Quantity"].Value - currentItem.First().PrintedQuantity > 0)
+                        {
+                            var iName = (row.Cells["ItemName"].Value.ToString() + " " + row.Cells["CostOfGoods"].Value).Count() > 40 ? row.Cells["ItemName"].Value.ToString().Substring(0, 20) + row.Cells["CostOfGoods"].Value : row.Cells["ItemName"].Value.ToString() + "\n" + row.Cells["CostOfGoods"].Value;
+
+
+                            var words = iName.Split(' ');
+                            var lines = new List<string>();
+                            var currentLine = new StringBuilder();
+                            foreach (var word in words)
+                            {
+                                if (currentLine.Length + word.Length + 1 > 20)
+                                {
+                                    lines.Add(currentLine.ToString());
+                                    currentLine.Clear();
+                                }
+                                currentLine.Append(word + " ");
+                            }
+                            if (currentLine.Length > 0)
+                            {
+                                lines.Add(currentLine.ToString());
+                            }
+                            iName = string.Join("\n", lines);
+
+                            SizeF qtyWidth = e.Graphics.MeasureString(row.Cells["Quantity"].Value.ToString(), normalFont);
+                            SizeF priceWidth = e.Graphics.MeasureString(row.Cells["Total"].Value.ToString(), normalFont);
+                            SizeF totalWidth = e.Graphics.MeasureString(row.Cells["TotalWithVat"].Value.ToString(), normalFont);
+
+                            e.Graphics.DrawString(iName, normalFont, Brushes.Black, total_width / receipt_number, height, new StringFormat());
+                            string tot = "";
+                            if (currentItem.Count() > 0)
+                            {
+
+                                tot = ((decimal)row.Cells["DiscountPriceWithVat"].Value * ((decimal)row.Cells["Quantity"].Value - currentItem.First().PrintedQuantity)).ToString();
+                                e.Graphics.DrawString(((decimal)row.Cells["Quantity"].Value - currentItem.First().PrintedQuantity).ToString(), normalFont, Brushes.Black, total_width / rec_qty, height, new StringFormat());
+                                e.Graphics.DrawString(tot, normalFont, Brushes.Black, total_width / rec_total, height, new StringFormat());
+                            }
+                            else
+                            {
+                                e.Graphics.DrawString(((decimal)row.Cells["Quantity"].Value).ToString(), normalFont, Brushes.Black, total_width / rec_qty, height, new StringFormat());
+                                e.Graphics.DrawString(((decimal)row.Cells["TotalWithVat"].Value).ToString(), normalFont, Brushes.Black, total_width / rec_total, height, new StringFormat());
+                            }
+
+
+                            net_total += (((decimal)row.Cells["Quantity"].Value - currentItem.First().PrintedQuantity) * currentItem.First().DiscountPriceWithVat);
+                            height += 30 + (lines.Count * 10);
+
+                        }
+
+                    }
+
+                    Services.Models.TablesSaleDetails.UpdateTableQuantityPrinted((decimal)row.Cells["Quantity"].Value, tableId, (int)row.Cells["ItemId"].Value);
+                    TablesSaleDetails tabledt = new TablesSaleDetails();
+                    var desc = "";
+                    if (row.Cells[11].Value != null)
+                    {
+                        desc = row.Cells[11].Value.ToString();
+                    }
+                    tabledt.UpdateTableItem((decimal)row.Cells["Quantity"].Value, (decimal)row.Cells["Total"].Value, (decimal)row.Cells["TotalWithVat"].Value, row.Cells["ItemName"].Value.ToString(), Convert.ToInt32(row.Cells["Id"].Value.ToString()), desc);
+
+                }
             }
             //Print Line
             e.Graphics.DrawString(line, normalFont, Brushes.Black, 0, height, new StringFormat());
@@ -2847,7 +3106,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {item.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -2960,7 +3219,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {item.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -3076,7 +3335,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {item.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -3191,7 +3450,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {item.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -3331,7 +3590,7 @@ namespace MyNET.Pos
                                     }
                                     else
                                     {
-                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                         {
                                             if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {item.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                             {
@@ -3805,7 +4064,7 @@ namespace MyNET.Pos
 
                 if (availableStock < quantity && Globals.Settings.StockWMinus == "0")
                 {
-                    if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                    if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                     {
                         if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                         {
@@ -3952,10 +4211,10 @@ namespace MyNET.Pos
 
                             ug[DiscountPrice, e.RowIndex].Value = "0";
                         }
-                        
+
                         else
                         {
-                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                             {
                                 EnterPin enter = new EnterPin();
                                 enter.ShowDialog();
@@ -3966,7 +4225,7 @@ namespace MyNET.Pos
                                     ug[DiscountPrice, e.RowIndex].Value = "0";
                                 }
                             }
-                            else if(Globals.User.Role == "1")
+                            else if (Globals.User.Role == "1")
                             {
                                 ug[totalRowIndex, e.RowIndex].Value = totalprice;
 
@@ -3977,7 +4236,7 @@ namespace MyNET.Pos
                                 MessageBox.Show($"Nuk mund te editoni sasine. Sasia e shtypur ne kupon fiskal eshte {tsQuantity}!");
                                 ug[quantityRowIndex, e.RowIndex].Value = tsQuantity;
                             }
-                                
+
 
                         }
 
@@ -5557,9 +5816,9 @@ namespace MyNET.Pos
                 Globals.Station.LastInvoiceNumber++;
                 DailyOpenFiscalCount += 1;
                 var daily = new DailyOpenCloseBalance();
-                var lastdaily = Services.DailyOpenCloseBalance.GetLastDailyBalanceByEmployee(Services.Tables.GetTables().Where(p=>p.Id.ToString()==tableId).First().Emp_id);
+                var lastdaily = Services.DailyOpenCloseBalance.GetLastDailyBalanceByEmployee(Services.Tables.GetTables().Where(p => p.Id.ToString() == tableId).First().Emp_id);
                 DailyOpenFiscalCount += lastdaily.DailyFiscalCount;
-                 totalSumOpenBalance = sale.TotalSum + lastdaily.TotalShitje;
+                totalSumOpenBalance = sale.TotalSum + lastdaily.TotalShitje;
                 var totalcash = 0.0m;
 
                 totalcash += lastdaily.TotalCash + frmPayment.Kesh;
@@ -7099,7 +7358,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -7188,7 +7447,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -7281,7 +7540,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -7370,7 +7629,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -7464,7 +7723,7 @@ namespace MyNET.Pos
                                     }
                                     else
                                     {
-                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                         {
                                             if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                             {
@@ -7868,7 +8127,7 @@ namespace MyNET.Pos
                 details.Barcode = item.Cells["Barcode"].Value.ToString();
                 details.Unit = item.Cells["Unit"].Value.ToString();
                 details.QuantityNow = (decimal)item.Cells["QuantityNow"].Value;
-                details.CostOfGoods = item.Cells[11].Value!=null? item.Cells[11].Value.ToString():"";
+                details.CostOfGoods = item.Cells[11].Value != null ? item.Cells[11].Value.ToString() : "";
                 details.Quantity = (decimal)item.Cells["Quantity"].Value;
                 details.Price = (decimal)item.Cells["Price"].Value;
                 details.AvgPrice = (decimal)item.Cells["AvgPrice"].Value;
@@ -7893,7 +8152,7 @@ namespace MyNET.Pos
 
                 if (result == 0)
                 {
-                    details.UpdateTableItem(details.Quantity, details.Total, details.TotalWithVat, details.ItemName, details.tableId,details.CostOfGoods);
+                    details.UpdateTableItem(details.Quantity, details.Total, details.TotalWithVat, details.ItemName, details.tableId, details.CostOfGoods);
                     item.Cells["Id"].Value = (int)item.Cells["Id"].Value;
 
                 }
@@ -8020,7 +8279,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -8109,7 +8368,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -8202,7 +8461,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -8290,7 +8549,7 @@ namespace MyNET.Pos
                                         }
                                         else
                                         {
-                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                             {
                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                 {
@@ -8384,7 +8643,7 @@ namespace MyNET.Pos
                                     }
                                     else
                                     {
-                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                         {
                                             if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {name.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                             {
@@ -9024,7 +9283,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -9114,7 +9373,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -9211,7 +9470,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -9301,7 +9560,7 @@ namespace MyNET.Pos
                                                         }
                                                         else
                                                         {
-                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                                            if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                                             {
                                                                 if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                                 {
@@ -9392,7 +9651,7 @@ namespace MyNET.Pos
                                                     }
                                                     else
                                                     {
-                                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role=="0")
+                                                        if ((Globals.Settings.PIN != "0" || Globals.Settings.PIN != null) && Globals.User.Role == "0")
                                                         {
                                                             if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {foundItems.ItemName}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                                                             {

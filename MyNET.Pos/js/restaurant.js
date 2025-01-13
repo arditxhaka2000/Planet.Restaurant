@@ -57,7 +57,7 @@ function receiveTables(jsonData) {
         }
         else {
 
-            html += "<div class='draggable' data-tableId= " + element.Id + " onclick ='sendPOS(" + element.Id + ")' style='left: " + left + "px; top: " + top + "px; user-select: none; background-image:url(Resources/" + pic + ".png);'>";
+            html += "<div class='draggable' data-tableId= " + element.Id + " onclick ='sendPOS(" + element.Id + ")' style='left: " + left + "px; top: " + top + "px; width: " + tWidth + "px; height: " + tHeight +"px ;user-select: none; background-image:url(Resources/" + pic + ".png);'>";
 
         }
 
@@ -215,12 +215,25 @@ function functionOptionsRestaurant(m) {
             var offsetY = e.clientY - draggable.getBoundingClientRect().top;
             var isDragging = true;
 
+            // Find the associated check-icon div
+            var checkIcon = draggable.querySelector('.check-icon');
+
+            // Ensure the check-icon is initially hidden
+            if (checkIcon) {
+                checkIcon.style.display = 'none';
+            }
+
             document.addEventListener('mousemove', dragDiv);
 
             function dragDiv(e) {
                 if (isDragging) {
                     draggable.style.left = e.clientX - offsetX + 'px';
                     draggable.style.top = e.clientY - offsetY + 'px';
+
+                    // Display the check-icon when moving
+                    if (checkIcon) {
+                        checkIcon.style.display = 'block';
+                    }
                 }
             }
 

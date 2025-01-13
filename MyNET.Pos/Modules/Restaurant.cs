@@ -233,7 +233,9 @@ namespace MyNET.Pos.Modules
         }
         private async void SendTablesToJavaScript(List<Services.Tables> tables)
         {
-            string jsonTables = JsonConvert.SerializeObject(tables);
+            var filteredTables = tables.Where(t => t.toDelete != "1").ToList();
+
+            string jsonTables = JsonConvert.SerializeObject(filteredTables);
 
             jsonTables = jsonTables.Replace("'", "\\'");
 
@@ -479,6 +481,9 @@ namespace MyNET.Pos.Modules
             {
                 await GetTransferoTavolinat();
             }
+
+            comboBox1.Text = "";
+
             webView21.Reload();
 
         }

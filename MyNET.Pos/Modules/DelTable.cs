@@ -34,11 +34,13 @@ namespace MyNET.Pos.Modules
             {
                 if (cmbTable.Text != "")
                 {
-                    var tid = Tables.GetTables().Where(p => p.Name == cmbTable.Text).First().Id;
-                    table.Id = tid;
+                    var tid = Tables.GetTables().Where(p => p.Name == cmbTable.Text).First();
+                    table.Id = tid.Id;
                     table.Space_id = space.Id;
                     table.Name = cmbTable.Text.ToString();
                     table.station_id = Globals.Station.Id.ToString();
+                    table.Width = tid.Width;
+                    table.Height = tid.Height;
                     table.toDelete = "1";
                     table.Status = 1;
                     table.Update();
@@ -185,7 +187,7 @@ namespace MyNET.Pos.Modules
                     var t = Tables.GetTables().Where(p => p.Name == cmbTable.Text).First();
                     table.Id = t.Id;
                     table.Space_id = space.Id;
-                    table.Name = textBox2.Text.ToString()!=""?textBox2.Text.ToString():table.Name;
+                    table.Name = cmbTable.Text.ToString()!=""? cmbTable.Text.ToString():table.Name;  
                     table.inPosTotal = "0";
                     table.station_id = Globals.Station.Id.ToString();
                     table.Shape = cmbTableShape.Text;

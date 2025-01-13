@@ -24,7 +24,15 @@ namespace MyNET.Pos.Modules
             Printer printer = new Printer();
 
            printer.UpdatePaperWidth(textBox1.Text, Globals.DeviceId);
-           printer.UpdateTermalName(comboBox2.SelectedItem.ToString(), Globals.DeviceId);
+            try
+            {
+                printer.UpdateTermalName(comboBox2.SelectedItem.ToString(), Globals.DeviceId);
+
+            }
+            catch (Exception)
+            {
+
+            }
 
             AutoClosingMessageBox.Show("Jane ruajtur me sukses te dhenat", "Sukses", 800);
             this.Close();

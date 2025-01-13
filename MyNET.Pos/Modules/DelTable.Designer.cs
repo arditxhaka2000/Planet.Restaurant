@@ -254,9 +254,9 @@
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(14, 189);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(94, 15);
+            this.label5.Size = new System.Drawing.Size(108, 15);
             this.label5.TabIndex = 25;
-            this.label5.Text = "Emri i Tavolines";
+            this.label5.Text = "Forma e Tavolines";
             this.label5.Visible = false;
             // 
             // DelTable
