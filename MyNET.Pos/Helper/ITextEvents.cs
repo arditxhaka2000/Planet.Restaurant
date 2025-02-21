@@ -51,9 +51,11 @@ namespace MyNET.Pos.Helper
                 string text = "";
                 if (Options.formButton == 1)
                 {
-                    text = "Shitjet ne periudhen:" + Options.dateF.ToString() + " deri me: " + Options.dateTo.ToString();
-                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 170, 520, 0);
+                    text = $"Shitjet ne periudhen: {Options.dateF.ToString()}  deri me: {Options.dateTo.ToString()}";
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 170, 525, 0);
 
+                    text = $"Totali i shitjeve: {Options.totaliRaport}€";
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 170, 505, 0);
 
                 }
                 if (Options.formButton == 2)
@@ -68,6 +70,35 @@ namespace MyNET.Pos.Helper
                     text = "Artikujt pa stok te ndare me muaj";
                     cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 330, 520, 0);
 
+
+                }
+                if (Options.formButton == 4)
+                {
+                    text = $"Shitjet ne periudhen: {Options.dateF.ToString()} në bazë të Kategorive të artikujve me Puntorë: {Options.currentUser.ToString()}";
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 170, 525, 0);
+
+                    text = $"Totali i shitjeve: {Options.totaliRaport}€";
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 170, 505, 0);
+
+                }
+                if (Options.formButton == 5)
+                {
+                    text = $"Shitjet ne periudhen: {Options.dateF.ToString()} në bazë të sasisë të Artikujve me Puntorë: {Options.currentUser.ToString()}";
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 170, 525, 0);
+
+                    text = $"Totali i shitjeve: {Options.totaliRaport}€";
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 170, 505, 0);
+
+                }
+                if (Options.formButton == 6)
+                {
+                    text = $"Raporti periodik ne periudhen: {Options.dateF.ToString()}  deri me: {Options.dateTo.ToString()} me Puntorë: {Options.currentUser.ToString()}";
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 90, 525, 0);
+
+                }if (Options.formButton == 7)
+                {
+                    text = $"Raporti i artikujve te anuluar: {Options.dateF.ToString()}  deri me: {Options.dateTo.ToString()} me Puntorë: {Options.currentUser.ToString()}";
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 90, 525, 0);
 
                 }
                 cb.SetFontAndSize(bf, 22);

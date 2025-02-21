@@ -173,7 +173,7 @@ namespace MyNET.Pos
 
                             if (ug.Columns.Contains(" ") == true)
                             {
-                                ug.Columns.RemoveAt(33);
+                                ug.Columns.RemoveAt(34);
                             }
 
                             countNumFiscal++;
@@ -205,11 +205,11 @@ namespace MyNET.Pos
 
                             Manage_Tables.closeTable = true;
                             Globals.NextStep = "RestaurantPos" + checkIfExistsNew.First().Id;
+                            Services.Tables.UpdateTableJoinId("0", checkIfExistsNew.First().Id.ToString());
 
                             this.Close();
                         }
 
-                        Services.Tables.UpdateTableJoinId("0", checkIfExistsNew.First().Id.ToString());
 
                     }
                     else
@@ -1380,7 +1380,7 @@ namespace MyNET.Pos
                         {
                             row.Cells[12].Value = bonuscard.Discount;
                             SimulateCellEndEdit(row.Index, 12);
-
+                                
                         }
                     }
                 }
@@ -1420,7 +1420,11 @@ namespace MyNET.Pos
             string receipt_no = daily.DailyFiscalCount.ToString();
             string receipt_date = DateTime.Now.ToString();
             decimal net_total = 0;
-            string company = Globals.Settings.CompanyName;
+            string user_name = Globals.User.Name;
+            var currentSpaceId = Services.Tables.GetTables().Where(p => p.Id.ToString() == tableId).FirstOrDefault().Space_id;
+            string space_name = Services.Spaces.GetSpaces().Where(p => p.Id == currentSpaceId).FirstOrDefault().Name;
+            string table_name = Services.Tables.GetTables().Where(p => p.Id.ToString() == tableId).FirstOrDefault().Name;
+
             string line = "--------------------------------------------------------------------------------";
             float height = 5;
             // float printerWidth;
@@ -1441,14 +1445,21 @@ namespace MyNET.Pos
 
 
             //Print Company Name
-            e.Graphics.DrawString("ORDER BILL", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
+
+            e.Graphics.DrawString("Porosia", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
             height += 30;
-            //Print Company Address
-            e.Graphics.DrawString(company, normalFont, Brushes.Black, total_width / company_address, height, new StringFormat());
-            height += 40;
+            //Print User Name
+            e.Graphics.DrawString("Kamarieri: " + user_name, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
+            //Print Space Name
+            e.Graphics.DrawString("Salla: " + space_name, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
+
+            e.Graphics.DrawString("Tavolina: " + table_name, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
 
             //Print Receipt No
-            e.Graphics.DrawString("Receipt No :\n " + receipt_no, boldFont, Brushes.Black, total_width / receipt_number, height, new StringFormat());
+            e.Graphics.DrawString("Numri i porosisë :\n " + receipt_no, boldFont, Brushes.Black, 0, height, new StringFormat());
             //Print Receipt Date
             e.Graphics.DrawString("Date :\n " + receipt_date, boldFont, Brushes.Black, total_width / rec_date, height, new StringFormat());
             height += 40;
@@ -1513,9 +1524,11 @@ namespace MyNET.Pos
 
             //Print Line
             e.Graphics.DrawString(line, normalFont, Brushes.Black, 0, height, new StringFormat());
-            height += 40;
+            height += 20;
 
-            e.Graphics.DrawString("Thank You", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
+            e.Graphics.DrawString("Faleminderit", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
+            height += 40;
+            e.Graphics.DrawString("Planet Accounting", normalFont, Brushes.Black, 0, height, new StringFormat());
 
             e.HasMorePages = false;
         }
@@ -1537,7 +1550,11 @@ namespace MyNET.Pos
             string receipt_no = daily.DailyFiscalCount.ToString();
             string receipt_date = DateTime.Now.ToString();
             decimal net_total = 0;
-            string company = Globals.Settings.CompanyName;
+            string user_name = Globals.User.Name;
+            var currentSpaceId = Services.Tables.GetTables().Where(p => p.Id.ToString() == tableId).FirstOrDefault().Space_id;
+            string space_name = Services.Spaces.GetSpaces().Where(p => p.Id == currentSpaceId).FirstOrDefault().Name;
+            string table_name = Services.Tables.GetTables().Where(p => p.Id.ToString() == tableId).FirstOrDefault().Name;
+
             string line = "--------------------------------------------------------------------------------";
             float height = 5;
             // float printerWidth;
@@ -1557,15 +1574,20 @@ namespace MyNET.Pos
 
 
 
-            //Print Company Name
             e.Graphics.DrawString("Porosia", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
             height += 30;
-            //Print Company Address
-            e.Graphics.DrawString(company, normalFont, Brushes.Black, total_width / company_address, height, new StringFormat());
-            height += 40;
+            //Print User Name
+            e.Graphics.DrawString("Kamarieri: " + user_name, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
+            //Print Space Name
+            e.Graphics.DrawString("Salla: " + space_name, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
+
+            e.Graphics.DrawString("Tavolina: " + table_name, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
 
             //Print Receipt No
-            e.Graphics.DrawString("Numri i porosisë :\n " + receipt_no, boldFont, Brushes.Black, total_width / receipt_number, height, new StringFormat());
+            e.Graphics.DrawString("Numri i porosisë :\n " + receipt_no, boldFont, Brushes.Black, 0, height, new StringFormat());
             //Print Receipt Date
             e.Graphics.DrawString("Date :\n " + receipt_date, boldFont, Brushes.Black, total_width / rec_date - 27, height, new StringFormat());
             height += 40;
@@ -1715,9 +1737,11 @@ namespace MyNET.Pos
 
             //Print Line
             e.Graphics.DrawString(line, normalFont, Brushes.Black, 0, height, new StringFormat());
-            height += 40;
+            height += 20;
 
             e.Graphics.DrawString("Faleminderit", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
+            height += 40;
+            e.Graphics.DrawString("Planet Accounting", normalFont, Brushes.Black, 0, height, new StringFormat());
 
             e.HasMorePages = false;
         }
@@ -1739,7 +1763,11 @@ namespace MyNET.Pos
             string receipt_no = daily.DailyFiscalCount.ToString();
             string receipt_date = DateTime.Now.ToString();
             decimal net_total = 0;
-            string company = Globals.Settings.CompanyName;
+            string user_name = Globals.User.Name;
+            var currentSpaceId = Services.Tables.GetTables().Where(p => p.Id.ToString() == tableId).FirstOrDefault().Space_id;
+            string space_name = Services.Spaces.GetSpaces().Where(p => p.Id == currentSpaceId).FirstOrDefault().Name;
+            string table_name = Services.Tables.GetTables().Where(p => p.Id.ToString() == tableId).FirstOrDefault().Name;
+
             string line = "--------------------------------------------------------------------------------";
             float height = 5;
             // float printerWidth;
@@ -1758,16 +1786,20 @@ namespace MyNET.Pos
 
 
 
-
-            //Print Company Name
             e.Graphics.DrawString("Porosia", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
             height += 30;
-            //Print Company Address
-            e.Graphics.DrawString(company, normalFont, Brushes.Black, total_width / company_address, height, new StringFormat());
-            height += 40;
+            //Print User Name
+            e.Graphics.DrawString("Kamarieri: " + user_name, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
+            //Print Space Name
+            e.Graphics.DrawString("Salla: " + space_name, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
+
+            e.Graphics.DrawString("Tavolina: " + table_name, normalFont, Brushes.Black, 0, height, new StringFormat());
+            height += 20;
 
             //Print Receipt No
-            e.Graphics.DrawString("Numri i porosisë :\n " + receipt_no, boldFont, Brushes.Black, total_width / receipt_number, height, new StringFormat());
+            e.Graphics.DrawString("Numri i porosisë :\n " + receipt_no, boldFont, Brushes.Black, 0, height, new StringFormat());
             //Print Receipt Date
             e.Graphics.DrawString("Date :\n " + receipt_date, boldFont, Brushes.Black, total_width / rec_date - 27, height, new StringFormat());
             height += 40;
@@ -1915,9 +1947,11 @@ namespace MyNET.Pos
 
             //Print Line
             e.Graphics.DrawString(line, normalFont, Brushes.Black, 0, height, new StringFormat());
-            height += 40;
+            height += 20;
 
             e.Graphics.DrawString("Faleminderit", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
+            height += 40;
+            e.Graphics.DrawString("Planet Accounting", normalFont, Brushes.Black, 0, height, new StringFormat());
 
             e.HasMorePages = false;
         }
@@ -3015,7 +3049,7 @@ namespace MyNET.Pos
             if (e.RowIndex < 0)
                 return;
 
-            if (e.ColumnIndex == 33)
+            if (e.ColumnIndex == 34)
             {
 
                 e.Paint(e.CellBounds, DataGridViewPaintParts.All);
@@ -5156,7 +5190,8 @@ namespace MyNET.Pos
                                          PrintedFiscal = group.First().PrintedFiscal,
                                          PrintedFiscalQuantity = group.First().PrintedFiscalQuantity,
                                          DiscountAmount = group.First().DiscountAmount,
-                                         toClose = group.First().toClose
+                                         toClose = group.First().toClose,
+                                         CreatedBy = Globals.User.Name
                                      })
                                      .ToList();
 
@@ -5191,6 +5226,7 @@ namespace MyNET.Pos
             ug.Columns[30].Visible = false;
             ug.Columns[31].Visible = false;
             ug.Columns[32].Visible = false;
+            ug.Columns[33].Visible = false;
 
 
             //ug.Columns[14].FillWeight = 50;
@@ -6239,13 +6275,11 @@ namespace MyNET.Pos
                 {
                     if (ug.Columns.Contains(" ") == true)
                     {
-                        ug.Columns.RemoveAt(33);
+                        ug.Columns.RemoveAt(34);
 
                     }
 
-                    Globals.NextStep = "Restaurant";
-
-                    this.Close();
+                    
                 }
                 else
                 {
@@ -6255,7 +6289,7 @@ namespace MyNET.Pos
                     {
                         if (ug.Columns.Contains(" ") == true)
                         {
-                            ug.Columns.RemoveAt(33);
+                            ug.Columns.RemoveAt(34);
 
                         }
 
@@ -6266,9 +6300,36 @@ namespace MyNET.Pos
                                          where row.Cells["Id"].Value != null
                                          select Convert.ToInt32(row.Cells["Id"].Value)).ToList();
 
+                //me e insertu canceled order 
+                var cancelOrder = new CanceledOrder();
+                var cancelOrderDetails = new CanceledOrderDetails();
 
-                idsToDelete.ForEach(id => Services.Models.TablesSaleDetails.DeleteTableSaleWithId(id.ToString()));
-                New();
+                cancelOrder.id_saler = Globals.User.Id;
+                cancelOrder.CreatedAt = DateTime.Now;
+                cancelOrder.Total = mTotalSum;
+
+                var result = cancelOrder.Insert();
+                if (result > 0)
+                {
+                    var b =  cancelOrder.Id;
+                }
+                foreach (DataGridViewRow row in ug.Rows)
+                {
+                    cancelOrderDetails.Order_Id = cancelOrder.Id;
+                    cancelOrderDetails.Item_Id = Convert.ToInt16(row.Cells["ItemId"].Value.ToString());
+                    cancelOrderDetails.Name = row.Cells["ItemName"].Value.ToString();
+                    cancelOrderDetails.Quantity = Convert.ToDecimal(row.Cells["Quantity"].Value.ToString());
+                    cancelOrderDetails.Price = Convert.ToDecimal(row.Cells[14].Value.ToString());
+                    cancelOrderDetails.CreatedAt = DateTime.Now;
+                    cancelOrderDetails.id_saler = Globals.User.Id.ToString();
+
+                    cancelOrderDetails.Insert();
+                }
+                idsToDelete.ForEach(id => TableSaleDetails.DeleteTableSaleWithId(id.ToString()));
+                ug.Rows.Clear();
+                Globals.NextStep = "Restaurant";
+                this.Close();
+
 
             }
             else
@@ -6343,7 +6404,7 @@ namespace MyNET.Pos
         private void PosRestaurant_FormClosing(object sender, FormClosingEventArgs e)
         {
             Globals.NextStep = "Restaurant";
-
+            InsertOrderDetails();
 
         }
 
@@ -6665,7 +6726,7 @@ namespace MyNET.Pos
             string tableID = this.tableId;
             if (ug.Columns.Contains(" ") == true)
             {
-                ug.Columns.RemoveAt(33);
+                ug.Columns.RemoveAt(34);
             }
             this.tableId = tableID;
 
@@ -6737,7 +6798,7 @@ namespace MyNET.Pos
 
                         if (ug.Columns.Contains(" ") == true)
                         {
-                            ug.Columns.RemoveAt(33);
+                            ug.Columns.RemoveAt(34);
                         }
 
                         countNumFiscal++;
@@ -7045,7 +7106,7 @@ namespace MyNET.Pos
                             {
                                 if (ug.Columns.Contains(" ") == true)
                                 {
-                                    ug.Columns.RemoveAt(33);
+                                    ug.Columns.RemoveAt(34);
                                 }
 
                                 countNumFiscal++;
@@ -7077,7 +7138,7 @@ namespace MyNET.Pos
 
                             if (ug.Columns.Contains(" ") == true)
                             {
-                                ug.Columns.RemoveAt(33);
+                                ug.Columns.RemoveAt(34);
                             }
 
                             countNumFiscal++;
@@ -8146,6 +8207,7 @@ namespace MyNET.Pos
                 details.ClientDiscount = Partner.Get(PartnerId).Discount;
                 details.Sale_Id = 0;
                 details.toClose = 0;
+                details.CreatedBy = Globals.User.Name;
                 //details.PrintedFiscalQuantity = (int)details.Quantity;
 
                 var result = details.Insert();
@@ -8154,6 +8216,7 @@ namespace MyNET.Pos
                 {
                     details.UpdateTableItem(details.Quantity, details.Total, details.TotalWithVat, details.ItemName, details.tableId, details.CostOfGoods);
                     item.Cells["Id"].Value = (int)item.Cells["Id"].Value;
+                    Services.Tables.UpdateTotalInPos(mTotalSum.ToString("N"), tableId);
 
                 }
                 else
@@ -8164,7 +8227,6 @@ namespace MyNET.Pos
 
 
             }
-            Services.Tables.UpdateTotalInPos(mTotalSum.ToString("N"), tableId);
         }
         private void btnSignOut_Click(object sender, EventArgs e)
         {
@@ -9065,6 +9127,8 @@ namespace MyNET.Pos
         {
             if (Globals.Settings.PosPrinter == "1")
             {
+                InsertOrderDetails();
+
                 PrintThermal();
 
             }

@@ -340,6 +340,9 @@
     <Compile Include="Helper\FullScreen.cs" />
     <Compile Include="Helper\InvoicePDF.cs" />
     <Compile Include="Helper\ITextEvents.cs" />
+    <Compile Include="Helper\WrapComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Helper\NetworkScanner.cs" />
     <Compile Include="Helper\SocketManager.cs" />
     <Compile Include="Helper\TableHub.cs" />

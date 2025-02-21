@@ -101,9 +101,14 @@
     <Compile Include="Action.cs" />
     <Compile Include="BonusCard.cs" />
     <Compile Include="BonusCardTemplate.cs" />
+    <Compile Include="CanceledOrder.cs" />
+    <Compile Include="CanceledOrderDetails.cs" />
     <Compile Include="DailyOpenCloseBalance.cs" />
     <Compile Include="Error.cs" />
+    <Compile Include="GeneralSalePeriodicReport.cs" />
+    <Compile Include="ItemCategoriesSaleReportClass.cs" />
     <Compile Include="ItemLocation.cs" />
+    <Compile Include="ItemSaleReportClass.cs" />
     <Compile Include="Models\DailyBalance.cs" />
     <Compile Include="Models\IBaseObj.cs" />
     <Compile Include="ItemCategory.cs" />

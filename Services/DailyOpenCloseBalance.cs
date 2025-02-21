@@ -68,7 +68,14 @@ namespace Services
             string searchParams = "StationId=" + stationId + "&DateFrom=" + strDateFrom + "&DateTo=" + strDateTo;
             var rptDailyBalance = Services.RestHepler<DailyBalance>.Select("rptDailyBalance", searchParams);
             return rptDailyBalance;
-        } 
+        }
+        public static List<DailyOpenCloseBalance> GetDailyBalanceByDay(DateTime date)
+        {
+            string strDateFrom = date.ToString("yyyy-MM-dd");
+            string searchParams = "&date=" + strDateFrom;
+            var rptDailyBalance = Services.RestHepler<DailyOpenCloseBalance>.Select("GetDailyBalanceByDay", searchParams);
+            return rptDailyBalance;
+        }
         public static List<DailyBalance> GetBalanceReportByDays(int stationId, DateTime dateFrom, DateTime dateTo)
         {
             string strDateFrom = dateFrom.ToString("yyyy-MM-ddTHH:mm:ss");

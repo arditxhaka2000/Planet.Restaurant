@@ -24,6 +24,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 using TremolZFP;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Font = System.Drawing.Font;
 using Label = System.Windows.Forms.Label;
 
@@ -48,10 +49,14 @@ namespace MyNET.Pos.Modules
         public static decimal dorezimi;
         public static decimal totaliRaport;
         public static decimal totalCat;
+        public static decimal totaliReport;
         public int dailyOpenId = Globals.User.Id;
         public static int formButton = 0;
+        public string ReportType = "";
+        public static string currentUser;
 
         Services.DailyOpenCloseBalance dailyOpen = Services.DailyOpenCloseBalance.GetLastDailyBalanceByEmployee(Globals.User.Id);
+        public WrapComboBox wrapCombo = new WrapComboBox();
 
         List<Services.Printer> printers = Services.Printer.Get();
         public ReportRestaurant()
@@ -227,20 +232,22 @@ namespace MyNET.Pos.Modules
         private void Options_Load(object sender, EventArgs e)
         {
 
+
             var globals = Services.Settings.Get();
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
             dateTimePicker1.CustomFormat = "MM/dd/yyyy";
+
             dateTimePicker4.Format = DateTimePickerFormat.Custom;
             dateTimePicker4.CustomFormat = "MM/dd/yyyy";
+
             dFDate.Format = DateTimePickerFormat.Custom;
+            dFDate.CustomFormat = "MM/dd/yyyy";
+
             dateTimePicker5.Format = DateTimePickerFormat.Custom;
             dateTimePicker5.CustomFormat = "MM/dd/yyyy";
-            dFDate.CustomFormat = "MM/dd/yyyy";
+
             dateTimePicker1.Value = DateTime.Now.AddDays(1);
             dateTimePicker4.Value = DateTime.Now.AddDays(1);
-
-            dateTimePicker6.Value = DateTime.Today.AddDays(1).AddTicks(-1);
-
 
             dateTimePicker3.Format = DateTimePickerFormat.Custom;
             dateTimePicker3.CustomFormat = "MM/dd/yyyy";
@@ -248,31 +255,60 @@ namespace MyNET.Pos.Modules
             dateTimePicker2.CustomFormat = "MM/dd/yyyy";
             dateTimePicker3.Value = DateTime.Now.AddDays(-1);
 
-            dateTimePicker7.Format = DateTimePickerFormat.Custom;
-            dateTimePicker7.CustomFormat = "MM/dd/yyyy";
 
-            dateTimePicker6.Format = DateTimePickerFormat.Custom;
-            dateTimePicker6.CustomFormat = "MM/dd/yyyy";
+            var users = new List<User>();
 
-            var users = User.GetByStation(Globals.Station.Id);
-            User user = new User();
-            user.FirstName = "Të gjithë";
-            users.Add(user);
+            if (Globals.User.Role == "1")
+            {
+                users = User.GetByStation(Globals.Station.Id);
+                User user = new User();
+                user.FirstName = "Të gjithë";
+                users.Add(user);
+                cmbUsers.DataSource = users;
+                cmbUsers.DisplayMember = "Name";
+                cmbUsers.ValueMember = "Id";
+                cmbUsers.Text = "Të gjithë";
+                cmbUser2.DataSource = users;
+                cmbUser2.DisplayMember = "Name";
+                cmbUser2.ValueMember = "Id";
+                cmbUser2.Text = "Të gjithë ";
 
-            cmbUsers.DataSource = users;
-            cmbUsers.DisplayMember = "Name";
-            cmbUsers.ValueMember = "Id";
-            cmbUsers.Text = "Të gjithë";
+                comboBox2.DataSource = users;
+                comboBox2.DisplayMember = "Name";
+                comboBox2.ValueMember = "Id";
+                comboBox2.Text = "Të gjithë ";
+            }
+            else
+            {
+                users.Add(Globals.User);
+                cmbUsers.DataSource = users;
+                cmbUsers.DisplayMember = "Name";
+                cmbUsers.ValueMember = "Id";
+                cmbUser2.DataSource = users;
+                cmbUser2.DisplayMember = "Name";
+                cmbUser2.ValueMember = "Id";
+                comboBox2.DataSource = users;
+                comboBox2.DisplayMember = "Name";
+                comboBox2.ValueMember = "Id";
+            }
 
-            cmbUser2.DataSource = users;
-            cmbUser2.DisplayMember = "Name";
-            cmbUser2.ValueMember = "Id";
-            cmbUser2.Text = "Të gjithë";
+            if (!Controls.ContainsKey("wrapCombo"))
+            {
+                wrapCombo.Location = new System.Drawing.Point(34, 43);
+                wrapCombo.Size = new System.Drawing.Size(187, 50);
+                wrapCombo.Name = "wrapCombo";
+                wrapCombo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12);
+                wrapCombo.DropDownHeight = 500;
+                tabPage4.Controls.Add(wrapCombo);
+            }
 
-            comboBox2.DataSource = users;
-            comboBox2.DisplayMember = "Name";
-            comboBox2.ValueMember = "Id";
-            comboBox2.Text = "Të gjithë";
+            wrapCombo.Items.Clear();
+            wrapCombo.Items.Add("Raporti gjeneral i shitjeve");
+            wrapCombo.Items.Add("Raporti i shitjeve në bazë të Kategorive");
+            wrapCombo.Items.Add("Raporti i shitjeve në bazë të Artikujve");
+            wrapCombo.Items.Add("Raporti i pergjithëshëm periodik");
+            wrapCombo.Items.Add("Raporti i artikujve të anuluar");
+            wrapCombo.SelectedIndexChanged += WrapCombo_SelectedIndexChanged;
 
 
         }
@@ -280,7 +316,51 @@ namespace MyNET.Pos.Modules
         {
             Options_Load(null, EventArgs.Empty);
         }
+        private void WrapCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (wrapCombo.SelectedItem != null)
+            {
+                ReportType = wrapCombo.SelectedItem.ToString();
 
+            }
+            if (wrapCombo.SelectedIndex == 0)
+            {
+                word_from.Visible = true;
+                word_to.Visible = true;
+                dFDate.Visible = true;
+                dateTimePicker1.Visible = true;
+
+            }
+            if (wrapCombo.SelectedIndex == 1)
+            {
+                word_from.Visible = true;
+                word_to.Visible = false;
+                dFDate.Visible = true;
+                dateTimePicker1.Visible = false;
+            }
+            if (wrapCombo.SelectedIndex == 2)
+            {
+                word_from.Visible = true;
+                word_to.Visible = false;
+                dFDate.Visible = true;
+                dateTimePicker1.Visible = false;
+            }
+            if (wrapCombo.SelectedIndex == 3)
+            {
+                word_from.Visible = true;
+                word_to.Visible = true;
+                dFDate.Visible = true;
+                dateTimePicker1.Visible = true;
+            }
+            if (wrapCombo.SelectedIndex == 4)
+            {
+                word_from.Visible = true;
+                word_to.Visible = true;
+                dFDate.Visible = true;
+                dateTimePicker1.Visible = true;
+            }
+
+        }
         private void timer1_Tick(object sender, EventArgs e)
         {
 
@@ -1536,55 +1616,193 @@ namespace MyNET.Pos.Modules
             dateTo = new DateTime(selectedToDate.Year, selectedToDate.Month, selectedToDate.Day, 0, 0, 0);
             string formattedFromDate = dateF.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
             string formattedToDate = dateTo.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
-
-            var list = new List<Sale>();
-            if (cmbUsers.Text != "Të gjithë")
+            var reportType = ReportType;
+            List<Sale> sales = new List<Sale>();
+            decimal t = 0.0m;
+            currentUser = cmbUsers.Text;
+            if (reportType == "Raporti gjeneral i shitjeve")
             {
+                var list = new List<Sale>();
+                if (cmbUsers.Text != "Të gjithë ")
+                {
 
-                list = Sale.SalesByDate(formattedFromDate, formattedToDate).Where(p => p.id_saler == (int)cmbUsers.SelectedValue).ToList();
+                    list = Sale.SalesByDate(formattedFromDate, formattedToDate).Where(p => p.id_saler == (int)cmbUsers.SelectedValue).ToList();
 
+
+                }
+                else
+                {
+                    list = Sale.SalesByDate(formattedFromDate, formattedToDate);
+                }
+                foreach (var lsale in list)
+                {
+                    t += lsale.TotalSum;
+                    sales.Add((Sale)lsale);
+
+                }
+
+                dataGridView1.DataSource = sales;
+                dataGridView1.Columns[1].Visible = false;
+                dataGridView1.Columns[3].Visible = false;
+                dataGridView1.Columns[4].Visible = false;
+                dataGridView1.Columns[5].Visible = false;
+                dataGridView1.Columns[7].Visible = false;
+                dataGridView1.Columns[8].Visible = false;
+                dataGridView1.Columns[9].Visible = false;
+                dataGridView1.Columns[10].Visible = false;
+                dataGridView1.Columns[11].Visible = false;
+                dataGridView1.Columns[12].Visible = false;
+                dataGridView1.Columns[14].Visible = false;
+                dataGridView1.Columns[15].Visible = false;
+                dataGridView1.Columns[16].Visible = false;
+                dataGridView1.Columns[17].Visible = false;
+                dataGridView1.Columns[18].Visible = false;
+                dataGridView1.Columns[19].Visible = false;
+                dataGridView1.Columns[20].Visible = false;
+                dataGridView1.Columns[21].Visible = false;
+                dataGridView1.Columns[22].Visible = false;
+                dataGridView1.Columns[24].Visible = false;
+                dataGridView1.Columns[25].Visible = false;
+                dataGridView1.Columns[26].Visible = false;
+
+                dataGridView1.Columns[6].HeaderText = "Nr.Faturës";
+                dataGridView1.Columns[13].HeaderText = "Shuma në €";
+                dataGridView1.Columns[23].HeaderText = "Krijuar nga: ";
+                var totalshitje = t;
+                label1.Text = totalshitje.ToString();
+            }
+            else if (reportType == "Raporti i shitjeve në bazë të Kategorive")
+            {
+                var reportByIC = new List<ItemCategoriesSaleReportClass>();
+                if (cmbUsers.Text != "Të gjithë ")
+                {
+                    reportByIC = ItemCategoriesSaleReportClass.GetReportByDateAndUser(dateF, cmbUsers.Text);
+
+                }
+                else
+                {
+                    reportByIC = ItemCategoriesSaleReportClass.GetAllReportByDate(dateF);
+
+                }
+
+                dataGridView1.DataSource = reportByIC;
+                foreach (DataGridViewRow item in dataGridView1.Rows)
+                {
+                    t += Convert.ToDecimal(item.Cells["TotalAmount"].Value);
+                    item.Cells["TotalAmount"].Value = Math.Round(((decimal)item.Cells["TotalAmount"].Value), 2);
+
+                }
+                label1.Text = t.ToString("N");
+
+            }
+            else if (reportType == "Raporti i shitjeve në bazë të Artikujve")
+            {
+                var reportByI = new List<ItemSaleReportClass>();
+                if (cmbUsers.Text != "Të gjithë ")
+                {
+                    reportByI = ItemSaleReportClass.GetItemReportByDateAndUser(dateF, cmbUsers.Text);
+
+                }
+                else
+                {
+                    reportByI = ItemSaleReportClass.GetItemAllReportByDate(dateF);
+
+                }
+
+                dataGridView1.DataSource = reportByI;
+                foreach (DataGridViewRow item in dataGridView1.Rows)
+                {
+                    t += Convert.ToDecimal(item.Cells["TotalAmount"].Value);
+                    item.Cells["TotalAmount"].Value = Math.Round(((decimal)item.Cells["TotalAmount"].Value), 2);
+
+                }
+                label1.Text = t.ToString("N");
+
+            }
+            else if (reportType == "Raporti i pergjithëshëm periodik")
+            {
+                var reportByI = new List<GeneralSalePeriodicReport>();
+                if (cmbUsers.Text != "Të gjithë ")
+                {
+                    reportByI = GeneralSalePeriodicReport.GeneralSalesByDateAndUser(formattedFromDate, formattedToDate, (int)cmbUsers.SelectedValue);
+
+                }
+                else
+                {
+                    reportByI = GeneralSalePeriodicReport.GeneralSalesByDate(formattedFromDate, formattedToDate);
+
+                }
+
+                dataGridView1.DataSource = reportByI;
+                foreach (DataGridViewRow item in dataGridView1.Rows)
+                {
+                    t += Convert.ToDecimal(item.Cells["TotalAmount"].Value);
+                    item.Cells[1].Value = Math.Round(((decimal)item.Cells[1].Value), 2);
+                    item.Cells[2].Value = Math.Round(((decimal)item.Cells[2].Value), 2);
+                    item.Cells[4].Value = Math.Round(((decimal)item.Cells[4].Value), 2);
+                    item.Cells[5].Value = Math.Round(((decimal)item.Cells[5].Value), 2);
+                    item.Cells[6].Value = Math.Round(((decimal)item.Cells[6].Value), 2);
+                    item.Cells[7].Value = Math.Round(((decimal)item.Cells[7].Value), 2);
+                    item.Cells[8].Value = Math.Round(((decimal)item.Cells[8].Value), 2);
+
+                }
+                dataGridView1.Columns[1].HeaderText = "Qarkullimi Total";
+                dataGridView1.Columns[2].HeaderText = "Totali i TVSH-se";
+                dataGridView1.Columns[3].HeaderText = "Kupona Fiskal";
+                dataGridView1.Columns[4].HeaderText = "Totali i shitjeve pa TVSH";
+                dataGridView1.Columns[5].HeaderText = "Totali i shitjeve me 8% TVSH";
+                dataGridView1.Columns[6].HeaderText = "Totali i shitjeve me 18% TVSH";
+                dataGridView1.Columns[7].HeaderText = "Totali i TVSH-se 8%";
+                dataGridView1.Columns[8].HeaderText = "Totali i TVSH-se 18%";
+
+                label1.Text = t.ToString("N");
+
+            }
+            else if (reportType == "Raporti i artikujve të anuluar")
+            {
+                var reportByI = new List<CanceledOrderDetails>();
+
+                if (cmbUsers.Text != "Të gjithë ")
+                {
+                    reportByI = CanceledOrderDetails.CanceledOrderByDateAndUser(formattedFromDate, formattedToDate, (int)cmbUsers.SelectedValue);
+
+                }
+                else
+                {
+                    reportByI = CanceledOrderDetails.CanceledOrderByDate(formattedFromDate, formattedToDate);
+
+                }
+
+                dataGridView1.DataSource = reportByI;
+                foreach (DataGridViewRow item in dataGridView1.Rows)
+                {
+                    t += Convert.ToDecimal(item.Cells["Price"].Value) * Convert.ToDecimal(item.Cells["Quantity"].Value);
+                    var name = User.Get(Convert.ToInt16(item.Cells[7].Value.ToString())).Name;
+                    item.Cells[7].Value = name;
+                    //item.Cells[2].Value = Math.Round(((decimal)item.Cells[2].Value), 2);
+                    //item.Cells[4].Value = Math.Round(((decimal)item.Cells[4].Value), 2);
+                    //item.Cells[5].Value = Math.Round(((decimal)item.Cells[5].Value), 2);
+                    //item.Cells[6].Value = Math.Round(((decimal)item.Cells[6].Value), 2);
+                    //item.Cells[7].Value = Math.Round(((decimal)item.Cells[7].Value), 2);
+                    //item.Cells[8].Value = Math.Round(((decimal)item.Cells[8].Value), 2);
+
+                }
+                dataGridView1.Columns[1].Visible = false;
+                dataGridView1.Columns[2].HeaderText = "Nr. Porosisë";
+                dataGridView1.Columns[3].HeaderText = "Id e Artikullit";
+                dataGridView1.Columns[4].HeaderText = "Emri i Artikullit";
+                dataGridView1.Columns[5].HeaderText = "Sasia";
+                dataGridView1.Columns[6].HeaderText = "Qmimi për copë";
+                dataGridView1.Columns[7].HeaderText = "Puntori";
+                dataGridView1.Columns[8].HeaderText = "Data";
+
+                label1.Text = t.ToString("N");
             }
             else
             {
-                list = Sale.SalesByDate(formattedFromDate, formattedToDate);
-            }
-            List<Sale> sales = new List<Sale>();
-            decimal t = 0.0m;
-            foreach (var lsale in list)
-            {
-                t += lsale.TotalSum;
-                sales.Add((Sale)lsale);
 
             }
-            dataGridView1.DataSource = sales;
-            dataGridView1.Columns[1].Visible = false;
-            dataGridView1.Columns[3].Visible = false;
-            dataGridView1.Columns[4].Visible = false;
-            dataGridView1.Columns[5].Visible = false;
-            dataGridView1.Columns[7].Visible = false;
-            dataGridView1.Columns[8].Visible = false;
-            dataGridView1.Columns[9].Visible = false;
-            dataGridView1.Columns[10].Visible = false;
-            dataGridView1.Columns[11].Visible = false;
-            dataGridView1.Columns[12].Visible = false;
-            dataGridView1.Columns[14].Visible = false;
-            dataGridView1.Columns[15].Visible = false;
-            dataGridView1.Columns[16].Visible = false;
-            dataGridView1.Columns[17].Visible = false;
-            dataGridView1.Columns[18].Visible = false;
-            dataGridView1.Columns[19].Visible = false;
-            dataGridView1.Columns[20].Visible = false;
-            dataGridView1.Columns[21].Visible = false;
-            dataGridView1.Columns[22].Visible = false;
-            dataGridView1.Columns[24].Visible = false;
-            dataGridView1.Columns[25].Visible = false;
-            dataGridView1.Columns[26].Visible = false;
 
-            dataGridView1.Columns[6].HeaderText = "Nr.Faturës";
-            dataGridView1.Columns[13].HeaderText = "Shuma në €";
-            dataGridView1.Columns[23].HeaderText = "Krijuar nga: ";
-            var totalshitje = t;
-            label1.Text = totalshitje.ToString();
         }
         private void cmbFiscalPrinterType_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1784,132 +2002,568 @@ namespace MyNET.Pos.Modules
 
         private void button4_Click_1(object sender, EventArgs e)
         {
-            formButton = 1;
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "PDF (*.pdf)|*.pdf";
+
             if (dataGridView1.Rows.Count > 0)
             {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "PDF (*.pdf)|*.pdf";
-                string formattedFromDate = dateF.ToString("dd.MM.yyyy hh:mm:ss tt").Replace(":", "_").Replace(" ", "_");
-                string formattedToDate = dateTo.ToString("dd.MM.yyyy hh:mm:ss tt").Replace(":", "_").Replace(" ", "_");
-                sfd.FileName = $"Shitjet_nga_data_{formattedFromDate}_deri_{formattedToDate}.pdf";
-
-                bool fileError = false;
-                if (sfd.ShowDialog() == DialogResult.OK)
+                if (ReportType == "Raporti gjeneral i shitjeve")
                 {
-                    if (File.Exists(sfd.FileName))
-                    {
-                        try
-                        {
-                            File.Delete(sfd.FileName);
-                        }
-                        catch (IOException ex)
-                        {
-                            fileError = true;
-                            MessageBox.Show("It wasn't possible to write the data to the disk." + ex.Message);
-                        }
-                    }
-                    if (!fileError)
-                    {
-                        try
-                        {
-                            PdfPTable pdfTable = new PdfPTable(4);
-                            pdfTable.DefaultCell.Padding = 3;
-                            pdfTable.WidthPercentage = 100;
-                            pdfTable.HorizontalAlignment = Element.ALIGN_LEFT;
+                    formButton = 1;
 
-                            foreach (DataGridViewColumn column in dataGridView1.Columns)
+                    string formattedFromDate = dateF.ToString("dd.MM.yyyy hh:mm:ss tt").Replace(":", "_").Replace(" ", "_");
+                    string formattedToDate = dateTo.ToString("dd.MM.yyyy hh:mm:ss tt").Replace(":", "_").Replace(" ", "_");
+                    sfd.FileName = $"Shitjet_nga_data_{formattedFromDate}_deri_{formattedToDate}.pdf";
+
+                    bool fileError = false;
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        if (File.Exists(sfd.FileName))
+                        {
+                            try
                             {
-                                if (column.Visible)
-                                {
-                                    PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText));
-                                    pdfTable.AddCell(cell);
-                                }
+                                File.Delete(sfd.FileName);
                             }
-                            pdfTable.CompleteRow();
-
-                            foreach (DataGridViewRow row in dataGridView1.Rows)
+                            catch (IOException ex)
                             {
-                                bool hasVisibleCell = false;
+                                fileError = true;
+                                MessageBox.Show("It wasn't possible to write the data to the disk." + ex.Message);
+                            }
+                        }
+                        if (!fileError)
+                        {
+                            try
+                            {
+                                PdfPTable pdfTable = new PdfPTable(4);
+                                pdfTable.DefaultCell.Padding = 3;
+                                pdfTable.WidthPercentage = 100;
+                                pdfTable.HorizontalAlignment = Element.ALIGN_LEFT;
+
                                 foreach (DataGridViewColumn column in dataGridView1.Columns)
                                 {
                                     if (column.Visible)
                                     {
-                                        DataGridViewCell cell = row.Cells[column.Index];
-                                        if (cell.Value != null)
+                                        PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText));
+                                        pdfTable.AddCell(cell);
+                                    }
+                                }
+                                pdfTable.CompleteRow();
+
+                                foreach (DataGridViewRow row in dataGridView1.Rows)
+                                {
+                                    bool hasVisibleCell = false;
+                                    foreach (DataGridViewColumn column in dataGridView1.Columns)
+                                    {
+                                        if (column.Visible)
                                         {
-                                            pdfTable.AddCell(cell.Value.ToString());
-                                            hasVisibleCell = true;
+                                            DataGridViewCell cell = row.Cells[column.Index];
+                                            if (cell.Value != null)
+                                            {
+                                                pdfTable.AddCell(cell.Value.ToString());
+                                                hasVisibleCell = true;
+                                            }
                                         }
                                     }
-                                }
 
-                                if (hasVisibleCell)
-                                {
-                                    pdfTable.CompleteRow();
-                                }
-                            }
-
-                            using (FileStream stream = new FileStream(sfd.FileName, FileMode.Create))
-                            {
-                                iTextSharp.text.Document pdfDoc = new iTextSharp.text.Document(PageSize.A4.Rotate(), 5f, 10f, 105f, 5f);
-                                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
-
-                                writer.PageEvent = new Helper.ITextEvents();
-
-                                pdfDoc.Open();
-
-                                PdfContentByte cb = writer.DirectContent;
-
-                                int pageRows = 0;
-                                //Ky loop e lejon tabelen ne pdf me pas veq 20 rreshta
-                                while (pageRows < dataGridView1.Rows.Count)
-                                {
-                                    cb.BeginText();
-                                    pdfTable.TotalWidth = 770f;
-                                    pdfTable.WriteSelectedRows(pageRows, pageRows + 15, 40, 500, cb);
-                                    pageRows += 15;
-
-                                    if (pageRows > dataGridView1.Rows.Count)
+                                    if (hasVisibleCell)
                                     {
-                                        BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-                                        cb.SetFontAndSize(bf, 18);
-                                        float tableHeight = 20 * (pageRows - dataGridView1.Rows.Count); // Calculate the height of the table
+                                        pdfTable.CompleteRow();
+                                    }
+                                }
 
-                                        cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, $"Totali i shitjeve: {label1.Text}€", 600, tableHeight + 0, 0);
+                                using (FileStream stream = new FileStream(sfd.FileName, FileMode.Create))
+                                {
+                                    iTextSharp.text.Document pdfDoc = new iTextSharp.text.Document(PageSize.A4.Rotate(), 5f, 10f, 105f, 5f);
+                                    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
+
+                                    writer.PageEvent = new Helper.ITextEvents();
+
+                                    pdfDoc.Open();
+
+                                    PdfContentByte cb = writer.DirectContent;
+
+                                    int pageRows = 0;
+                                    //Ky loop e lejon tabelen ne pdf me pas veq 20 rreshta
+                                    while (pageRows < dataGridView1.Rows.Count)
+                                    {
+                                        cb.BeginText();
+                                        pdfTable.TotalWidth = 770f;
+                                        pdfTable.WriteSelectedRows(pageRows, pageRows + 15, 40, 500, cb);
+                                        pageRows += 15;
+
+                                        if (pageRows > dataGridView1.Rows.Count)
+                                        {
+                                            BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+                                            cb.SetFontAndSize(bf, 18);
+                                            float tableHeight = 20 * (pageRows - dataGridView1.Rows.Count); // Calculate the height of the table
+
+                                            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, $"Totali i shitjeve: {label1.Text}€", 600, tableHeight + 0, 0);
+                                        }
+
+                                        cb.EndText();
+                                        pdfDoc.NewPage();
                                     }
 
-                                    cb.EndText();
-                                    pdfDoc.NewPage();
+                                    //cb.SetColorFill(BaseColor.BLACK);
+                                    //cb.SetFontAndSize(bf, 14);
+                                    //cb.BeginText();
+                                    //string text = "Shitjet sipas artikujve ne periudhen:" + dFDate.Value.ToString() + " deri me: " + dtDate.Value.ToString();
+                                    //cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 200, 520, 0);
+
+                                    //cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, $"{Globals.Station.Name}", 350, 550, 0);
+                                    //cb.BeginText();
+
+                                    //cb.SetFontAndSize(bf, 12);
+                                    //cb.EndText();
+
+                                    //pdfDoc.Add(pdfTable);
+                                    //writer.PageEvent.OnCloseDocument(writer, pdfDoc);
+
+                                    pdfDoc.Close();
+                                    stream.Close();
                                 }
 
-                                //cb.SetColorFill(BaseColor.BLACK);
-                                //cb.SetFontAndSize(bf, 14);
-                                //cb.BeginText();
-                                //string text = "Shitjet sipas artikujve ne periudhen:" + dFDate.Value.ToString() + " deri me: " + dtDate.Value.ToString();
-                                //cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 200, 520, 0);
-
-                                //cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, $"{Globals.Station.Name}", 350, 550, 0);
-                                //cb.BeginText();
-
-                                //cb.SetFontAndSize(bf, 12);
-                                //cb.EndText();
-
-                                //pdfDoc.Add(pdfTable);
-                                //writer.PageEvent.OnCloseDocument(writer, pdfDoc);
-
-                                pdfDoc.Close();
-                                stream.Close();
+                                MessageBox.Show("Dokumenti u ruajt me sukses!", "Info");
                             }
-
-                            MessageBox.Show("Dokumenti u ruajt me sukses!", "Info");
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Error :" + ex.Message);
+                            }
                         }
-                        catch (Exception ex)
+                    }
+                }
+                else if (ReportType == "Raporti i shitjeve në bazë të Kategorive")
+                {
+                    formButton = 4;
+
+                    string formattedFromDate = dateF.ToString("dd.MM.yyyy hh:mm:ss tt").Replace(":", "_").Replace(" ", "_");
+                    sfd.FileName = $"Shitjet_nga_data_{formattedFromDate}_në_bazë_të_Kategorisë_së_artikujve_me_puntor_{cmbUsers.Text}.pdf";
+                    bool fileError = false;
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        if (File.Exists(sfd.FileName))
                         {
-                            MessageBox.Show("Error :" + ex.Message);
+                            try
+                            {
+                                File.Delete(sfd.FileName);
+                            }
+                            catch (IOException ex)
+                            {
+                                fileError = true;
+                                MessageBox.Show("It wasn't possible to write the data to the disk." + ex.Message);
+                            }
+                        }
+                        if (!fileError)
+                        {
+                            try
+                            {
+                                PdfPTable pdfTable = new PdfPTable(3);
+                                pdfTable.DefaultCell.Padding = 3;
+                                pdfTable.WidthPercentage = 100;
+                                pdfTable.HorizontalAlignment = Element.ALIGN_LEFT;
+
+                                foreach (DataGridViewColumn column in dataGridView1.Columns)
+                                {
+                                    if (column.Visible)
+                                    {
+                                        PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText));
+                                        pdfTable.AddCell(cell);
+                                    }
+                                }
+                                pdfTable.CompleteRow();
+
+                                foreach (DataGridViewRow row in dataGridView1.Rows)
+                                {
+                                    bool hasVisibleCell = false;
+                                    foreach (DataGridViewColumn column in dataGridView1.Columns)
+                                    {
+                                        if (column.Visible)
+                                        {
+                                            DataGridViewCell cell = row.Cells[column.Index];
+                                            if (cell.Value != null)
+                                            {
+                                                pdfTable.AddCell(cell.Value.ToString());
+                                                hasVisibleCell = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (hasVisibleCell)
+                                    {
+                                        pdfTable.CompleteRow();
+                                    }
+                                }
+
+                                using (FileStream stream = new FileStream(sfd.FileName, FileMode.Create))
+                                {
+                                    iTextSharp.text.Document pdfDoc = new iTextSharp.text.Document(PageSize.A4.Rotate(), 5f, 10f, 105f, 5f);
+                                    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
+
+                                    writer.PageEvent = new Helper.ITextEvents();
+
+                                    pdfDoc.Open();
+
+                                    PdfContentByte cb = writer.DirectContent;
+
+                                    int pageRows = 0;
+                                    //Ky loop e lejon tabelen ne pdf me pas veq 20 rreshta
+                                    while (pageRows < dataGridView1.Rows.Count)
+                                    {
+                                        cb.BeginText();
+                                        pdfTable.TotalWidth = 770f;
+                                        pdfTable.WriteSelectedRows(pageRows, pageRows + 15, 40, 500, cb);
+                                        pageRows += 15;
+
+                                        if (pageRows > dataGridView1.Rows.Count)
+                                        {
+                                            BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+                                            cb.SetFontAndSize(bf, 18);
+                                            float tableHeight = 20 * (pageRows - dataGridView1.Rows.Count); // Calculate the height of the table
+
+                                            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, $"Totali i shitjeve: {label1.Text}€", 600, tableHeight + 0, 0);
+                                        }
+
+                                        cb.EndText();
+                                        pdfDoc.NewPage();
+                                    }
+
+                                    pdfDoc.Close();
+                                    stream.Close();
+                                }
+
+                                MessageBox.Show("Dokumenti u ruajt me sukses!", "Info");
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Error :" + ex.Message);
+                            }
+                        }
+                    }
+                }
+                else if (ReportType == "Raporti i shitjeve në bazë të Artikujve")
+                {
+                    formButton = 5;
+                    string formattedFromDate = dateF.ToString("dd.MM.yyyy hh:mm:ss tt").Replace(":", "_").Replace(" ", "_");
+                    sfd.FileName = $"Shitjet_nga_data_{formattedFromDate}në_bazë_të_sasisë_së_artikujve_me_puntor_{cmbUsers.Text}.pdf";
+                    bool fileError = false;
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        if (File.Exists(sfd.FileName))
+                        {
+                            try
+                            {
+                                File.Delete(sfd.FileName);
+                            }
+                            catch (IOException ex)
+                            {
+                                fileError = true;
+                                MessageBox.Show("It wasn't possible to write the data to the disk." + ex.Message);
+                            }
+                        }
+                        if (!fileError)
+                        {
+                            try
+                            {
+                                PdfPTable pdfTable = new PdfPTable(4);
+                                pdfTable.DefaultCell.Padding = 3;
+                                pdfTable.WidthPercentage = 100;
+                                pdfTable.HorizontalAlignment = Element.ALIGN_LEFT;
+
+                                foreach (DataGridViewColumn column in dataGridView1.Columns)
+                                {
+                                    if (column.Visible)
+                                    {
+                                        PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText));
+                                        pdfTable.AddCell(cell);
+                                    }
+                                }
+                                pdfTable.CompleteRow();
+
+                                foreach (DataGridViewRow row in dataGridView1.Rows)
+                                {
+                                    bool hasVisibleCell = false;
+                                    foreach (DataGridViewColumn column in dataGridView1.Columns)
+                                    {
+                                        if (column.Visible)
+                                        {
+                                            DataGridViewCell cell = row.Cells[column.Index];
+                                            if (cell.Value != null)
+                                            {
+                                                pdfTable.AddCell(cell.Value.ToString());
+                                                hasVisibleCell = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (hasVisibleCell)
+                                    {
+                                        pdfTable.CompleteRow();
+                                    }
+                                }
+
+                                using (FileStream stream = new FileStream(sfd.FileName, FileMode.Create))
+                                {
+                                    iTextSharp.text.Document pdfDoc = new iTextSharp.text.Document(PageSize.A4.Rotate(), 5f, 10f, 105f, 5f);
+                                    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
+
+                                    writer.PageEvent = new Helper.ITextEvents();
+
+                                    pdfDoc.Open();
+
+                                    PdfContentByte cb = writer.DirectContent;
+
+                                    int pageRows = 0;
+                                    //Ky loop e lejon tabelen ne pdf me pas veq 20 rreshta
+                                    while (pageRows < dataGridView1.Rows.Count)
+                                    {
+                                        cb.BeginText();
+                                        pdfTable.TotalWidth = 770f;
+                                        pdfTable.WriteSelectedRows(pageRows, pageRows + 15, 40, 500, cb);
+                                        pageRows += 15;
+
+                                        if (pageRows > dataGridView1.Rows.Count)
+                                        {
+                                            BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+                                            cb.SetFontAndSize(bf, 18);
+                                            float tableHeight = 20 * (pageRows - dataGridView1.Rows.Count); // Calculate the height of the table
+
+                                            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, $"Totali i shitjeve: {label1.Text}€", 600, tableHeight + 0, 0);
+                                        }
+
+                                        cb.EndText();
+                                        pdfDoc.NewPage();
+                                    }
+
+                                    pdfDoc.Close();
+                                    stream.Close();
+                                }
+
+                                MessageBox.Show("Dokumenti u ruajt me sukses!", "Info");
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Error :" + ex.Message);
+                            }
+                        }
+                    }
+                }
+                else if (ReportType == "Raporti i pergjithëshëm periodik")
+                {
+                    formButton = 6;
+                    string formattedFromDate = dateF.ToString("dd.MM.yyyy hh:mm:ss tt").Replace(":", "_").Replace(" ", "_");
+                    sfd.FileName = $"Raporti_periodik.pdf";
+                    bool fileError = false;
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        if (File.Exists(sfd.FileName))
+                        {
+                            try
+                            {
+                                File.Delete(sfd.FileName);
+                            }
+                            catch (IOException ex)
+                            {
+                                fileError = true;
+                                MessageBox.Show("It wasn't possible to write the data to the disk." + ex.Message);
+                            }
+                        }
+                        if (!fileError)
+                        {
+                            try
+                            {
+                                PdfPTable pdfTable = new PdfPTable(8);
+                                pdfTable.DefaultCell.Padding = 3;
+                                pdfTable.WidthPercentage = 100;
+                                pdfTable.HorizontalAlignment = Element.ALIGN_LEFT;
+
+                                foreach (DataGridViewColumn column in dataGridView1.Columns)
+                                {
+                                    if (column.Visible)
+                                    {
+                                        PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText));
+                                        pdfTable.AddCell(cell);
+                                    }
+                                }
+                                pdfTable.CompleteRow();
+
+                                foreach (DataGridViewRow row in dataGridView1.Rows)
+                                {
+                                    bool hasVisibleCell = false;
+                                    foreach (DataGridViewColumn column in dataGridView1.Columns)
+                                    {
+                                        if (column.Visible)
+                                        {
+                                            DataGridViewCell cell = row.Cells[column.Index];
+                                            if (cell.Value != null)
+                                            {
+                                                pdfTable.AddCell(cell.Value.ToString());
+                                                hasVisibleCell = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (hasVisibleCell)
+                                    {
+                                        pdfTable.CompleteRow();
+                                    }
+                                }
+
+                                using (FileStream stream = new FileStream(sfd.FileName, FileMode.Create))
+                                {
+                                    iTextSharp.text.Document pdfDoc = new iTextSharp.text.Document(PageSize.A4.Rotate(), 5f, 10f, 105f, 5f);
+                                    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
+
+                                    writer.PageEvent = new Helper.ITextEvents();
+
+                                    pdfDoc.Open();
+
+                                    PdfContentByte cb = writer.DirectContent;
+
+                                    int pageRows = 0;
+                                    //Ky loop e lejon tabelen ne pdf me pas veq 20 rreshta
+                                    while (pageRows < dataGridView1.Rows.Count)
+                                    {
+                                        cb.BeginText();
+                                        pdfTable.TotalWidth = 770f;
+                                        pdfTable.WriteSelectedRows(pageRows, pageRows + 15, 40, 500, cb);
+                                        pageRows += 15;
+
+                                        if (pageRows > dataGridView1.Rows.Count)
+                                        {
+                                            BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+                                            cb.SetFontAndSize(bf, 18);
+                                            float tableHeight = 20 * (pageRows - dataGridView1.Rows.Count); // Calculate the height of the table
+
+                                            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, $"Totali i shitjeve: {label1.Text}€", 600, tableHeight + 0, 0);
+                                        }
+
+                                        cb.EndText();
+                                        pdfDoc.NewPage();
+                                    }
+
+                                    pdfDoc.Close();
+                                    stream.Close();
+                                }
+
+                                MessageBox.Show("Dokumenti u ruajt me sukses!", "Info");
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Error :" + ex.Message);
+                            }
+                        }
+                    }
+                }
+                else if (ReportType == "Raporti i artikujve të anuluar")
+                {
+                    formButton = 7;
+                    string formattedFromDate = dateF.ToString("dd.MM.yyyy hh:mm:ss tt").Replace(":", "_").Replace(" ", "_");
+                    sfd.FileName = $"Raporti_i_artikujve_te_anuluar.pdf";
+                    bool fileError = false;
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        if (File.Exists(sfd.FileName))
+                        {
+                            try
+                            {
+                                File.Delete(sfd.FileName);
+                            }
+                            catch (IOException ex)
+                            {
+                                fileError = true;
+                                MessageBox.Show("It wasn't possible to write the data to the disk." + ex.Message);
+                            }
+                        }
+                        if (!fileError)
+                        {
+                            try
+                            {
+                                PdfPTable pdfTable = new PdfPTable(7);
+                                pdfTable.DefaultCell.Padding = 3;
+                                pdfTable.WidthPercentage = 100;
+                                pdfTable.HorizontalAlignment = Element.ALIGN_LEFT;
+
+                                foreach (DataGridViewColumn column in dataGridView1.Columns)
+                                {
+                                    if (column.Visible)
+                                    {
+                                        PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText));
+                                        pdfTable.AddCell(cell);
+                                    }
+                                }
+                                pdfTable.CompleteRow();
+
+                                foreach (DataGridViewRow row in dataGridView1.Rows)
+                                {
+                                    bool hasVisibleCell = false;
+                                    foreach (DataGridViewColumn column in dataGridView1.Columns)
+                                    {
+                                        if (column.Visible)
+                                        {
+                                            DataGridViewCell cell = row.Cells[column.Index];
+                                            if (cell.Value != null)
+                                            {
+                                                pdfTable.AddCell(cell.Value.ToString());
+                                                hasVisibleCell = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (hasVisibleCell)
+                                    {
+                                        pdfTable.CompleteRow();
+                                    }
+                                }
+
+                                using (FileStream stream = new FileStream(sfd.FileName, FileMode.Create))
+                                {
+                                    iTextSharp.text.Document pdfDoc = new iTextSharp.text.Document(PageSize.A4.Rotate(), 5f, 10f, 105f, 5f);
+                                    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
+
+                                    writer.PageEvent = new Helper.ITextEvents();
+
+                                    pdfDoc.Open();
+
+                                    PdfContentByte cb = writer.DirectContent;
+
+                                    int pageRows = 0;
+                                    //Ky loop e lejon tabelen ne pdf me pas veq 20 rreshta
+                                    while (pageRows < dataGridView1.Rows.Count)
+                                    {
+                                        cb.BeginText();
+                                        pdfTable.TotalWidth = 770f;
+                                        pdfTable.WriteSelectedRows(pageRows, pageRows + 15, 40, 500, cb);
+                                        pageRows += 15;
+
+                                        if (pageRows > dataGridView1.Rows.Count)
+                                        {
+                                            BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+                                            cb.SetFontAndSize(bf, 18);
+                                            float tableHeight = 20 * (pageRows - dataGridView1.Rows.Count); // Calculate the height of the table
+
+                                            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, $"Totali i shitjeve: {label1.Text}€", 600, tableHeight + 0, 0);
+                                        }
+
+                                        cb.EndText();
+                                        pdfDoc.NewPage();
+                                    }
+
+                                    pdfDoc.Close();
+                                    stream.Close();
+                                }
+
+                                MessageBox.Show("Dokumenti u ruajt me sukses!", "Info");
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Error :" + ex.Message);
+                            }
                         }
                     }
                 }
             }
+           
+        
             else
             {
                 MessageBox.Show("Ska te dhena per tu eksportuar!", "Info");
@@ -2433,77 +3087,6 @@ namespace MyNET.Pos.Modules
 
         }
 
-        private void button20_Click(object sender, EventArgs e)
-        {
-            dataGridView7.Rows.Clear();
-            var totalSumCat = 0.0m;
-
-            var selectedFromDate = dateTimePicker7.Value;
-            var selectedToDate = dateTimePicker6.Value;
-            dateCatF = new DateTime(selectedFromDate.Year, selectedFromDate.Month, selectedFromDate.Day, selectedFromDate.Hour, selectedFromDate.Minute, selectedFromDate.Second);
-            dateCatT = new DateTime(selectedToDate.Year, selectedToDate.Month, selectedToDate.Day, selectedToDate.Hour, selectedToDate.Minute, selectedToDate.Second);
-            string formattedFromDate = selectedFromDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
-            string formattedToDate = selectedToDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
-            var categoryValues = new Dictionary<string, decimal>();
-
-            foreach (var item in ItemCategory.Get())
-            {
-                dataGridView7.Rows.Add(item.Id, item.Name); 
-            }
-
-            var list = new List<Sale>();
-            if (comboBox2.Text != "Të gjithë ")
-            {
-
-                list = Sale.SalesByDate(formattedFromDate, formattedToDate).Where(p => p.id_saler == (int)comboBox2.SelectedValue).ToList();
-
-            }
-            else
-            {
-                list = Sale.SalesByDate(formattedFromDate, formattedToDate);
-            }
-
-            var listSaleDetails = new List<Services.SaleDetails>();
-
-            if (list.Count > 0)
-            {
-                foreach (var item in list)
-                {
-                    foreach( var s in SaleDetails.GetSdById(item.Id))
-                    {
-                        listSaleDetails.Add(s);
-
-                    }
-                }
-            }
-
-            foreach (DataGridViewRow item in dataGridView7.Rows) 
-            {
-                var total = 0.0m;
-                foreach (var sd in listSaleDetails)
-                {
-
-                    if (item.Cells[0].Value.ToString() == Item.GetById(sd.ItemId).First().CategoryId.ToString())
-                    {
-                        var priceBase = sd.Price;
-                        var discount = sd.Discount / 100;
-                        var amountDiscount = (priceBase * discount);
-                        var priceNovat = sd.Price - amountDiscount;
-                        var patvsh = priceNovat * sd.Quantity;
-                        var ta = Math.Round(patvsh * (1 + (Convert.ToDecimal(sd.VAT) / 100)), 5);
-
-                        total += ta;
-                        
-                    }
-
-                }
-                item.Cells[2].Value = total;
-                totalSumCat += total;
-            }
-            totalCat = totalSumCat;
-            label21.Text = totalSumCat.ToString();
-        }
-
         private void button19_Click(object sender, EventArgs e)
         {
             var settings = Settings.Get();
@@ -2571,6 +3154,60 @@ namespace MyNET.Pos.Modules
             e.Graphics.DrawString($"Totali: {totalCat.ToString()}", normalFont, Brushes.Black, 5, height + 5, new StringFormat());
 
             e.HasMorePages = false;
+        }
+
+        private void button20_Click_1(object sender, EventArgs e)
+        {
+            dataGridView7.DataSource = null;
+
+            if (dataGridView7.Columns["PuntoriCol"] != null)
+            {
+                dataGridView7.Columns.Remove("PuntoriCol");
+
+
+            }
+
+            var empId = 0;
+            var daily = new List<DailyOpenCloseBalance>();
+            var selectedDate = dateTimePicker6.Value;
+            if (comboBox2.Text != "Të gjithë ")
+            {
+                empId = (int)comboBox2.SelectedValue;
+                daily = Services.DailyOpenCloseBalance.GetDailyBalance(empId).Where(p => p.Date.Day == selectedDate.Day).ToList();
+
+            }
+            else
+            {
+                daily = Services.DailyOpenCloseBalance.GetDailyBalanceByDay(selectedDate).ToList();
+
+            }
+
+
+            dataGridView7.DataSource = daily;
+
+            dataGridView7.Columns[1].Visible = false;
+            dataGridView7.Columns[4].Visible = false;
+            dataGridView7.Columns[10].Visible = false;
+            dataGridView7.Columns[3].Visible = false;
+
+            dataGridView7.Columns[5].HeaderText = "Nr i shitjeve";
+            dataGridView7.Columns[6].HeaderText = "Total shitje";
+            dataGridView7.Columns[7].HeaderText = "Total kesh";
+            dataGridView7.Columns[8].HeaderText = "Total bank";
+            dataGridView7.Columns[9].HeaderText = "Shuma e hapjes se dites";
+            dataGridView7.Columns[11].HeaderText = "Hapja e dites";
+
+            if (dataGridView7.Columns["PuntoriCol"] == null)
+            {
+                dataGridView7.Columns.Add("PuntoriCol", "Puntori");
+
+            }
+
+            foreach (DataGridViewRow row in dataGridView7.Rows)
+            {
+                row.Cells[11].Value = row.Cells[11].Value.ToString() == "close" ? "Mbyllje" : "Hapje";
+                row.Cells[12].Value = User.Get((int)row.Cells[3].Value).Name;
+            }
         }
     }
 }

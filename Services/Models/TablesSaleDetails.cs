@@ -52,6 +52,7 @@ namespace Services.Models
         public int ItemNumber { get; set; }
         public decimal DiscountAmount { get; set; }
         public int toClose { get; set; }
+        public string CreatedBy { get; set; }
 
 
         public static List<Models.TablesSaleDetails> GetTS()

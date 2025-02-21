@@ -22,6 +22,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 using TremolZFP;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace MyNET.Pos
 {
@@ -44,8 +45,12 @@ namespace MyNET.Pos
         public static decimal dorezimi;
         public int dailyOpenId = Globals.User.Id;
         public static int formButton = 0;
+        public string ReportType = "";
+        public static string currentUser;
+        public static decimal totaliRaport;
 
         Services.DailyOpenCloseBalance dailyOpen = Services.DailyOpenCloseBalance.GetLastDailyBalanceByEmployee(Globals.User.Id);
+        public WrapComboBox wrapCombo = new WrapComboBox();
 
         List<Services.Printer> printers = Services.Printer.Get();
         public Options()
@@ -225,40 +230,78 @@ namespace MyNET.Pos
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
             dateTimePicker1.CustomFormat = "MM/dd/yyyy";
 
-            dFDate.Format = DateTimePickerFormat.Custom;
-            dFDate.CustomFormat = "MM/dd/yyyy";
-
-            dateTimePicker1.Value = DateTime.Now.AddDays(1);
-
-            dateTimePicker3.Format = DateTimePickerFormat.Custom;
-            dateTimePicker3.CustomFormat = "MM/dd/yyyy";
-
-            dateTimePicker2.Format = DateTimePickerFormat.Custom;
-            dateTimePicker2.CustomFormat = "MM/dd/yyyy";
-
-            dateTimePicker3.Value = DateTime.Now.AddDays(-1);
-
-            dateTimePicker5.Format = DateTimePickerFormat.Custom;
-            dateTimePicker5.CustomFormat = "MM/dd/yyyy";
-            
             dateTimePicker4.Format = DateTimePickerFormat.Custom;
             dateTimePicker4.CustomFormat = "MM/dd/yyyy";
 
+            dFDate.Format = DateTimePickerFormat.Custom;
+            dFDate.CustomFormat = "MM/dd/yyyy";
 
-            var users = User.GetByStation(Globals.Station.Id);
-            User user = new User();
-            user.FirstName = "Të gjithë";
-            users.Add(user);
+            dateTimePicker5.Format = DateTimePickerFormat.Custom;
+            dateTimePicker5.CustomFormat = "MM/dd/yyyy";
 
-            cmbUsers.DataSource = users;
-            cmbUsers.DisplayMember = "Name";
-            cmbUsers.ValueMember = "Id";
-            cmbUsers.Text = "Të gjithë";
+            dateTimePicker1.Value = DateTime.Now.AddDays(1);
+            dateTimePicker4.Value = DateTime.Now.AddDays(1);
 
-            cmbUser2.DataSource = users;
-            cmbUser2.DisplayMember = "Name";
-            cmbUser2.ValueMember = "Id";
-            cmbUser2.Text = "Të gjithë";
+            dateTimePicker3.Format = DateTimePickerFormat.Custom;
+            dateTimePicker3.CustomFormat = "MM/dd/yyyy";
+            dateTimePicker2.Format = DateTimePickerFormat.Custom;
+            dateTimePicker2.CustomFormat = "MM/dd/yyyy";
+            dateTimePicker3.Value = DateTime.Now.AddDays(-1);
+
+
+            var users = new List<User>();
+
+            if (Globals.User.Role == "1")
+            {
+                users = User.GetByStation(Globals.Station.Id);
+                User user = new User();
+                user.FirstName = "Të gjithë";
+                users.Add(user);
+                cmbUsers.DataSource = users;
+                cmbUsers.DisplayMember = "Name";
+                cmbUsers.ValueMember = "Id";
+                cmbUsers.Text = "Të gjithë";
+                cmbUser2.DataSource = users;
+                cmbUser2.DisplayMember = "Name";
+                cmbUser2.ValueMember = "Id";
+                cmbUser2.Text = "Të gjithë ";
+
+                comboBox2.DataSource = users;
+                comboBox2.DisplayMember = "Name";
+                comboBox2.ValueMember = "Id";
+                comboBox2.Text = "Të gjithë ";
+            }
+            else
+            {
+                users.Add(Globals.User);
+                cmbUsers.DataSource = users;
+                cmbUsers.DisplayMember = "Name";
+                cmbUsers.ValueMember = "Id";
+                cmbUser2.DataSource = users;
+                cmbUser2.DisplayMember = "Name";
+                cmbUser2.ValueMember = "Id";
+                comboBox2.DataSource = users;
+                comboBox2.DisplayMember = "Name";
+                comboBox2.ValueMember = "Id";
+            }
+
+            if (!Controls.ContainsKey("wrapCombo"))
+            {
+                wrapCombo.Location = new System.Drawing.Point(45, 56);
+                wrapCombo.Size = new System.Drawing.Size(187, 50);
+                wrapCombo.Name = "wrapCombo";
+                wrapCombo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12);
+                wrapCombo.DropDownHeight = 500;
+                tabPage4.Controls.Add(wrapCombo);
+            }
+
+            wrapCombo.Items.Clear();
+            wrapCombo.Items.Add("Raporti gjeneral i shitjeve");
+            wrapCombo.Items.Add("Raporti i shitjeve në bazë të Kategorive");
+            wrapCombo.Items.Add("Raporti i shitjeve në bazë të Artikujve");
+            wrapCombo.Items.Add("Raporti i pergjithëshëm periodik");
+            wrapCombo.SelectedIndexChanged += WrapCombo_SelectedIndexChanged;
+
 
         }
         public void ReloadForm()
@@ -279,7 +322,44 @@ namespace MyNET.Pos
 
             }
         }
+        private void WrapCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (wrapCombo.SelectedItem != null)
+            {
+                ReportType = wrapCombo.SelectedItem.ToString();
 
+            }
+            if (wrapCombo.SelectedIndex == 0)
+            {
+                word_from.Visible = true;
+                word_to.Visible = true;
+                dFDate.Visible = true;
+                dateTimePicker1.Visible = true;
+
+            }
+            if (wrapCombo.SelectedIndex == 1)
+            {
+                word_from.Visible = true;
+                word_to.Visible = false;
+                dFDate.Visible = true;
+                dateTimePicker1.Visible = false;
+            }
+            if (wrapCombo.SelectedIndex == 2)
+            {
+                word_from.Visible = true;
+                word_to.Visible = false;
+                dFDate.Visible = true;
+                dateTimePicker1.Visible = false;
+            }
+            if (wrapCombo.SelectedIndex == 3)
+            {
+                word_from.Visible = true;
+                word_to.Visible = true;
+                dFDate.Visible = true;
+                dateTimePicker1.Visible = true;
+            }
+
+        }
         private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -1488,56 +1568,157 @@ namespace MyNET.Pos
         {
             var selectedFromDate = dFDate.Value;
             var selectedToDate = dateTimePicker1.Value;
-            dateF = new DateTime(selectedFromDate.Year, selectedFromDate.Month, selectedFromDate.Day, selectedFromDate.Hour, selectedFromDate.Minute, selectedFromDate.Second);
-            dateTo = new DateTime(selectedToDate.Year, selectedToDate.Month, selectedToDate.Day, selectedToDate.Hour, selectedToDate.Minute, selectedToDate.Second);
-            string formattedFromDate = selectedFromDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
-            string formattedToDate = selectedToDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
-
-            var list = new List<Sale>();
-            if (cmbUsers.Text != "Të gjithë")
+            dateF = new DateTime(selectedFromDate.Year, selectedFromDate.Month, selectedFromDate.Day, 0, 0, 0);
+            dateTo = new DateTime(selectedToDate.Year, selectedToDate.Month, selectedToDate.Day, 0, 0, 0);
+            string formattedFromDate = dateF.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
+            string formattedToDate = dateTo.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
+            var reportType = ReportType;
+            List<Sale> sales = new List<Sale>();
+            decimal t = 0.0m;
+            currentUser = cmbUsers.Text;
+            if (reportType == "Raporti gjeneral i shitjeve")
             {
+                var list = new List<Sale>();
+                if (cmbUsers.Text != "Të gjithë ")
+                {
 
-                list = Sale.SalesByDate(formattedFromDate, formattedToDate).Where(p => p.id_saler == (int)cmbUsers.SelectedValue).ToList();
+                    list = Sale.SalesByDate(formattedFromDate, formattedToDate).Where(p => p.id_saler == (int)cmbUsers.SelectedValue).ToList();
+
+
+                }
+                else
+                {
+                    list = Sale.SalesByDate(formattedFromDate, formattedToDate);
+                }
+                foreach (var lsale in list)
+                {
+                    t += lsale.TotalSum;
+                    sales.Add((Sale)lsale);
+
+                }
+
+                dataGridView1.DataSource = sales;
+                dataGridView1.Columns[1].Visible = false;
+                dataGridView1.Columns[3].Visible = false;
+                dataGridView1.Columns[4].Visible = false;
+                dataGridView1.Columns[5].Visible = false;
+                dataGridView1.Columns[7].Visible = false;
+                dataGridView1.Columns[8].Visible = false;
+                dataGridView1.Columns[9].Visible = false;
+                dataGridView1.Columns[10].Visible = false;
+                dataGridView1.Columns[11].Visible = false;
+                dataGridView1.Columns[12].Visible = false;
+                dataGridView1.Columns[14].Visible = false;
+                dataGridView1.Columns[15].Visible = false;
+                dataGridView1.Columns[16].Visible = false;
+                dataGridView1.Columns[17].Visible = false;
+                dataGridView1.Columns[18].Visible = false;
+                dataGridView1.Columns[19].Visible = false;
+                dataGridView1.Columns[20].Visible = false;
+                dataGridView1.Columns[21].Visible = false;
+                dataGridView1.Columns[22].Visible = false;
+                dataGridView1.Columns[24].Visible = false;
+                dataGridView1.Columns[25].Visible = false;
+                dataGridView1.Columns[26].Visible = false;
+
+                dataGridView1.Columns[6].HeaderText = "Nr.Faturës";
+                dataGridView1.Columns[13].HeaderText = "Shuma në €";
+                dataGridView1.Columns[23].HeaderText = "Krijuar nga: ";
+                var totalshitje = t;
+                label1.Text = totalshitje.ToString();
+            }
+            else if (reportType == "Raporti i shitjeve në bazë të Kategorive")
+            {
+                var reportByIC = new List<ItemCategoriesSaleReportClass>();
+                if (cmbUsers.Text != "Të gjithë ")
+                {
+                    reportByIC = ItemCategoriesSaleReportClass.GetReportByDateAndUser(dateF, cmbUsers.Text);
+
+                }
+                else
+                {
+                    reportByIC = ItemCategoriesSaleReportClass.GetAllReportByDate(dateF);
+
+                }
+
+                dataGridView1.DataSource = reportByIC;
+                foreach (DataGridViewRow item in dataGridView1.Rows)
+                {
+                    t += Convert.ToDecimal(item.Cells["TotalAmount"].Value);
+                    item.Cells["TotalAmount"].Value = Math.Round(((decimal)item.Cells["TotalAmount"].Value), 2);
+
+                }
+                label1.Text = t.ToString("N");
+
+            }
+            else if (reportType == "Raporti i shitjeve në bazë të Artikujve")
+            {
+                var reportByI = new List<ItemSaleReportClass>();
+                if (cmbUsers.Text != "Të gjithë ")
+                {
+                    reportByI = ItemSaleReportClass.GetItemReportByDateAndUser(dateF, cmbUsers.Text);
+
+                }
+                else
+                {
+                    reportByI = ItemSaleReportClass.GetItemAllReportByDate(dateF);
+
+                }
+
+                dataGridView1.DataSource = reportByI;
+                foreach (DataGridViewRow item in dataGridView1.Rows)
+                {
+                    t += Convert.ToDecimal(item.Cells["TotalAmount"].Value);
+                    item.Cells["TotalAmount"].Value = Math.Round(((decimal)item.Cells["TotalAmount"].Value), 2);
+
+                }
+                label1.Text = t.ToString("N");
+
+            }
+            else if (reportType == "Raporti i pergjithëshëm periodik")
+            {
+                var reportByI = new List<GeneralSalePeriodicReport>();
+                if (cmbUsers.Text != "Të gjithë ")
+                {
+                    reportByI = GeneralSalePeriodicReport.GeneralSalesByDateAndUser(formattedFromDate, formattedToDate, (int)cmbUsers.SelectedValue);
+
+                }
+                else
+                {
+                    reportByI = GeneralSalePeriodicReport.GeneralSalesByDate(formattedFromDate, formattedToDate);
+
+                }
+
+                dataGridView1.DataSource = reportByI;
+                foreach (DataGridViewRow item in dataGridView1.Rows)
+                {
+                    t += Convert.ToDecimal(item.Cells["TotalAmount"].Value);
+                    item.Cells[1].Value = Math.Round(((decimal)item.Cells[1].Value), 2);
+                    item.Cells[2].Value = Math.Round(((decimal)item.Cells[2].Value), 2);
+                    item.Cells[4].Value = Math.Round(((decimal)item.Cells[4].Value), 2);
+                    item.Cells[5].Value = Math.Round(((decimal)item.Cells[5].Value), 2);
+                    item.Cells[6].Value = Math.Round(((decimal)item.Cells[6].Value), 2);
+                    item.Cells[7].Value = Math.Round(((decimal)item.Cells[7].Value), 2);
+                    item.Cells[8].Value = Math.Round(((decimal)item.Cells[8].Value), 2);
+
+                }
+                dataGridView1.Columns[1].HeaderText = "Qarkullimi Total";
+                dataGridView1.Columns[2].HeaderText = "Totali i TVSH-se";
+                dataGridView1.Columns[3].HeaderText = "Kupona Fiskal";
+                dataGridView1.Columns[4].HeaderText = "Totali i shitjeve pa TVSH";
+                dataGridView1.Columns[5].HeaderText = "Totali i shitjeve me 8% TVSH";
+                dataGridView1.Columns[6].HeaderText = "Totali i shitjeve me 18% TVSH";
+                dataGridView1.Columns[7].HeaderText = "Totali i TVSH-se 8%";
+                dataGridView1.Columns[8].HeaderText = "Totali i TVSH-se 18%";
+
+                label1.Text = t.ToString("N");
 
             }
             else
             {
-                list = Sale.SalesByDate(formattedFromDate, formattedToDate);
-            }
-            List<Sale> sales = new List<Sale>();
-            decimal t = 0.0m;
-            foreach (var lsale in list)
-            {
-                t += lsale.TotalSum;
-                sales.Add((Sale)lsale);
 
             }
-            dataGridView1.DataSource = sales;
-            dataGridView1.Columns[3].Visible = false;
-            dataGridView1.Columns[4].Visible = false;
-            dataGridView1.Columns[5].Visible = false;
-            dataGridView1.Columns[7].Visible = false;
-            dataGridView1.Columns[8].Visible = false;
-            dataGridView1.Columns[9].Visible = false;
-            dataGridView1.Columns[10].Visible = false;
-            dataGridView1.Columns[11].Visible = false;
-            dataGridView1.Columns[12].Visible = false;
-            dataGridView1.Columns[14].Visible = false;
-            dataGridView1.Columns[15].Visible = false;
-            dataGridView1.Columns[16].Visible = false;
-            dataGridView1.Columns[17].Visible = false;
-            dataGridView1.Columns[18].Visible = false;
-            dataGridView1.Columns[19].Visible = false;
-            dataGridView1.Columns[20].Visible = false;
-            dataGridView1.Columns[21].Visible = false;
-            dataGridView1.Columns[23].Visible = false;
-            dataGridView1.Columns[24].Visible = false;
 
-            dataGridView1.Columns[6].HeaderText = "Nr.Faturës";
-            dataGridView1.Columns[13].HeaderText = "Shuma në €";
-            dataGridView1.Columns[22].HeaderText = "Krijuar nga: ";
-            var totalshitje = t;
-            label1.Text = totalshitje.ToString();
         }
         private void cmbFiscalPrinterType_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -2265,6 +2446,36 @@ namespace MyNET.Pos
             {
                 dataGridView6.Rows.Add(item);
             }
+
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dateTimePicker6_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView7_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label19_Click(object sender, EventArgs e)
+        {
 
         }
     }
