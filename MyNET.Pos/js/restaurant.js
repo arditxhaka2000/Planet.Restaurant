@@ -19,7 +19,7 @@ function receiveSpaces(jsonData) {
             var buttonId = event.target.id;
             sendSpaceId(buttonId);
             //loadTablesForSpace(spaceId);
-        });
+        });  
     });
 }
 function receiveTables(jsonData) {
@@ -29,13 +29,12 @@ function receiveTables(jsonData) {
 
     var container = document.getElementById('table_div');
     var html = "";
-
+    
     data.forEach(function (element) {
         var left = (element.LocationX * screen.width) / 100;
         var top = (element.LocationY * screen.height) / 100;
         var tWidth = element.Width; 
         var tHeight = element.Height; 
-        console.log(tWidth, tHeight);
         var pic = "Table";
         var forecolor = "black";
         var backcolor = "#618368";
@@ -94,7 +93,7 @@ function sendPOS(id) {
             var checkIcon = parentDiv.querySelector('.check-icon');
 
 
-            console.log('1', bashkocount);
+            //console.log('1', bashkocount);
             if (checkIcon && bashkocount < 2) {
                 if (checkIcon.style.display === 'block') {
 
@@ -111,7 +110,7 @@ function sendPOS(id) {
                     selectableDivs.push(id);
                     checkIcon.style.display = 'block';
                     bashkocount++;
-                    console.log('2', bashkocount);
+                    //console.log('2', bashkocount);
 
                 }
 
@@ -126,7 +125,7 @@ function sendPOS(id) {
                         selectableDivs.splice(index, 1);
                     }
                     bashkocount--;
-                    console.log('3', bashkocount);
+                    //console.log('3', bashkocount);
 
                 }
             }
@@ -157,7 +156,7 @@ function sendPOS(id) {
                     selectableDivs.push(id);
                     checkIcon.style.display = 'block';
                     bashkocount++;
-                    console.log('2', bashkocount);
+                    //console.log('2', bashkocount);
 
                 }
 
@@ -172,7 +171,7 @@ function sendPOS(id) {
                         selectableDivs.splice(index, 1);
                     }
                     bashkocount--;
-                    console.log('3', bashkocount);
+                    //console.log('3', bashkocount);
 
                 }
             }
@@ -185,7 +184,7 @@ function sendPOS(id) {
 
 }
 function sendBashko() {
-    console.log('sadasd', selectableDivs);
+    //console.log('sadasd', selectableDivs);
     return selectableDivs;
 }
 function sendSpaceId(value) {
@@ -249,7 +248,7 @@ function functionOptionsRestaurant(m) {
 }
 function changeTableColor(tableId, color) {
     const tableElement = document.querySelector("[data-tableId='" + tableId + "']");
-    console.log('ktu12', color);
+    //console.log('ktu12', color);
     if (tableElement) {
         const h5 = tableElement.getElementsByTagName('h5');
 
@@ -273,11 +272,11 @@ function changeTableTotal(tableId, total) {
     const tableElement = document.querySelector("[data-tableId='" + tableId + "']");
     if (tableElement) {
         const h5Total = tableElement.querySelector('h5.total');
-        console.log('ktu2', h5Total);
+        //console.log('ktu2', h5Total);
 
         if (h5Total) {
             h5Total.textContent = total;
-            console.log('ktu22', total);
+            //console.log('ktu22', total);
 
         }
 
@@ -295,7 +294,7 @@ function getDivLocations() {
             LocationY: rect.top.toString()
         };
         locations.push(location);
-        console.log(locations);
+        //console.log(locations);
 
     });
 
@@ -326,7 +325,7 @@ function toggleSelection(event) {
 
     }
     selectableDivs.push(divId);
-    console.log(selectableDivs);
+    //console.log(selectableDivs);
 }
 function toggleCheckIcons() {
     var parentElement = document.querySelector('.container-fluid');

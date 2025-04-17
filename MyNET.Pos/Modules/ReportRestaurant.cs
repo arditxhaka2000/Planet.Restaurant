@@ -775,7 +775,7 @@ namespace MyNET.Pos.Modules
                 MessageBox.Show("Veprimi perfundoi me sukses!");
 
             }
-            if (checkBox4.Checked == false)
+            if (checkBox4.Checked == false)     
             {
                 sett.UpdateForReturn(0, sett.Id);
                 MessageBox.Show("Veprimi perfundoi me sukses!");

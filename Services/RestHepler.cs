@@ -160,6 +160,7 @@ namespace Services
             var request = new RestRequest(tableName, Method.POST);
 
             request.AddJsonBody(obj);
+             string jsonBody = JsonConvert.SerializeObject(obj);
 
             var response = restClient.Execute<Response<T>>(request);
             if (response.ErrorException != null)
@@ -176,6 +177,8 @@ namespace Services
             var request = new RestRequest(tableName + "/savesale", Method.POST);
 
             request.AddJsonBody(obj);
+            string jsonBody = JsonConvert.SerializeObject(obj);
+
 
             var response = restClient.Execute<Response<T>>(request);
 
@@ -194,6 +197,7 @@ namespace Services
             var request = new RestRequest(tableName + "/insertB", Method.POST);
 
             request.AddJsonBody(objList);
+            string jsonBody = JsonConvert.SerializeObject(objList);
 
             var response = restClient.Execute<Response<T>>(request);
             if (response.ErrorException != null)

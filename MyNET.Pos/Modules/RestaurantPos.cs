@@ -1556,7 +1556,7 @@ namespace MyNET.Pos
             string table_name = Services.Tables.GetTables().Where(p => p.Id.ToString() == tableId).FirstOrDefault().Name;
 
             string line = "--------------------------------------------------------------------------------";
-            float height = 5;
+            float height = 0;
             // float printerWidth;
             // float printerHight;
 
@@ -1577,20 +1577,46 @@ namespace MyNET.Pos
             e.Graphics.DrawString("Porosia", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
             height += 30;
             //Print User Name
-            e.Graphics.DrawString("Kamarieri: " + user_name, normalFont, Brushes.Black, 0, height, new StringFormat());
-            height += 20;
+            // Create the initial string
+            var waiterName = "Kamarieri: " + user_name;
+
+            // Split and wrap the string
+            var w = waiterName.Split(' ');
+            var l = new List<string>();
+            var cL = new StringBuilder();
+
+            foreach (var word in w)
+            {
+                if (cL.Length + word.Length + 1 > 24) // 20 is the max chars per line
+                {
+                    l.Add(cL.ToString().Trim());
+                    cL.Clear();
+                }
+                cL.Append(word + " ");
+            }
+
+            if (cL.Length > 0)
+            {
+                l.Add(cL.ToString().Trim());
+            }
+
+            // Join the lines with newlines
+            waiterName = string.Join("\n", l);
+
+
             //Print Space Name
             e.Graphics.DrawString("Salla: " + space_name, normalFont, Brushes.Black, 0, height, new StringFormat());
+
+            e.Graphics.DrawString("Tavolina: " + table_name, normalFont, Brushes.Black, total_width-40, height, new StringFormat());
             height += 20;
 
-            e.Graphics.DrawString("Tavolina: " + table_name, normalFont, Brushes.Black, 0, height, new StringFormat());
-            height += 20;
+            e.Graphics.DrawString(waiterName, normalFont, Brushes.Black, 0, height, new StringFormat());
 
             //Print Receipt No
-            e.Graphics.DrawString("Numri i porosisë :\n " + receipt_no, boldFont, Brushes.Black, 0, height, new StringFormat());
-            //Print Receipt Date
-            e.Graphics.DrawString("Date :\n " + receipt_date, boldFont, Brushes.Black, total_width / rec_date - 27, height, new StringFormat());
-            height += 40;
+            e.Graphics.DrawString("Numri i porosisë : " + receipt_no, boldFont, Brushes.Black, total_width - 40, height, new StringFormat());
+            height += 20;
+
+         
 
             //Print Line
             e.Graphics.DrawString(line, normalFont, Brushes.Black, 0, height, new StringFormat());
@@ -1742,6 +1768,10 @@ namespace MyNET.Pos
             e.Graphics.DrawString("Faleminderit", headingFont, Brushes.Black, total_width / company_name, height, new StringFormat());
             height += 40;
             e.Graphics.DrawString("Planet Accounting", normalFont, Brushes.Black, 0, height, new StringFormat());
+
+            //Print Receipt Date
+            e.Graphics.DrawString(receipt_date, boldFont, Brushes.Black, total_width / rec_date - 27, height, new StringFormat());
+            height += 40;
 
             e.HasMorePages = false;
         }
@@ -4482,65 +4512,222 @@ namespace MyNET.Pos
                 clientDiscount = Partner.Get(PartnerId).Discount;
 
             }
-            Services.Models.TablesSaleDetails sd = new Services.Models.TablesSaleDetails();
-            sd.No = ug.Rows.Count + 1;
-
-            sd.Id = 0;
-            sd.ItemId = item.Id;
-            sd.No = ug.Rows.Count + 1;
-            sd.Barcode = item.Barcode;
-            sd.ItemName = item.Name;
-            sd.Unit = item.Unit;
-            sd.Quantity = 1.00M;
-            sd.QuantityNow = Warehouse.GetbyId(sd.ItemId).InStock;
-            sd.Price = item.SalePrice;
-            sd.Discount = item.Discount;
-            sd.CategoryId = item.CategoryId;
-            int count = ug.Rows.Count + 1;
-            ((BindingList<Services.Models.TablesSaleDetails>)ug.DataSource).Add(sd);
-
-            sd.DiscountPrice = item.SalePrice * (1 - item.Discount / 100);
-
-            sd.DiscountPriceWithVat = Math.Round(item.SalePrice * (1 + (decimal)item.Vat / 100.00M), 2);
-            sd.Vat = item.Vat;
-            sd.VatSum = sd.DiscountPrice * item.Vat / 100;
-
-            sd.Total = sd.Quantity * sd.DiscountPrice;
-            sd.TotalWithVat = clientDiscount > 0 ? Math.Round(sd.Total + sd.VatSum - ((sd.Total + sd.VatSum) * clientDiscount / 100), 2) : Math.Round(sd.Total + sd.VatSum, 2);
-
-            CalculateGridColumns();
-
-            if (ug.Rows.Count > 1)
+            if (item.Service == 0)
             {
-                ug.CurrentCell = ug[2, ug.Rows.Count - 1];
-
-            }
-
-            if (Globals.Settings.StockRibbon == 1 && Globals.Settings.LocationRibbon == 1)
-            {
-                lblNameAndQuant.Text = sd.ItemName + " / Sasia e disponueshme: " + sd.QuantityNow.ToString() +
-                        ((Globals.ItemLocation.Find(p => p.Id == item.Location)?.Name != null) ? " / Lokacioni: " + Globals.ItemLocation.Find(p => p.Id == item.Location).Name : "");
+                if (Warehouse.GetbyId(item.Id).InStock > 0 || settings.StockWMinus != "0")
+                {
 
 
-                lblNameAndQuant.Left = (panel2.Width - lblNameAndQuant.Width) / 2;
-                lblNameAndQuant.Top = (panel2.Height - lblNameAndQuant.Height) / 2;
-            }
-            else if (Globals.Settings.StockRibbon == 1 && Globals.Settings.LocationRibbon == 0)
-            {
-                lblNameAndQuant.Text = sd.ItemName + " / Sasia e disponueshme: " + sd.QuantityNow.ToString();
-                lblNameAndQuant.Left = (panel2.Width - lblNameAndQuant.Width) / 2;
-                lblNameAndQuant.Top = (panel2.Height - lblNameAndQuant.Height) / 2;
+                    Services.Models.TablesSaleDetails sd = new Services.Models.TablesSaleDetails();
+                    sd.No = ug.Rows.Count + 1;
+
+                    sd.Id = 0;
+                    sd.ItemId = item.Id;
+                    sd.No = ug.Rows.Count + 1;
+                    sd.Barcode = item.Barcode;
+                    sd.ItemName = item.Name;
+                    sd.Unit = item.Unit;
+                    sd.Quantity = 1.00M;
+
+                    sd.QuantityNow = Warehouse.GetbyId(sd.ItemId) == null ? 0 : Warehouse.GetbyId(sd.ItemId).InStock;
+                    sd.Price = item.SalePrice;
+                    sd.Discount = item.Discount;
+                    sd.CategoryId = item.CategoryId;
+                    int count = ug.Rows.Count + 1;
+                    ((BindingList<Services.Models.TablesSaleDetails>)ug.DataSource).Add(sd);
+
+                    sd.DiscountPrice = item.SalePrice * (1 - item.Discount / 100);
+
+                    sd.DiscountPriceWithVat = Math.Round(item.SalePrice * (1 + (decimal)item.Vat / 100.00M), 2);
+                    sd.Vat = item.Vat;
+                    sd.VatSum = sd.DiscountPrice * item.Vat / 100;
+
+                    sd.Total = sd.Quantity * sd.DiscountPrice;
+                    sd.TotalWithVat = clientDiscount > 0 ? Math.Round(sd.Total + sd.VatSum - ((sd.Total + sd.VatSum) * clientDiscount / 100), 2) : Math.Round(sd.Total + sd.VatSum, 2);
+                    sd.ClientDiscount = clientDiscount;
+                    sd.PrintedQuantity = 0;
+                    CalculateGridColumns();
+
+                    if (ug.Rows.Count > 1)
+                    {
+                        ug.CurrentCell = ug[2, ug.Rows.Count - 1];
+
+                    }
+
+                    if (Globals.Settings.StockRibbon == 1 && Globals.Settings.LocationRibbon == 1)
+                    {
+                        lblNameAndQuant.Text = sd.ItemName + " / Sasia e disponueshme: " + sd.QuantityNow.ToString() +
+                                ((Globals.ItemLocation.Find(p => p.Id == item.Location)?.Name != null) ? " / Lokacioni: " + Globals.ItemLocation.Find(p => p.Id == item.Location).Name : "");
+
+
+                        lblNameAndQuant.Left = (panel2.Width - lblNameAndQuant.Width) / 2;
+                        lblNameAndQuant.Top = (panel2.Height - lblNameAndQuant.Height) / 2;
+                    }
+                    else if (Globals.Settings.StockRibbon == 1 && Globals.Settings.LocationRibbon == 0)
+                    {
+                        lblNameAndQuant.Text = sd.ItemName + " / Sasia e disponueshme: " + sd.QuantityNow.ToString();
+                        lblNameAndQuant.Left = (panel2.Width - lblNameAndQuant.Width) / 2;
+                        lblNameAndQuant.Top = (panel2.Height - lblNameAndQuant.Height) / 2;
+                    }
+                    else
+                    {
+
+                        lblNameAndQuant.Text = ((Globals.ItemLocation.Find(p => p.Id == item.Location)?.Name != null) ? " Lokacioni: " + Globals.ItemLocation.Find(p => p.Id == item.Location).Name : "");
+                        lblNameAndQuant.Left = (panel2.Width - lblNameAndQuant.Width) / 2;
+                        lblNameAndQuant.Top = (panel2.Height - lblNameAndQuant.Height) / 2;
+                    }
+
+
+                    mIsChanged = true;
+                }
+                else
+                {
+                    if (settings.PIN != "0" || settings.PIN == null)
+                    {
+
+                        if (MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {item.Name}! A deshironi te vazhdoni?", "Sasi me minus", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+                        {
+                            EnterPin enter = new EnterPin();
+                            enter.ShowDialog();
+                            if (enter.flag == true)
+                            {
+                                Services.Models.TablesSaleDetails sd = new Services.Models.TablesSaleDetails();
+                                sd.No = ug.Rows.Count + 1;
+
+                                sd.Id = 0;
+                                sd.ItemId = item.Id;
+                                sd.No = ug.Rows.Count + 1;
+                                sd.Barcode = item.Barcode;
+                                sd.ItemName = item.Name;
+                                sd.Unit = item.Unit;
+                                sd.Quantity = 1.00M;
+
+                                sd.QuantityNow = Warehouse.GetbyId(sd.ItemId) == null ? 0 : Warehouse.GetbyId(sd.ItemId).InStock;
+                                sd.Price = item.SalePrice;
+                                sd.Discount = item.Discount;
+                                sd.CategoryId = item.CategoryId;
+                                int count = ug.Rows.Count + 1;
+                                ((BindingList<Services.Models.TablesSaleDetails>)ug.DataSource).Add(sd);
+
+                                sd.DiscountPrice = item.SalePrice * (1 - item.Discount / 100);
+
+                                sd.DiscountPriceWithVat = Math.Round(item.SalePrice * (1 + (decimal)item.Vat / 100.00M), 2);
+                                sd.Vat = item.Vat;
+                                sd.VatSum = sd.DiscountPrice * item.Vat / 100;
+
+                                sd.Total = sd.Quantity * sd.DiscountPrice;
+                                sd.TotalWithVat = clientDiscount > 0 ? Math.Round(sd.Total + sd.VatSum - ((sd.Total + sd.VatSum) * clientDiscount / 100), 2) : Math.Round(sd.Total + sd.VatSum, 2);
+                                sd.ClientDiscount = clientDiscount;
+                                sd.PrintedQuantity = 0;
+                                CalculateGridColumns();
+
+                                if (ug.Rows.Count > 1)
+                                {
+                                    ug.CurrentCell = ug[2, ug.Rows.Count - 1];
+
+                                }
+
+                                if (Globals.Settings.StockRibbon == 1 && Globals.Settings.LocationRibbon == 1)
+                                {
+                                    lblNameAndQuant.Text = sd.ItemName + " / Sasia e disponueshme: " + sd.QuantityNow.ToString() +
+                                            ((Globals.ItemLocation.Find(p => p.Id == item.Location)?.Name != null) ? " / Lokacioni: " + Globals.ItemLocation.Find(p => p.Id == item.Location).Name : "");
+
+
+                                    lblNameAndQuant.Left = (panel2.Width - lblNameAndQuant.Width) / 2;
+                                    lblNameAndQuant.Top = (panel2.Height - lblNameAndQuant.Height) / 2;
+                                }
+                                else if (Globals.Settings.StockRibbon == 1 && Globals.Settings.LocationRibbon == 0)
+                                {
+                                    lblNameAndQuant.Text = sd.ItemName + " / Sasia e disponueshme: " + sd.QuantityNow.ToString();
+                                    lblNameAndQuant.Left = (panel2.Width - lblNameAndQuant.Width) / 2;
+                                    lblNameAndQuant.Top = (panel2.Height - lblNameAndQuant.Height) / 2;
+                                }
+                                else
+                                {
+
+                                    lblNameAndQuant.Text = ((Globals.ItemLocation.Find(p => p.Id == item.Location)?.Name != null) ? " Lokacioni: " + Globals.ItemLocation.Find(p => p.Id == item.Location).Name : "");
+                                    lblNameAndQuant.Left = (panel2.Width - lblNameAndQuant.Width) / 2;
+                                    lblNameAndQuant.Top = (panel2.Height - lblNameAndQuant.Height) / 2;
+                                }
+
+
+                                mIsChanged = true;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Nuk keni sasi te mjaftueshme per artikullin: {item.Name}!");
+                    }
+                }
             }
             else
             {
+                Services.Models.TablesSaleDetails sd = new Services.Models.TablesSaleDetails();
+                sd.No = ug.Rows.Count + 1;
 
-                lblNameAndQuant.Text = ((Globals.ItemLocation.Find(p => p.Id == item.Location)?.Name != null) ? " Lokacioni: " + Globals.ItemLocation.Find(p => p.Id == item.Location).Name : "");
-                lblNameAndQuant.Left = (panel2.Width - lblNameAndQuant.Width) / 2;
-                lblNameAndQuant.Top = (panel2.Height - lblNameAndQuant.Height) / 2;
+                sd.Id = 0;
+                sd.ItemId = item.Id;
+                sd.No = ug.Rows.Count + 1;
+                sd.Barcode = item.Barcode;
+                sd.ItemName = item.Name;
+                sd.Unit = item.Unit;
+                sd.Quantity = 1.00M;
+
+                sd.QuantityNow = Warehouse.GetbyId(sd.ItemId) == null ? 0 : Warehouse.GetbyId(sd.ItemId).InStock;
+                sd.Price = item.SalePrice;
+                sd.Discount = item.Discount;
+                sd.CategoryId = item.CategoryId;
+                int count = ug.Rows.Count + 1;
+                ((BindingList<Services.Models.TablesSaleDetails>)ug.DataSource).Add(sd);
+
+                sd.DiscountPrice = item.SalePrice * (1 - item.Discount / 100);
+
+                sd.DiscountPriceWithVat = Math.Round(item.SalePrice * (1 + (decimal)item.Vat / 100.00M), 2);
+                sd.Vat = item.Vat;
+                sd.VatSum = sd.DiscountPrice * item.Vat / 100;
+
+                sd.Total = sd.Quantity * sd.DiscountPrice;
+                sd.TotalWithVat = clientDiscount > 0 ? Math.Round(sd.Total + sd.VatSum - ((sd.Total + sd.VatSum) * clientDiscount / 100), 2) : Math.Round(sd.Total + sd.VatSum, 2);
+                sd.ClientDiscount = clientDiscount;
+                sd.PrintedQuantity = 0;
+                CalculateGridColumns();
+
+                if (ug.Rows.Count > 1)
+                {
+                    ug.CurrentCell = ug[2, ug.Rows.Count - 1];
+
+                }
+
+                if (Globals.Settings.StockRibbon == 1 && Globals.Settings.LocationRibbon == 1)
+                {
+                    lblNameAndQuant.Text = sd.ItemName + " / Sasia e disponueshme: " + sd.QuantityNow.ToString() +
+                            ((Globals.ItemLocation.Find(p => p.Id == item.Location)?.Name != null) ? " / Lokacioni: " + Globals.ItemLocation.Find(p => p.Id == item.Location).Name : "");
+
+
+                    lblNameAndQuant.Left = (panel2.Width - lblNameAndQuant.Width) / 2;
+                    lblNameAndQuant.Top = (panel2.Height - lblNameAndQuant.Height) / 2;
+                }
+                else if (Globals.Settings.StockRibbon == 1 && Globals.Settings.LocationRibbon == 0)
+                {
+                    lblNameAndQuant.Text = sd.ItemName + " / Sasia e disponueshme: " + sd.QuantityNow.ToString();
+                    lblNameAndQuant.Left = (panel2.Width - lblNameAndQuant.Width) / 2;
+                    lblNameAndQuant.Top = (panel2.Height - lblNameAndQuant.Height) / 2;
+                }
+                else
+                {
+
+                    lblNameAndQuant.Text = ((Globals.ItemLocation.Find(p => p.Id == item.Location)?.Name != null) ? " Lokacioni: " + Globals.ItemLocation.Find(p => p.Id == item.Location).Name : "");
+                    lblNameAndQuant.Left = (panel2.Width - lblNameAndQuant.Width) / 2;
+                    lblNameAndQuant.Top = (panel2.Height - lblNameAndQuant.Height) / 2;
+                }
+
+
+                mIsChanged = true;
             }
 
 
-            mIsChanged = true;
         }
 
         int mSelectedCatId = 0;
@@ -5853,7 +6040,6 @@ namespace MyNET.Pos
                 DailyOpenFiscalCount += 1;
                 var daily = new DailyOpenCloseBalance();
                 var lastdaily = Services.DailyOpenCloseBalance.GetLastDailyBalanceByEmployee(Services.Tables.GetTables().Where(p => p.Id.ToString() == tableId).First().Emp_id);
-                DailyOpenFiscalCount += lastdaily.DailyFiscalCount;
                 totalSumOpenBalance = sale.TotalSum + lastdaily.TotalShitje;
                 var totalcash = 0.0m;
 
@@ -6283,7 +6469,7 @@ namespace MyNET.Pos
                 }
                 else
                 {
-                    EnterPin enter = new EnterPin();
+                    EnterPin enter = new EnterPin(); 
                     enter.ShowDialog();
                     if (enter.flag == true)
                     {

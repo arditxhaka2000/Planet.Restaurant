@@ -192,12 +192,18 @@ namespace MyNET.Pos.Modules
                     table.station_id = Globals.Station.Id.ToString();
                     table.Shape = cmbTableShape.Text;
                     table.LocationX = t.LocationX;
-                    table.Width = table.Width;
-                    table.Height = table.Height;
+                    table.Width = t.Width;
+                    table.Height = t.Height;
                     table.LocationY = t.LocationY;
                     table.toUpdate = "1";
                     table.Status = 1;
-                    table.Update();
+                    var i= table.Update();
+                    if (i > 0)
+                    {
+                        MessageBox.Show("Tavolina u ndryshua me sukses!");
+                        this.Close();
+                    }
+
                 }
                 else
                 {
@@ -213,7 +219,12 @@ namespace MyNET.Pos.Modules
                 space.station_id = Globals.Station.Id.ToString();
                 space.toUpdate = "1";
                 space.Status = "1";
-                space.Update();
+                var i = space.Update();
+                if (i > 0)
+                {
+                    MessageBox.Show("Hapsira u ndryshua me sukses!");
+                    this.Close();
+                }
             }
 
         }

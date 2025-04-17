@@ -341,7 +341,6 @@ namespace MyNET.Pos.Modules
                         totalsum = Convert.ToDecimal(txtOpenAmount.Text) + daily.TotalCash;
                         txtTotali.Text = totalsum.ToString("N");
                         txtDorzimi.Text = totalsum.ToString("N");
-                        txtNrKuponav.Text = daily.DailyFiscalCount.ToString();
                         txtKesh.Text = daily.TotalCash.ToString("N");
                         txtBankat.Text = daily.TotalCreditCard.ToString("N");
 

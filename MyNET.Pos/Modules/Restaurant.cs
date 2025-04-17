@@ -141,7 +141,7 @@ namespace MyNET.Pos.Modules
 
         }
 
-        private async void CoreWebView2_AddWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
+        private async void CoreWebView2_AddWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)     
         {
             // Receive messages sent from JavaScript
             string message = e.TryGetWebMessageAsString();
@@ -173,7 +173,7 @@ namespace MyNET.Pos.Modules
                     if (tbl.JoinId == 0)
                     {
 
-                        if (tbl.Emp_id == Globals.User.Id)
+                        if (tbl.Emp_id == Globals.User.Id || Globals.User.Role == "1")
                         {
                             Services.Tables.UpdateTablePos(1, id);
 
@@ -927,7 +927,7 @@ namespace MyNET.Pos.Modules
 
         private void Dil_Click(object sender, EventArgs value)
         {
-            Globals.NextStep = "LoginForm";
+             Globals.NextStep = "LoginForm";
             Globals.CashBoxStatus = "Locked";
             Services.StationService.UnLockUserStation(Globals.User.Id, Globals.DeviceId);
             this.Close();
