@@ -279,7 +279,7 @@ namespace MyNET.Pos
             if (printCategory.Any(p => !string.IsNullOrEmpty(p.ThermalName)))
             {
                 foreach (var currentPrinter in printCategory.Where(p => !string.IsNullOrEmpty(p.ThermalName)))
-                {
+                    {
                     // Create a new PrintDocument for each printer
                     using (PrintDocument printDocs = new PrintDocument())
                     {
@@ -1642,7 +1642,7 @@ namespace MyNET.Pos
                 if ((int)row.Cells["Printed"].Value == 0)
                 {
 
-                    var iName = (row.Cells["ItemName"].Value.ToString() + " " + row.Cells["CostOfGoods"].Value).Count() > 40 ? row.Cells["ItemName"].Value.ToString().Substring(0, 20) + row.Cells["CostOfGoods"].Value : row.Cells["ItemName"].Value.ToString() + "\n" + row.Cells["CostOfGoods"].Value;
+                    var iName = (row.Cells["ItemName"].Value.ToString() + " " + row.Cells["CostOfGoods"].Value).Count() > 60 ? row.Cells["ItemName"].Value.ToString().Substring(0, 50) + " "+row.Cells["CostOfGoods"].Value : row.Cells["ItemName"].Value.ToString() + "\n" + row.Cells["CostOfGoods"].Value;
 
                     var words = iName.Split(' ');
                     var lines = new List<string>();
@@ -1690,7 +1690,7 @@ namespace MyNET.Pos
                 {
                     if ((decimal)row.Cells["Quantity"].Value - currentItem.First().PrintedQuantity > 0)
                     {
-                        var iName = (row.Cells["ItemName"].Value.ToString() + " " + row.Cells["CostOfGoods"].Value).Count() > 40 ? row.Cells["ItemName"].Value.ToString().Substring(0, 20) + row.Cells["CostOfGoods"].Value : row.Cells["ItemName"].Value.ToString() + "\n" + row.Cells["CostOfGoods"].Value;
+                        var iName = (row.Cells["ItemName"].Value.ToString() + " " + row.Cells["CostOfGoods"].Value).Count() > 60 ? row.Cells["ItemName"].Value.ToString().Substring(0, 50) + row.Cells["CostOfGoods"].Value : row.Cells["ItemName"].Value.ToString() + "\n" + row.Cells["CostOfGoods"].Value;
 
 
                         var words = iName.Split(' ');
@@ -2476,7 +2476,7 @@ namespace MyNET.Pos
                 //btn_DirectPay.Font = new Font("Lato", 22, FontStyle.Regular);
                 txtShortcuts.Font = new Font("Lato", 8, FontStyle.Regular);
                 CbSize = new Size(100, 50); subCbSize = new Size(90, 40);
-                bTextSize = new Font("Arial", 9, FontStyle.Regular);
+                bTextSize = new Font("Arial", 11, FontStyle.Regular);
                 catButtonL = 10;
             }
             if (x >= 1400 && x <= 1680)
@@ -2494,7 +2494,7 @@ namespace MyNET.Pos
                 word_print_the_coupon.Font = new Font("Lato", 16, FontStyle.Regular);
                 //btn_DirectPay.Font = new Font("Lato", 16, FontStyle.Regular);
                 txtShortcuts.Font = new Font("Lato", 7, FontStyle.Regular);
-                bTextSize = new Font("Arial", 8, FontStyle.Regular);
+                bTextSize = new Font("Arial", 10, FontStyle.Regular);
 
                 CbSize = new Size(100, 50); subCbSize = new Size(90, 40);
                 catButtonL = 10;
@@ -2515,7 +2515,7 @@ namespace MyNET.Pos
                 word_print_the_coupon.Font = new Font("Lato", 16, FontStyle.Regular);
                 //btn_DirectPay.Font = new Font("Lato", 16, FontStyle.Regular);
                 txtShortcuts.Font = new Font("Lato", 7, FontStyle.Regular);
-                bTextSize = new Font("Arial", 7, FontStyle.Regular);
+                bTextSize = new Font("Arial", 8, FontStyle.Regular);
 
                 CbSize = new Size(80, 40); subCbSize = new Size(70, 30);
                 catButtonL = 0;
@@ -2867,7 +2867,7 @@ namespace MyNET.Pos
                 ButtonBaseName = "btnItems_",
                 BaseAddition = 110,
                 ButtonSize = new Size(150, 50),
-                ButtonText = new Font("Arial", 9, FontStyle.Regular),
+                ButtonText = new Font("Arial", 11, FontStyle.Regular),
                 ButtonFlat = FlatStyle.Flat,
                 ButtonDock = DockStyle.Fill,
                 ImageAlignButton = TextImageRelation.TextAboveImage
@@ -3056,7 +3056,7 @@ namespace MyNET.Pos
                 ButtonBaseName = "btnItems_",
                 BaseAddition = 110,
                 ButtonSize = CbSize,
-                ButtonText = new Font("Arial", 9, FontStyle.Regular),
+                ButtonText = new Font("Arial", 11, FontStyle.Regular),
                 ButtonFlat = FlatStyle.Flat,
                 ButtonAnchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
                 ButtonColor = Color.FromArgb(49, 50, 55),
@@ -4782,7 +4782,7 @@ namespace MyNET.Pos
                     ButtonBaseName = "btnSubCat",
                     BaseAddition = 110,
                     ButtonSize = subCbSize,
-                    ButtonText = new Font("Arial", 9, FontStyle.Regular),
+                    ButtonText = new Font("Arial", 11, FontStyle.Regular),
                     ButtonFlat = FlatStyle.Flat,
                     ButtonColor = Color.FromArgb(55, 67, 82),
                     TextColor = Color.White,

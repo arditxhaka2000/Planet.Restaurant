@@ -104,7 +104,7 @@
       <HintPath>..\packages\ExtendedXmlSerializer.3.7.6\lib\net452\ExtendedXmlSerializer.dll</HintPath>
     </Reference>
     <Reference Include="FPcore">
-      <HintPath>..\..\..\..\Desktop\FPcore.dll</HintPath>
+      <HintPath>..\..\..\..\Documents\FPcore.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.11.59.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.11.59\lib\Net45\HtmlAgilityPack.dll</HintPath>

@@ -50,7 +50,7 @@
             this.Ruaj.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.Ruaj.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ruaj.ForeColor = System.Drawing.Color.White;
-            this.Ruaj.Location = new System.Drawing.Point(895, 3);
+            this.Ruaj.Location = new System.Drawing.Point(894, 3);
             this.Ruaj.Name = "Ruaj";
             this.Ruaj.Size = new System.Drawing.Size(114, 38);
             this.Ruaj.TabIndex = 4;
@@ -85,7 +85,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.77778F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.22222F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 109F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 175F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 176F));
             this.tableLayoutPanel2.Controls.Add(this.btnLogOut, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.pictureBox1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.comboBox1, 1, 0);
@@ -105,7 +105,7 @@
             this.btnLogOut.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnLogOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogOut.ForeColor = System.Drawing.Color.BlanchedAlmond;
-            this.btnLogOut.Location = new System.Drawing.Point(786, 3);
+            this.btnLogOut.Location = new System.Drawing.Point(785, 3);
             this.btnLogOut.Name = "btnLogOut";
             this.btnLogOut.Size = new System.Drawing.Size(103, 38);
             this.btnLogOut.TabIndex = 11;
@@ -145,7 +145,7 @@
             "Bashko Tavolinat"});
             this.comboBox1.Location = new System.Drawing.Point(612, 3);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(168, 37);
+            this.comboBox1.Size = new System.Drawing.Size(167, 37);
             this.comboBox1.TabIndex = 10;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 

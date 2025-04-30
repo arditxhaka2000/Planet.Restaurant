@@ -119,7 +119,7 @@ namespace MyNET.Pos.Modules
 
             }
 
-            
+
 
 
 
@@ -153,9 +153,9 @@ namespace MyNET.Pos.Modules
             height += 40;
 
             float tableTop = height + 20; // Start of the table
-            float rowHeight = 30; 
-            float col1Width = total_width-63; // Width of the first column
-            float col2Width = total_width -63; // Width of the second column
+            float rowHeight = 30;
+            float col1Width = total_width - 63; // Width of the first column
+            float col2Width = total_width - 63; // Width of the second column
 
             // Define rows
             var rows = new List<(string Label, string Value)>
@@ -167,7 +167,7 @@ namespace MyNET.Pos.Modules
         ("Total Shitje:", $"{txtTotaliShitje.Text} EUR"),
         ("Totali:", $"{txtTotali.Text} EUR")
     };
-         
+
             // Draw table rows
             foreach (var row in rows)
             {
@@ -186,7 +186,7 @@ namespace MyNET.Pos.Modules
         private void btnZRaport_Click(object sender, EventArgs e)
         {
             var globals = Services.Settings.Get();
-
+            var printer = Services.Printer.Get().Find(p => p.Id == Globals.DeviceId);
             try
             {
                 //shtyp raportin Z
@@ -201,22 +201,37 @@ namespace MyNET.Pos.Modules
                     MessageBox.Show("");
                 }
 
-                if (globals.FiscalPrinterType == "Tremol")
+                if (globals.FiscalPrinterType == null)
                 {
-                    if (globals.PosPrinter == "1")
+                    if (printer.FiscalType == "Tremol")
                     {
                         TremolPrint.PrintZReport();
 
                     }
+                    else
+                    {
+                        var myUniqueFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".inp";
+
+                        string zReport = "E,1, ______,_,__; Planetaccounting.org;@Z,1,______,_,__;" + Environment.NewLine;
+                        zReport = zReport.Replace("@", "\n");
+
+                        File.WriteAllText(Path.Combine(path, myUniqueFileName), zReport);
+                    }
                 }
                 else
                 {
-                    var myUniqueFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".inp";
+                    if (globals.FiscalPrinterType == "Tremol")
+                    {
+                        TremolPrint.PrintZReport();
+                    }
+                    else
+                    {
+                        var myUniqueFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".inp";
+                        string zReport = "E,1, ______,_,__; Planetaccounting.org;@Z,1,______,_,__;" + Environment.NewLine;
+                        zReport = zReport.Replace("@", "\n");
+                        File.WriteAllText(Path.Combine(path, myUniqueFileName), zReport);
+                    }
 
-                    string zReport = "E,1, ______,_,__; Planetaccounting.org;@Z,1,______,_,__;" + Environment.NewLine;
-                    zReport = zReport.Replace("@", "\n");
-
-                    File.WriteAllText(Path.Combine(path, myUniqueFileName), zReport);
                 }
             }
             catch
@@ -327,7 +342,7 @@ namespace MyNET.Pos.Modules
 
                     dailyOpen = Services.DailyOpenCloseBalance.GetLastDailyBalanceByEmployee(dailyOpenId);
 
-                    txtNrKuponav.Text = RestaurantPos.countNumFiscal.ToString();
+                    txtNrKuponav.Text = dailyOpen.DailyFiscalCount.ToString();
                     if (dailyOpen != null)
                     {
                         if (dailyOpen.Status == "open")
@@ -357,7 +372,7 @@ namespace MyNET.Pos.Modules
                     MessageBox.Show("Nuk mund ta mbyllni diten pa i mbyll te gjitha tavolinat!");
                     this.Close();
                 }
-               
+
 
             }
         }

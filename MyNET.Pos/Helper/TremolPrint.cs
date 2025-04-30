@@ -138,35 +138,36 @@ namespace MyNET.Shops
                         fp.RefundPLUwithSpecifiedVAT(item["ItemName"].ToString(), vATClass, priceWithVat, decimal.Parse(item["Quantity"].ToString()), 0, null, null);
                     }
                 }
-                
-                OptionPaymentType optionPaymentType = new OptionPaymentType();
-                OptionChange optionchange = new OptionChange();
-                OptionChangeType optionChangeType = new OptionChangeType();
 
-                optionChangeType = OptionChangeType.Change_In_Cash;
+                //OptionPaymentType optionPaymentType = new OptionPaymentType();
+                //OptionChange optionchange = new OptionChange();
+                //OptionChangeType optionChangeType = new OptionChangeType();
 
-                foreach (var item in Payment.GetBySaleId(int.Parse(dt.Rows[0]["SaleId"].ToString())))
-                {
-                    if (item.BankId > 0 && item.AmountPaid > 0.0m)
-                    {
-                        optionPaymentType = OptionPaymentType.Card;
+                //optionChangeType = OptionChangeType.Change_In_Cash;
 
-                    }
-                    else if (item.BankId == 0 && item.AmountPaid > 0.0m)
-                    {
-                        optionPaymentType = OptionPaymentType.Cash;
+                //foreach (var item in Payment.GetBySaleId(int.Parse(dt.Rows[0]["Sale_Id"].ToString())))
+                //{
+                //    if (item.BankId > 0 && item.AmountPaid > 0.0m)
+                //    {
+                //        optionPaymentType = OptionPaymentType.Card;
 
-                    }
+                //    }
+                //    else if (item.BankId == 0 && item.AmountPaid > 0.0m)
+                //    {
+                //        optionPaymentType = OptionPaymentType.Cash;
 
-                }
+                //    }
 
-                fp.Payment(optionPaymentType, optionchange, clientPayed, optionChangeType);
+                //}
+
+                //fp.Payment(optionPaymentType, optionchange, clientPayed, optionChangeType);
+                fp.PayExactSum(OptionPaymentType.Cash);
                 flag = true;
 
                 fp.CloseReceipt();
 
 
-                fp.DisplayTextLines1and2("Për kusur: " + frmPayment.numreturn.ToString() + "\nJu Faleminderit!");
+                //fp.DisplayTextLines1and2("Për kusur: " + frmPayment.numreturn.ToString() + "\nJu Faleminderit!");
 
 
                 if (Globals.Settings.PrintCopy == "1")
@@ -193,8 +194,6 @@ namespace MyNET.Shops
                 var s = printer.Find(p => p.Id == Globals.DeviceId);
 
                 FP fp = new FP(Convert.ToInt32(s.DefVersion)) { ServerAddress = "http://LocalHost:4444/" };
-                fp.ServerSetDeviceSerialPortSettings(s.COM, 115200);
-                fp.OpenReceipt(1, "0", OptionPrintType.Postponed_printing);
 
                 var restClient = GetRestClient("http://LocalHost:4444/");
                 var request = new RestRequest($"/settings(com={s.COM},baud=,tcp=,ip=,port=,password=)", Method.GET);

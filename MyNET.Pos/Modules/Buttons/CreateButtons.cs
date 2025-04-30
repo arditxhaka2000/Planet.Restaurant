@@ -151,9 +151,9 @@ namespace MyNET.Pos.Modules
                 foreach (var item in sender)
                 {
                     string path = Path.GetFullPath(Application.StartupPath + @"\ImagesPath" + Globals.Settings.Id.ToString() + "\\" + item.Id.ToString() + ".jpg");
-                    if (item.Name.Length > 10)
+                    if (item.Name.Length > 50)
                     {
-                        ButtonT = item.Name.Substring(0, 10) + "...";
+                        ButtonT = item.Name.Substring(0, 50) + "...";
                     }
                     else
                     {
@@ -207,7 +207,7 @@ namespace MyNET.Pos.Modules
                         };
                         b.MouseHover += (s, e) =>
                         {
-                            if (b.Tag != null && item.Name.Length > 10)
+                            if (b.Tag != null && item.Name.Length > 50)
                             {
                                 b.Text = item.Name.ToString() + "\n" + item.TotalPrice + "EUR";
 
@@ -215,9 +215,9 @@ namespace MyNET.Pos.Modules
                         };
                         b.MouseLeave += (s, e) =>
                         {
-                            if (item.Name.Length > 10)
+                            if (item.Name.Length > 50)
                             {
-                                b.Text = item.Name.Substring(0, 10) + "\n" + item.TotalPrice + "EUR";
+                                b.Text = item.Name.Substring(0, 50) + "\n" + item.TotalPrice + "EUR";
 
                             }
 
@@ -259,7 +259,7 @@ namespace MyNET.Pos.Modules
                         };
                         b.MouseHover += (s, e) =>
                         {
-                            if (b.Tag != null && item.Name.Length > 10)
+                            if (b.Tag != null && item.Name.Length > 50)
                             {
                                 b.Text = item.Name.ToString() + "\n" + item.TotalPrice + "EUR";
 
@@ -267,9 +267,9 @@ namespace MyNET.Pos.Modules
                         };
                         b.MouseLeave += (s, e) =>
                         {
-                            if (item.Name.Length > 10)
+                            if (item.Name.Length > 50)
                             {
-                                b.Text = item.Name.Substring(0, 10) + "\n" + item.TotalPrice + "EUR";
+                                b.Text = item.Name.Substring(0, 50) + "\n" + item.TotalPrice + "EUR";
 
                             }
 

@@ -4284,7 +4284,7 @@ namespace MyNET.Pos
             foreach (var s in saleDetails)
             {
                 DataRow r = dt.NewRow();
-                var allitems = Services.Item.Get(s.ItemId);
+                var allitems = Item.GetById(s.ItemId).First();
                 string itemname = allitems.ItemName;
                 r["Id"] = s.Id;
                 r["SaleId"] = s.SaleId;

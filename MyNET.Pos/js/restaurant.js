@@ -246,21 +246,34 @@ function functionOptionsRestaurant(m) {
         //toggleCheckIcons();
     }
 }
-function changeTableColor(tableId, color) {
+function changeTableColor(tableId, color, shape) {
     const tableElement = document.querySelector("[data-tableId='" + tableId + "']");
     //console.log('ktu12', color);
     if (tableElement) {
         const h5 = tableElement.getElementsByTagName('h5');
-
+        console.log(shape);
         if (color === 'red') {
-            tableElement.style.backgroundImage = "url('Resources/Table1.png')";
+
+            if (shape === 'Tavolinë') {
+                tableElement.style.backgroundImage = "url('Resources/Table1.png')";
+            }
+            else {
+                tableElement.style.backgroundColor = "#682825";
+            }
             for (let i = 0; i < h5.length; i++) {
                 h5[i].style.color = 'white';
             }
 
         }
         else {
-            tableElement.style.backgroundImage = "url('Resources/Table.png')";
+
+            if (shape === 'Tavolinë') {
+                tableElement.style.backgroundImage = "url('Resources/Table1.png')";
+            }
+            else {
+                tableElement.style.backgroundColor = "#618368";
+
+            }
             for (let i = 0; i < h5.length; i++) {
                 h5[i].style.color = 'black';
             }

@@ -82,7 +82,8 @@ namespace MyNET.Pos.Modules
                 int inPos = responseObj[0].inPos;
                 string id = responseObj[0].Id;
                 string color = inPos == 0 ? "green" : "red";
-                UpdateTableColor(id, color);
+                string shape = Services.Tables.GetTables().Find(p => p.Id.ToString() == id).Shape;
+                UpdateTableColor(id, color,shape);
 
 
             });
@@ -260,7 +261,7 @@ namespace MyNET.Pos.Modules
             await webView21.ExecuteScriptAsync($"changeTheme('{message}')");
             webView21.Refresh();
         }
-        private void UpdateTableColor(string id, string color)
+        private void UpdateTableColor(string id, string color,string shape)
         {
             syncContext.Post(async _ =>
             {
@@ -271,7 +272,7 @@ namespace MyNET.Pos.Modules
 
                 try
                 {
-                    await webView21.ExecuteScriptAsync($"changeTableColor('{id}', '{color}')");
+                    await webView21.ExecuteScriptAsync($"changeTableColor('{id}', '{color}','{shape}')");
                 }
                 catch (Exception ex)
                 {

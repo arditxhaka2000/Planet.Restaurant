@@ -292,7 +292,7 @@ namespace MyNET.Pos.Modules
             float height = 5;
             // float printerWidth;
             // float printerHight;
-
+            
 
             float company_name = 2f;
             float company_address = 2.5f;
