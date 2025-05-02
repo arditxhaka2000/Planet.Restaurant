@@ -87,7 +87,7 @@ namespace MyNET.Shops
                         discountpercent = decimal.Parse(dt.Rows[i - 1]["ClientDiscount"].ToString());
                     }
                     decimal discountamount = 0;
-
+                    //
                     if (discountpercent > 0)
                     {
                         discountamount = quantityT * priceWithVat * (discountpercent / 100);
