@@ -31,6 +31,17 @@ namespace MyNET.Shops
             }
             var allowdiscount = Globals.Settings.AllowDiscount;
 
+            bool hasQuantityToPrint = dt.AsEnumerable().Any(row =>
+            {
+                decimal quantity = decimal.Parse(row["Quantity"].ToString());
+                decimal printed = dt.Columns.Contains("PrintedFiscalQuantity")
+                                  ? decimal.Parse(row["PrintedFiscalQuantity"].ToString())
+                                  : 0;
+                return quantity - printed > 0;
+            });
+
+            if (!hasQuantityToPrint)
+                return flag;
             try
             {
                 FP fp = new FP(versionDef) { ServerAddress = "http://LocalHost:4444/" };
@@ -70,6 +81,8 @@ namespace MyNET.Shops
                     {
                         quantity = decimal.Parse(dt.Rows[i - 1]["Quantity"].ToString()) - decimal.Parse(dt.Rows[i - 1]["PrintedFiscalQuantity"].ToString());
                         quantityT = decimal.Parse(dt.Rows[i - 1]["Quantity"].ToString()) - decimal.Parse(dt.Rows[i - 1]["PrintedFiscalQuantity"].ToString());
+                        if (quantity == 0)
+                            continue;
                     }
                     else
                     {

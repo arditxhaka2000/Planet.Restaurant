@@ -9388,7 +9388,13 @@ namespace MyNET.Pos
                         {
                             if (TremolPrint.CreateReceipt(dt, clientPayed))
                             {
-                                Services.SaleDetails.UpdatePrinted(mSaleId);
+                                foreach (DataRow item in dt.Rows)
+                                {
+                                    decimal quantity = Convert.ToDecimal(item["Quantity"].ToString());
+                                    string id = item["Id"].ToString();
+                                    Services.Models.TablesSaleDetails.UpdateTableFiscalQuantityPrinted(quantity, id);
+
+                                }
                             }
 
                             global.UpdateFC(lblFiscalCount.Text, Globals.Settings.Id);
